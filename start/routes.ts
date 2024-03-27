@@ -1,6 +1,8 @@
 /*
 |--------------------------------------------------------------------------
-| Routes file sass --watch "web engineering 2\Kleinanzeigen-proto\scss":Kleinanzeigenplattform\resources\css
+| Routes file 
+|sass --watch "web engineering 2\Kleinanzeigen-proto\scss":Kleinanzeigenplattform\resources\css
+|sass --watch --style=compressed webengineering2\Kleinanzeigen-proto\scss:adonis-kleinanzeigenplattform/resources/css
 |--------------------------------------------------------------------------
 |
 | The routes file is used for defining the HTTP routes.
@@ -14,14 +16,14 @@ router.get('/', async ({ view }) => {
         {
             name: 'Fast neues Auto',
             price: 100,
-            image: 'https://placehold.co/150x100',
+            image: 'https://placehold.co/150x300',
             description: 'Hat ein paar kleine Kratzer und Dellen, aber das ist der Charakterdes Autos.'
         },
         {
             name: 'Apple google',
             price: 100,
-            image: 'https://placehold.co/150x100',
-            description: 'Apple google'
+            image: 'https://www.apple.com/newsroom/images/partnerships/Apple-Google-partner-industry-specification-hero_inline.jpg.slideshow-medium_2x.jpg',
+            description: 'Apple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple google'
         },
         {
             name: 'Alles',
@@ -92,4 +94,16 @@ router.get('/gespeichert', async ({ view }) => {
 
 router.get('/konto' , async ({ view }) => {
     return view.render('pages/base', { page: 'pages/konto' })
+})
+
+router.get('meine-anzeigen', async ({ view }) => {
+    const meineAnzeigen = [
+        {
+            name: 'Apple google',
+            price: 100,
+            image: 'https://placehold.co/150x100',
+            description: 'Apple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple google'
+        }
+    ]
+    return view.render('pages/base', { page: 'pages/meine-anzeigen', meineAnzeigen })
 })
