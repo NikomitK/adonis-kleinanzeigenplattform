@@ -16,43 +16,43 @@ router.get('/', async ({ view }) => {
         {
             name: 'Fast neues Auto',
             price: 100,
-            image: 'https://placehold.co/150x300',
+            image: 'resources/images/auto.webp',
             description: 'Hat ein paar kleine Kratzer und Dellen, aber das ist der Charakterdes Autos.'
         },
         {
             name: 'Apple google',
             price: 100,
-            image: 'https://www.apple.com/newsroom/images/partnerships/Apple-Google-partner-industry-specification-hero_inline.jpg.slideshow-medium_2x.jpg',
+            image: 'resources/images/apple-google.jpg',
             description: 'Apple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple google'
         },
         {
             name: 'Alles',
             price: 100,
-            image: 'https://placehold.co/150x100',
+            image: 'resources/images/alles.jpg',
             description: 'Ich verkaufe alles was existiert.'
         },
         {
             name: 'Svenjamin',
             price: 100,
-            image: 'https://placehold.co/150x100',
+            image: 'resources/images/sven.jpg',
             description: 'Some quick example text to build on the card title and make up the bulk of the cards content.'
         },
         {
             name: 'Apple google',
             price: 100,
-            image: 'https://placehold.co/150x100',
+            image: 'resources/images/apple-google.jpg',
             description: 'Apple google'
         },
         {
             name: 'Alles',
             price: 100,
-            image: 'https://placehold.co/150x100',
+            image: 'resources/images/alles.jpg',
             description: 'Ich verkaufe alles was existiert.'
         },
         {
             name: 'Svenjamin',
             price: 100,
-            image: 'https://placehold.co/150x100',
+            image: 'resources/images/sven.jpg',
             description: 'Some quick example text to build on the card title and make up the bulk of the cards content.'
         }
     ]
