@@ -1,0 +1,51 @@
+<script>
+    function disableShippingPrice() {
+        document.getElementById("shipping-price").disabled = !document.getElementById("shipping").checked;
+    }
+</script>
+
+<div class="container">
+    <form class="twoxthree-grid" action="/anzeige-aufgeben" method="post">
+        <div>
+            <img src="https://placehold.co/500x400" alt="">
+        </div>
+        <div id="anzeige-aufgeben_text-div">
+            <div class="form-floating">
+                <input name="title" class="form-control" type="text" id="title" placeholder="Titel der Anzeige" required>
+                <label for="title">Titel der Anzeige</label>
+            </div>
+            <div class="form-floating">
+                <textarea name="description" class="form-control" id="description" placeholder="Titel der Anzeige"></textarea>
+                <label for="title">Beschreibung der Anzeige</label>
+            </div>
+        </div>
+        <div class="anzeige-aufgeben_price">
+            <div class="form-floating">
+                <input name="price" class="form-control" type="number" id="price" placeholder="Preis" step="any" required>
+                <label for="price">Preis</label>
+            </div>
+            <div class="form-check">
+                <input name="negotiable" class="form-check-input" type="checkbox" id="negotiable">
+                <label class="form-check-label" for="negotiable">
+                    Verhandelbar
+                </label>
+            </div>
+        </div>
+        <div class="anzeige-aufgeben_price">
+            <div class="form-floating">
+                <input name="shipping-price" class="form-control" type="number" id="shipping-price" placeholder="Versandkosten" step="any" disabled>
+                <label for="shipping-price">Versandkosten</label>
+            </div>
+            <div class="form-check">
+                <input name="shipping" class="form-check-input" type="checkbox" id="shipping" onchange="disableShippingPrice()">
+                <label class="form-check-label" for="shipping">
+                    Versand möglich
+                </label>
+            </div>
+        </div>
+        <div>
+            <input type="submit" value="Anzeige aufgeben!" class="btn btn-secondary">
+        </div>
+        {{ csrfField() }}
+    </form>
+</div>

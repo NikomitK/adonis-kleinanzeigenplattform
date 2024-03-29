@@ -107,3 +107,18 @@ router.get('meine-anzeigen', async ({ view }) => {
     ]
     return view.render('pages/base', { page: 'pages/meine-anzeigen', meineAnzeigen })
 })
+
+router.get('/anzeige-aufgeben', async ({ view }) => {
+    return view.render('pages/base', { page: 'pages/anzeige-aufgeben' })
+})
+
+router.post('/anzeige-aufgeben', async ({ request, response }) => {
+    console.log(request.input('title'))
+    console.log(request.input('description'))
+    console.log(request.input('price'))
+    console.log(request.input('negotiable'))
+    console.log(request.input('shipping'))
+    console.log(request.input('shipping-price'))
+    //console.log(request.input('image'))
+    response.redirect('/meine-anzeigen')
+})
