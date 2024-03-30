@@ -1,38 +1,49 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse d-md-flex justify-content-md-evenly" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/gespeichert">Gespeichert</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Pricing</a>
-                </li>
+<script>
+    function testfunction() {
+        let mobileNavLinks = document.getElementById('mobile-nav-links')
+        mobileNavLinks.getAttribute("aria-expanded") == "true" ? mobileNavLinks.setAttribute("aria-expanded", "false") : mobileNavLinks.setAttribute("aria-expanded", "true")
+    }
+</script>
+<nav class="container-fluid" role="toolbar">
+    <div class="container-fluid nav-gradient">
+        <div class="container nk-navbar ">
+            <ul class="nav-link-container">
+                <li><a href="/" aria-selected="true">Home</a></li>
+                <li><a href="/gespeichert">Gespeichert</a></li>
             </ul>
-
-            <a class="navbar-brand" href="#">
-                <img src="{{ asset('resources/images/nk_dark.png') }}" width="45" alt="" />
-            </a>
-
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="/meine-anzeigen">Meine Anzeigen</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/anzeige-aufgeben">Anzeige Aufgeben</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/konto">Konto</a>
-                </li>
+            <div class="nk-nav-brand">
+                <a href="/" class="nk-nav-brand"><img src="{{ asset('resources/images/nk_dark.png') }}" width="45pt"
+                        height="45pt" alt="Nikos Kleinanzeigen Logo"></a>
+            </div>
+            <ul class="nav-link-container">
+                <li><a href="/meine-anzeigen">Meine Anzeigen</a></li>
+                <li><a href="/anzeige-aufgeben">Anzeige aufgeben</a></li>
+                <li><a href="/konto">Konto</a></li>
             </ul>
+            <div class="nk-nav-toggler">
+                <button id="navbar-toggler" onclick="testfunction()"><span
+                        class="material-symbols-outlined">menu</span></button>
+            </div>
         </div>
+    </div>
+    <div class="container-fluid " id="mobile-nav-links" aria-expanded="false">
+        <ul class="nav-link-container">
+            <li><a href="/" aria-selected="true">Home</a></li>
+            <li><a href="/gespeichert">Gespeichert</a></li>
+            <li><a href="/meine-anzeigen">Meine Anzeigen</a></li>
+            <li><a href="/anzeige-aufgeben">Anzeige aufgeben</a></li>
+            <li><a href="/konto">Konto</a></li>
+        </ul>
     </div>
 </nav>
 
+<script>
+    console.log(window.location.pathname)
+    let navLinks = document.querySelectorAll('.nav-link-container a')
+    navLinks.forEach(link => {
+        link.setAttribute('aria-selected', 'false')
+        if (link.getAttribute('href') == window.location.pathname) {
+            link.setAttribute('aria-selected', 'true')
+        }
+    })
+</script>
