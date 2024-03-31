@@ -1,0 +1,6 @@
+<div class="achievment" {{ $props.merge( { class: ['done']} ).toAttrs() }}>
+
+    <img src="{{ asset('resources/images/achievments/sven.jpg') }}" alt="">
+    <h3>{{ $props.achievment.title }}</h3>
+    <p>{{ $props.achievment.description }}</p>
+</div>

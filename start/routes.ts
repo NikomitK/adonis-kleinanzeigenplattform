@@ -93,7 +93,50 @@ router.get('/gespeichert', async ({ view }) => {
 })
 
 router.get('/konto' , async ({ view }) => {
-    return view.render('pages/base', { page: 'pages/konto' })
+    const konto = {
+        nutzername: 'Svenjamin',
+        email: 'svenjamin@test.com',
+        vorname: 'Sven',
+        nachname: 'Benjamin',
+        telefon: '123456789',
+        adresse: 'Musterstraße 123',
+        plz: '12345',
+        ort: 'Musterort',
+        seit: '27.01.1975',
+        achievments: [{
+            title: 'Svenjamin',
+            description: 'Verkaufe einen Svenjamin',
+            done: true,
+            image: 'resources/images/achievments/sven.jpg'
+        },
+        {
+            title: 'Svenjamin',
+            description: 'Verkaufe einen Svenjamin',
+            done: true,
+            image: 'resources/images/achievments/sven.jpg'
+        },{
+            title: 'Svenjamin',
+            description: 'Verkaufe einen Svenjamin',
+            done: true,
+            image: 'resources/images/achievments/sven.jpg'
+        },{
+            title: 'Svenjamin',
+            description: 'Verkaufe einen Svenjamin',
+            done: true,
+            image: 'resources/images/achievments/sven.jpg'
+        },{
+            title: 'Svenjamin',
+            description: 'Verkaufe einen Svenjamin',
+            done: false,
+            image: 'resources/images/achievments/sven.jpg'
+        },{
+            title: 'Svenjamin',
+            description: 'Verkaufe einen Svenjamin',
+            done: false,
+            image: 'resources/images/achievments/sven.jpg'
+        }]
+    }
+    return view.render('pages/base', { page: 'pages/konto', konto })
 })
 
 router.get('meine-anzeigen', async ({ view }) => {

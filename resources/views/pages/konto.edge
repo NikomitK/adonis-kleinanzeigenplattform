@@ -3,50 +3,25 @@
         <div id="profile-side">
             <img src="img/sven.jpg" width="100px" height="100px" alt="" id="profile-image">
             <div>
-                <h2>Sven</h2>
+                <h2>{{konto.nutzername}}</h2>
                 <div>69 Bewertungen</div>
-                <div>Aktiv seit: Urknall</div>
+                <div>Aktiv seit: {{konto.seit}}</div>
             </div>
         </div>
         <div id="profile-general">
-            <span>Nutzername</span> <span>Sven</span>
-            <span>Email:</span> <span>svenjamin@deine.mama</span>
-            <span>Vorname:</span> <span>Sven</span>
-            <span>Nachname:</span> <span>Sven</span>
-            <span>Telefon:</span> <span>123456789</span>
+            <span>Nutzername</span> <span>{{konto.nutzername}}</span>
+            <span>Email:</span> <span>{{konto.email}}</span>
+            <span>Vorname:</span> <span>{{konto.vorname}}</span>
+            <span>Nachname:</span> <span>{{konto.nachname}}</span>
+            <span>Telefon:</span> <span>{{konto.telefon}}</span>
         </div>
     </div>
     <div class="container mt-5">
         <h2>Achievments:</h2>
         <div id="achievment-list">
-            <div class="achievment">
-                <img src="img/sven.jpg" alt="">
-                <h3>Verkaufe einen Svenjamin</h3>
-            </div>
-            <div class="achievment">
-                <img src="img/sven.jpg" alt="">
-                <h3>Verkaufe einen Svenjamin</h3>
-            </div>
-            <div class="achievment">
-                <img src="img/sven.jpg" alt="">
-                <h3>Verkaufe einen Svenjamin</h3>
-            </div>
-            <div class="achievment">
-                <img src="img/sven.jpg" alt="">
-                <h3>Verkaufe einen Svenjamin</h3>
-            </div>
-            <div class="achievment">
-                <img src="img/sven.jpg" alt="">
-                <h3>Verkaufe einen Svenjamin</h3>
-            </div>
-            <div class="achievment">
-                <img src="img/sven.jpg" alt="">
-                <h3>Verkaufe einen Svenjamin</h3>
-            </div>
-            <div class="achievment">
-                <img src="img/sven.jpg" alt="">
-                <h3>Verkaufe einen Svenjamin</h3>
-            </div>
+            @each(achievment in konto.achievments)
+                @!component('components/achievment', { achievment })
+            @end
         </div>
     </div>
 </div>
