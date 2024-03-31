@@ -1,4 +1,6 @@
-<div class="achievment" {{ $props.merge( { class: ['done']} ).toAttrs() }}>
+<div class="{{ html.classNames(['achievment', $props.class]) }}" 
+{{ $props.except(['achievment', 'class']).toAttrs() }}
+>
 
     <img src="{{ asset('resources/images/achievments/sven.jpg') }}" alt="">
     <h3>{{ $props.achievment.title }}</h3>

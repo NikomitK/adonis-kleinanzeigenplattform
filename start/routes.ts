@@ -146,6 +146,12 @@ router.get('meine-anzeigen', async ({ view }) => {
             price: 100,
             image: 'https://placehold.co/150x100',
             description: 'Apple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple googleApple google'
+        },
+        {
+            name: 'Gniesbert',
+            price: 999999,
+            image: 'resources/images/gniesbert.png',
+            description: 'Mein scheiss Hund Gniesbert ist schon wieder in meinen Gaming pc geklettert, weshalb ich ihn verkaufen muss. Er ist 3 Jahre alt und hat schon 2 mal meinen Gaming pc zerstört. Ich verkaufe ihn für 999999€. Versand ist möglich, er läuft dann zu dir.'
         }
     ]
     return view.render('pages/base', { page: 'pages/meine-anzeigen', meineAnzeigen })

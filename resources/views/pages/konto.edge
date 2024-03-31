@@ -20,7 +20,7 @@
         <h2>Achievments:</h2>
         <div id="achievment-list">
             @each(achievment in konto.achievments)
-                @!component('components/achievment', { achievment })
+                @!component('components/achievment', { achievment, class: achievment.done ? 'done' : ''})
             @end
         </div>
     </div>
