@@ -1,27 +1,48 @@
 <div class="container-fluid">
     <div class="container" id="profile-information">
-        <div id="profile-side">
-            <img src="img/sven.jpg" width="100px" height="100px" alt="" id="profile-image">
+        <div id="profile-top">
+            <img src="{{ asset(konto.image) }}" width="100px" height="100px" alt="" id="profile-image">
             <div>
                 <h2>{{konto.nutzername}}</h2>
                 <div>69 Bewertungen</div>
                 <div>Aktiv seit: {{konto.seit}}</div>
             </div>
         </div>
-        <div id="profile-general">
-            <span>Nutzername</span> <span>{{konto.nutzername}}</span>
-            <span>Email:</span> <span>{{konto.email}}</span>
-            <span>Vorname:</span> <span>{{konto.vorname}}</span>
-            <span>Nachname:</span> <span>{{konto.nachname}}</span>
-            <span>Telefon:</span> <span>{{konto.telefon}}</span>
-        </div>
+        <form id="profile-general" action="/profile" method="post">
+            <span>Nutzername</span> <input name="" class="form-control form-control-sm" type="text"
+                placeholder="{{konto.nutzername}}">
+            <span>Email:</span> <input name="" class="form-control form-control-sm" type="text"
+                placeholder="{{konto.email}}">
+            <span>Vorname:</span> <input name="" class="form-control form-control-sm" type="text"
+                placeholder="{{konto.vorname}}">
+            <span>Nachname:</span> <input name="" class="form-control form-control-sm" type="text"
+                placeholder="{{konto.nachname}}">
+            <span>Telefon:</span> <input name="" class="form-control form-control-sm" type="text"
+                placeholder="{{konto.telefon}}">
+            <input id="submit-btn" type="submit" class="btn btn-secondary" value="Änderungen Speichern 🚀" disabled>
+        </form>
     </div>
     <div class="container mt-5">
         <h2>Achievments:</h2>
         <div id="achievment-list">
             @each(achievment in konto.achievments)
-                @!component('components/achievment', { achievment, class: achievment.done ? 'done' : ''})
+            @!component('components/achievment', { achievment, class: achievment.done ? 'done' : ''})
             @end
         </div>
     </div>
 </div>
+<script>
+    document.getElementById('profile-general').addEventListener('input', function () {
+            let disabled = ![].some.call(document.querySelectorAll("input[type=text]"), (input) => {
+                return input.value.length;
+            });
+
+            let submit = document.getElementById("submit-btn");
+
+            if (disabled) {
+                submit.setAttribute("disabled", "disabled");
+            } else {
+                submit.removeAttribute("disabled");
+            }
+        });
+</script>

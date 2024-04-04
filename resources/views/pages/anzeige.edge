@@ -1,0 +1,20 @@
+<div class="container twoxthree-grid detail-anzeige">
+    <div id="anzeige_image-div>">
+        <img class="anzeigen-image" src="{{asset(anzeige.path)}}" alt="">
+    </div>
+    <div class="anzeige_text-div">
+        <h2>{{ anzeige.title }}</h2>
+        <p>{{ anzeige.description }}</p>
+    </div>
+    <div class="anzeige_price">
+        <span><b>{{ anzeige.price }}€</b>
+            @if(anzeige.negotiable)
+            Verhandelbar!
+            @end
+        </span>
+        @if(anzeige.shipping)
+        Versand möglich: {{ anzeige.shippingPrice }}€
+        @end
+    </div>
+
+</div>
