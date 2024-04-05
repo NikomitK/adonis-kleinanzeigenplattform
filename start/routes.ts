@@ -86,6 +86,8 @@ router.get('/login', [UsersController, 'loginForm'])
 
 router.post('/login', [UsersController, 'loginProcess'])
 
+router.get('/logout', [UsersController, 'logout'])
+
 router.get('/gespeichert', [ListingsController, 'savedListings'])
 
 /*router.get('/konto', async ({ view }) => {

@@ -23,8 +23,12 @@ export default class ListingsController {
         return view.render('pages/base', { page: 'pages/anzeige/meine-anzeigen', meineAnzeigen })
     }
 
-    async savedListings({ view }: HttpContext) {
-        const gespeichert = await db.rawQuery("SELECT listing.*, image.path FROM listing, image, saved WHERE listing.id = image.listing_id AND saved.username = 'nikomitk' AND saved.listing_id = listing.id")
+    async savedListings({ view, session, response }: HttpContext) {
+        const user = session.get('user')
+        if (!user) {
+            response.redirect('/login')
+        }
+        const gespeichert = await db.rawQuery(`SELECT listing.*, image.path FROM listing, image, saved WHERE listing.id = image.listing_id AND saved.username = '${user.username}' AND saved.listing_id = listing.id`)
         return view.render('pages/base', { page: 'pages/anzeige/gespeichert', gespeichert })
     }
 

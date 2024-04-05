@@ -52,6 +52,11 @@ export default class UsersController {
         }
     }
 
+    async logout({ response, session }: HttpContext) {
+        session.clear()
+        return response.redirect('/')
+    }
+
     async konto({ view, response, session }: HttpContext) {
         const user = session.get('user')
         if (!user) {
@@ -61,8 +66,12 @@ export default class UsersController {
         return view.render('pages/base', { page: 'pages/user/konto', konto: user })
     }
 
-    async saveListing({ request }: HttpContext) {
-        const result = await db.table('saved').insert({ username: 'nikomitk', listing_id: request.params().id })
+    async saveListing({ request, session }: HttpContext) {
+        const user = session.get('user')
+        if (!user) {
+            return 
+        }
+        const result = await db.table('saved').insert({ username: user.username, listing_id: request.params().id })
         //TODO check for errors
     }
 }
