@@ -10,7 +10,9 @@
 */
 
 import router from '@adonisjs/core/services/router'
-import db from '@adonisjs/lucid/services/db'
+
+import ListingsController from '#controllers/listings_controller'
+import UsersController from '#controllers/users_controller'
 
 /*const products = [
     {
@@ -74,27 +76,19 @@ import db from '@adonisjs/lucid/services/db'
     }
 ]*/
 
-router.get('/', async ({ view }) => {
-    const products = await db.rawQuery('SELECT listing.*, image.path FROM listing, image WHERE listing.id = image.listing_id')
-    console.log(products)
-    return view.render('pages/base', { page: 'pages/home', products })
-})
+router.get('/', [ListingsController, 'home'])
 
-router.get('/register', async ({ view }) => {
-    return view.render('pages/base', { page: 'pages/register' })
-})
+router.get('/register', [UsersController, 'registerForm'])
 
-router.get('/login', async ({ view }) => {
-    return view.render('pages/base', { page: 'pages/login' })
-})
+router.post('/register', [UsersController, 'registerProcess'])
 
-router.get('/gespeichert', async ({ view }) => {
-    const gespeichert = await db.rawQuery("SELECT listing.*, image.path FROM listing, image, saved WHERE listing.id = image.listing_id AND saved.username = 'nikomitk' AND saved.listing_id = listing.id")
-    console.log('gespeichert', gespeichert)
-    return view.render('pages/base', { page: 'pages/gespeichert', gespeichert })
-})
+router.get('/login', [UsersController, 'loginForm'])
 
-router.get('/konto', async ({ view }) => {
+router.post('/login', [UsersController, 'loginProcess'])
+
+router.get('/gespeichert', [ListingsController, 'savedListings'])
+
+/*router.get('/konto', async ({ view }) => {
     const konto = {
         image: 'resources/images/sven.jpg',
         nutzername: 'Svenjamin',
@@ -139,39 +133,17 @@ router.get('/konto', async ({ view }) => {
             image: 'resources/images/achievments/sven.jpg'
         }]
     }
-    return view.render('pages/base', { page: 'pages/konto', konto })
-})
+    return view.render('pages/base', { page: 'pages/user/konto', konto })
+})*/
 
-router.get('meine-anzeigen', async ({ view }) => {
-    const meineAnzeigen = await db.rawQuery("SELECT listing.*, image.path FROM listing, image WHERE listing.id = image.listing_id AND listing.username = 'nikomitk'")
-    return view.render('pages/base', { page: 'pages/meine-anzeigen', meineAnzeigen })
-})
+router.get('/konto', [UsersController, 'konto'])
 
-router.get('/anzeige-aufgeben', async ({ view }) => {
-    return view.render('pages/base', { page: 'pages/anzeige-aufgeben' })
-})
+router.get('meine-anzeigen', [ListingsController, 'myListings'])
 
-router.post('/anzeige-aufgeben', async ({ request, response }) => {
-    const title = request.input('title')
-    const description = request.input('description')
-    const price = request.input('price')
+router.get('/anzeige-aufgeben', [ListingsController, 'createForm'])
 
-    const result = await db.table('listing').insert({title, description, username: 'nikomitk', price })
-    const imageresult = await db.table('image').insert({ path: 'resources/images/sven.jpg', listing_id: result[0] })
-    response.redirect('/meine-anzeigen')
-})
+router.post('/anzeige-aufgeben', [ListingsController, 'createProcess'])
 
-router.get('/anzeige/:id', async ({ request, view }) => {
-    const anzeige = await db.rawQuery(`
-    SELECT listing.*, image.path 
-    FROM listing, image 
-    WHERE listing.id = image.listing_id 
-    AND listing.id = ${request.params().id}
-    LIMIT 1`)
-    return view.render('pages/base', { page: 'pages/anzeige', anzeige: anzeige[0] })
-})
+router.get('/anzeige/:id', [ListingsController, 'show']) 
 
-router.post('anzeige/save/:id', async ({ request, response }) => {
-    const result = await db.table('saved').insert({ listing_id: request.params().id, username: 'nikomitk' })
-    response.redirect('/gespeichert')
-})
+router.put('anzeige/save/:id', [UsersController, 'saveListing'])

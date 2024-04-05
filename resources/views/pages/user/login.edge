@@ -1,0 +1,21 @@
+<form action="/login" method="POST">
+    {{ csrfField() }}
+    <div class="login-form">
+        <h2>Herzlich Willkommen zurück!</h2>
+
+        <div class="form-floating">
+            <input type="text" class="form-control" name="username" id="username" placeholder="username" required>
+            <label for="username">username</label>
+        </div>
+
+        <div class="form-floating">
+            <input type="password" class="form-control" name="password" id="password" placeholder="Passwort" required>
+            <label for="password">Passwort</label>
+        </div>
+
+        <div class="login-buttons">
+            <button type="submit" class="btn btn-secondary">Login</button>
+            <a href="/register" class="btn btn-outline-secondary">Ich habe noch keinen Account</a>
+        </div>
+    </div>
+</form>
