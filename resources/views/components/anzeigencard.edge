@@ -4,31 +4,26 @@
         <h5 class="card-title">{{ $props.anzeige.title }}</h5>
         <p class="card-text">{{$props.anzeige.description}}</p>
         <div class="d-flex flex-nowrap gap-3">
-            <button id="save-button" class="btn btn-secondary anzeigen-btn"><span
-                    class="material-symbols-outlined">favorite</span></button>
+            <button class="btn btn-secondary anzeigen-btn" onclick="test({{$props.anzeige.id}})"><img
+                    src="{{ asset('resources/images/icons/favorite_outline.svg') }}"></button>
             <a href="#" class="btn btn-secondary anzeigen-btn"><span class="material-symbols-outlined">
                     chat</span></a>
         </div>
     </div>
-    <a href='/anzeige/save/{{ $props.anzeige.id }}' class="stretched-link"></a>
+    <a href='/anzeige/{{ $props.anzeige.id }}' class="stretched-link"></a>
 </div>
 <script>
-    document.getElementById('save-button').onclick = function() {
+    function test(id) {
         console.log('clicked');
-        fetch('/save/{{ $props.anzeige.id }},
+        fetch(`anzeige/save/${id}`,
             {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 }
             }).then(response => {
-            if (response.ok) {
-                console.log('saved');
-            } else {
-                console.log('not saved');
-            }
-        }).catch(error => {
-            console.log('error');
-        });
+            }).catch(error => {
+                console.log('error');
+            });
     }
 </script>
