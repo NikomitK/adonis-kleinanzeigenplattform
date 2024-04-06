@@ -18,25 +18,39 @@ export default class ListingsController {
         return view.render('pages/base', { page: 'pages/anzeige/anzeige', anzeige: anzeige[0] })
     }
 
-    async myListings({ view }: HttpContext) {
-        const meineAnzeigen = await db.rawQuery("SELECT listing.*, image.path FROM listing, image WHERE listing.id = image.listing_id AND listing.username = 'nikomitk'")
+    async myListings({ view, session, response }: HttpContext) {
+        const user = session.get('user')
+        if (!user) {
+            return response.redirect('/login')
+        }
+        const meineAnzeigen = await db.rawQuery(`SELECT listing.*, image.path FROM listing, image WHERE listing.id = image.listing_id AND listing.username = '${user.username}'`)
         return view.render('pages/base', { page: 'pages/anzeige/meine-anzeigen', meineAnzeigen })
     }
 
     async savedListings({ view, session, response }: HttpContext) {
         const user = session.get('user')
         if (!user) {
-            response.redirect('/login')
+            return response.redirect('/login')
         }
         const gespeichert = await db.rawQuery(`SELECT listing.*, image.path FROM listing, image, saved WHERE listing.id = image.listing_id AND saved.username = '${user.username}' AND saved.listing_id = listing.id`)
         return view.render('pages/base', { page: 'pages/anzeige/gespeichert', gespeichert })
     }
 
-    async createForm({ view }: HttpContext) { 
+    async createForm({ view, session, response }: HttpContext) {
+        const user = session.get('user')
+        if (!user) {
+            return response.redirect('/login')
+        }
         return view.render('pages/base', { page: 'pages/anzeige/anzeige-aufgeben' })
     }
 
-    async createProcess({ view, request, response }: HttpContext) { const title = request.input('title')
+    async createProcess({ view, request, response, session }: HttpContext) {
+        const user = session.get('user')
+        if (!user) {
+            return response.redirect('/login')
+        }
+
+        const title = request.input('title')
     const description = request.input('description')
     const price = request.input('price')
 
