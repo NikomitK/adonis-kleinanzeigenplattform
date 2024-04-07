@@ -44,7 +44,8 @@ export default class UsersController {
         const hashedPassword = await hash.make(request.input('password'));
         const now = new Date();
         try {
-            const result = await db.table('user').insert({ username: request.input('username'), password: hashedPassword, firstname: request.input('firstname'), lastname: request.input('lastname'), since: now, email: request.input('email') })
+            const result = await db.table('user')
+            .insert({ username: request.input('username'), password: hashedPassword, firstname: request.input('firstname'), lastname: request.input('lastname'), since: now, email: request.input('email') })
             response.redirect('/');
         } catch (error) {
             console.log(error)
@@ -62,8 +63,10 @@ export default class UsersController {
         if (!user) {
             return response.redirect('/login')
         }
-        const unAchieved = await db.rawQuery('SELECT * FROM achievment WHERE title NOT IN (SELECT title FROM achieved WHERE username = ?)', [user.username])
-        const achieved = await db.rawQuery('SELECT * FROM achievment WHERE title IN (SELECT title FROM achieved WHERE username = ?)', [user.username])
+        //const unAchieved = await db.rawQuery('SELECT * FROM achievment WHERE title NOT IN (SELECT title FROM achieved WHERE username = ?)', [user.username])
+        const unAchieved = await db.from('achievment').whereNotIn('title', db.from('achieved').where('username', user.username).select('title'))
+        //const achieved = await db.rawQuery('SELECT * FROM achievment WHERE title IN (SELECT title FROM achieved WHERE username = ?)', [user.username])
+        const achieved = await db.from('achievment').whereIn('title', db.from('achieved').where('username', user.username).select('title'))
         return view.render('pages/base', { page: 'pages/user/konto', user, achieved, unAchieved })
     }
 
@@ -77,7 +80,9 @@ export default class UsersController {
             lastname: request.input('lastname') ? request.input('lastname') : user.lastname, 
             email: request.input('email') ? request.input('email') : user.email, 
             number: request.input('number') ? request.input('number') : user.number})
+
         const updatedUser = await db.from('user').where('username', user.username).first()
+
         session.put('user', { username: updatedUser.username, firstname: updatedUser.firstname, lastname: updatedUser.lastname, email: updatedUser.email, number: updatedUser.number, since: updatedUser.since, picture: updatedUser.picture })
         return response.redirect('/konto')
     }
