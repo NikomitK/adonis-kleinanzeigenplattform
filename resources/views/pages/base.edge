@@ -8,7 +8,13 @@
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
     @vite('resources/css/custom.css')
-    <title>Document</title>
+    <title>
+        @if (title)
+            {{ title }}
+            - 
+        @end
+        Nikos Kleinanzeigen!
+    </title>
 </head>
 
 <body>

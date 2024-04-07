@@ -22,7 +22,7 @@ export default class ListingsController {
             return view.render('pages/base', { page: 'pages/errors/not_found' })
         }
         const poster = await db.from('user').where('username', anzeige.username).first()
-        return view.render('pages/base', { page: 'pages/anzeige/anzeige', anzeige: anzeige, poster, user: user ? user : null })
+        return view.render('pages/base', { page: 'pages/anzeige/anzeige', anzeige: anzeige, poster, user: user ? user : null, title: anzeige.title })
     }
 
     async myListings({ view, session, response }: HttpContext) {
@@ -34,7 +34,7 @@ export default class ListingsController {
             .select('listing.*', 'image.path')
             .join('image', 'listing.id', '=', 'image.listing_id')
             .where('listing.username', user.username)
-        return view.render('pages/base', { page: 'pages/anzeige/meine-anzeigen', meineAnzeigen })
+        return view.render('pages/base', { page: 'pages/anzeige/meine-anzeigen', meineAnzeigen, title: 'Meine Anzeigen'})
     }
 
     async savedListings({ view, session, response }: HttpContext) {
@@ -48,7 +48,7 @@ export default class ListingsController {
             .join('saved', 'listing.id', '=', 'saved.listing_id')
             .where('saved.username', user.username)
 
-        return view.render('pages/base', { page: 'pages/anzeige/gespeichert', gespeichert })
+        return view.render('pages/base', { page: 'pages/anzeige/gespeichert', gespeichert, title: 'Gespeicherte Anzeigen'})
     }
 
     async createForm({ view, session, response }: HttpContext) {
@@ -56,7 +56,7 @@ export default class ListingsController {
         if (!user) {
             return response.redirect('/login')
         }
-        return view.render('pages/base', { page: 'pages/anzeige/anzeige-aufgeben' })
+        return view.render('pages/base', { page: 'pages/anzeige/anzeige-aufgeben', title: 'Anzeige aufgeben'})
     }
 
     async createProcess({ view, request, response, session }: HttpContext) {

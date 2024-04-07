@@ -8,7 +8,7 @@ export default class UsersController {
         if (user) {
             return response.redirect('back')
         }
-        return view.render('pages/base', { page: 'pages/user/login' })
+        return view.render('pages/base', { page: 'pages/user/login', title: 'Login' })
     }
 
     async loginProcess({ view, request, response, session }: HttpContext) {
@@ -34,7 +34,7 @@ export default class UsersController {
         if (user) {
             return response.redirect('back')
         }
-        return view.render('pages/base', { page: 'pages/user/register' })
+        return view.render('pages/base', { page: 'pages/user/register', title: 'Registrieren' })
     }
 
     async registerProcess({ view, request, response, session }: HttpContext) {
@@ -65,7 +65,7 @@ export default class UsersController {
         }
         const unAchieved = await db.from('achievment').whereNotIn('title', db.from('achieved').where('username', user.username).select('title'))
         const achieved = await db.from('achievment').whereIn('title', db.from('achieved').where('username', user.username).select('title'))
-        return view.render('pages/base', { page: 'pages/user/konto', user, achieved, unAchieved })
+        return view.render('pages/base', { page: 'pages/user/konto', user, achieved, unAchieved, title: 'Konto' })
     }
 
     async updateProfile({ request, response, session }: HttpContext) {
