@@ -4,7 +4,7 @@
 
         @each(anzeige in products)
 
-            @!component('components/anzeigencard', { anzeige, username: user ? user.username : null})
+            @!component('components/anzeigencard', { anzeige })
 
         @end
 

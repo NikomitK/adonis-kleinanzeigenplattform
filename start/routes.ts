@@ -151,3 +151,5 @@ router.post('/anzeige-aufgeben', [ListingsController, 'createProcess'])
 router.get('/anzeige/:id', [ListingsController, 'show']) 
 
 router.put('anzeige/save/:id', [UsersController, 'saveListing'])
+
+router.put('anzeige/unsave/:id', [UsersController, 'unsaveListing'])

@@ -4,11 +4,15 @@
         <h5 class="card-title">{{ $props.anzeige.title }}</h5>
         <p class="card-text">{{$props.anzeige.description}}</p>
         <div class="d-flex flex-nowrap gap-3 align-items-center">
-            @if($props.anzeige.username != $props.username)
-
-            <button class="btn btn-secondary anzeigen-btn" onclick="test({{$props.anzeige.id}})">
+            @if(!$props.myListing)
+            <button class="btn btn-secondary anzeigen-btn" onclick="saveListing({{$props.anzeige.id}})">
+                @if($props.saved)
+                <img src="{{ asset('resources/images/icons/favorite_fill.svg') }}">
+                @else
                 <img src="{{ asset('resources/images/icons/favorite_outline.svg') }}">
+                @end
             </button>
+
             <a href="#" class="btn btn-secondary anzeigen-btn">
                 <span class="material-symbols-outlined">chat</span>
             </a>
@@ -20,17 +24,22 @@
     <a href='/anzeige/{{ $props.anzeige.id }}' class="stretched-link"></a>
 </div>
 <script>
-    function test(id) {
+    function saveListing(id) {
         console.log('clicked');
-        fetch(`anzeige/save/${id}`,
+        @if ($props.saved)
+            fetch(`anzeige/unsave/${id}`,
+                @else
+                fetch(`anzeige/save/${id}`,
+                    @end
             {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            }).then(response => {
-            }).catch(error => {
-                console.log('error');
-            });
-    }
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        }
+                    }).then(response => {
+                        response.status == 200 ? location.reload() : console.log('error');
+                    }).catch(error => {
+                        console.log('error');
+                    });
+    } 
 </script>

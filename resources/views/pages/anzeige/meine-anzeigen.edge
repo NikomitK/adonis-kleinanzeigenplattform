@@ -4,7 +4,7 @@
 
         @each(anzeige in meineAnzeigen)
 
-            @!component('components/anzeigencard', { anzeige })
+            @!component('components/anzeigencard', { anzeige, myListing: true})
 
         @end
 

@@ -94,4 +94,13 @@ export default class UsersController {
         const result = await db.table('saved').insert({ username: user.username, listing_id: request.params().id })
         //TODO check for errors
     }
+
+    async unsaveListing({ request, session }: HttpContext) {
+        const user = session.get('user')
+        if (!user) {
+            return
+        }
+        const result = await db.from('saved').where('username', user.username).where('listing_id', request.params().id).delete()
+        //TODO check for errors
+    }
 }
