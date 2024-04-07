@@ -26,8 +26,11 @@
     <div class="container mt-5">
         <h2>Achievments:</h2>
         <div id="achievment-list">
-            @each(achievment in konto.achievments)
-            @!component('components/achievment', { achievment, class: achievment.done ? 'done' : ''})
+            @each(achievment in achieved)
+            @!component('components/achievment', { achievment, class: 'done'})
+            @end
+            @each(achievment in unAchieved)
+            @!component('components/achievment', { achievment })
             @end
         </div>
     </div>

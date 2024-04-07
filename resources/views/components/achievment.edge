@@ -2,7 +2,7 @@
 {{ $props.except(['achievment', 'class']).toAttrs() }}
 >
 
-    <img src="{{ asset($props.achievment.image) }}"></img>
+    <img src="{{ asset(`resources/images/achievments/${$props.achievment.icon}.svg`) }}"></img>
     <h3>{{ $props.achievment.title }}</h3>
     <p>{{ $props.achievment.description }}</p>
 </div>
