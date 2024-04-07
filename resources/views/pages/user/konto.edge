@@ -1,25 +1,15 @@
 <div class="container-fluid">
     <div class="container" id="profile-information">
-        <div id="profile-top">
-            <img src="{{ (konto.picture !== undefined) ? asset(konto.picture) : asset('resources/images/profile_pictures/default.png')}}" width="100px" height="100px" alt="" id="profile-image">
-            <div>
-                <h2>{{konto.username}}</h2>
-                <div>69 Bewertungen</div>
-                <div>Aktiv seit: {{konto.since}}</div>
-            </div>
-            <a href="/logout" class="btn btn-danger">Logout</a>
-        </div>
-        <form id="profile-general" action="/profile" method="post">
-            <span>Nutzername</span> <input name="" class="form-control form-control-sm" type="text"
-                placeholder="{{konto.username}}">
-            <span>Email:</span> <input name="" class="form-control form-control-sm" type="text"
-                placeholder="{{konto.email}}">
-            <span>Vorname:</span> <input name="" class="form-control form-control-sm" type="text"
-                placeholder="{{konto.firstname}}">
-            <span>Nachname:</span> <input name="" class="form-control form-control-sm" type="text"
-                placeholder="{{konto.lastname}}">
-            <span>Telefon:</span> <input name="" class="form-control form-control-sm" type="text"
-                placeholder="{{konto.telefon}}">
+        <form id="profile-general" action="/konto" method="post">
+            {{ csrfField() }}
+            <span>Email:</span> <input name="email" class="form-control form-control-sm" type="text"
+                placeholder="{{user.email}}">
+            <span>Vorname:</span> <input name="firstname" class="form-control form-control-sm" type="text"
+                placeholder="{{user.firstname}}">
+            <span>Nachname:</span> <input name="lastname" class="form-control form-control-sm" type="text"
+                placeholder="{{user.lastname}}">
+            <span>Telefon:</span> <input name="number" class="form-control form-control-sm" type="text"
+                placeholder="{{user.number}}">
             <input id="submit-btn" type="submit" class="btn btn-secondary" value="Änderungen Speichern 🚀" disabled>
         </form>
     </div>

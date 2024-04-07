@@ -140,6 +140,8 @@ router.get('/gespeichert', [ListingsController, 'savedListings'])
 
 router.get('/konto', [UsersController, 'konto'])
 
+router.post('/konto', [UsersController, 'updateProfile'])
+
 router.get('meine-anzeigen', [ListingsController, 'myListings'])
 
 router.get('/anzeige-aufgeben', [ListingsController, 'createForm'])
