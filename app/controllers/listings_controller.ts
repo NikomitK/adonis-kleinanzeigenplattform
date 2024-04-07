@@ -11,6 +11,7 @@ export default class ListingsController {
             .join('image', 'listing.id', '=', 'image.listing_id')
             .where('listing.username', '!=', user ? user.username : '')
             .where('listing.id', 'not in', db.from('saved').select('listing_id').where('username', user ? user.username : ''))
+            .orderBy('listing.id', "desc")
 
         return view.render('pages/base', { page: 'pages/anzeige/home', products, user})
     }
@@ -39,6 +40,8 @@ export default class ListingsController {
             .select('listing.*', 'image.path')
             .join('image', 'listing.id', '=', 'image.listing_id')
             .where('listing.username', user.username)
+            .orderBy('listing.id', "desc")
+
         return view.render('pages/base', { page: 'pages/anzeige/meine-anzeigen', meineAnzeigen, title: 'Meine Anzeigen'})
     }
 
@@ -52,6 +55,7 @@ export default class ListingsController {
             .join('image', 'listing.id', '=', 'image.listing_id')
             .join('saved', 'listing.id', '=', 'saved.listing_id')
             .where('saved.username', user.username)
+            .orderBy('listing.id', "desc")
 
         return view.render('pages/base', { page: 'pages/anzeige/gespeichert', gespeichert, title: 'Gespeicherte Anzeigen'})
     }
