@@ -3,19 +3,21 @@ import db from '@adonisjs/lucid/services/db'
 
 export default class ListingsController {
 
-    async home({ view}: HttpContext) {
+    async home({ view }: HttpContext) {
         const products = await db.rawQuery('SELECT listing.*, image.path FROM listing, image WHERE listing.id = image.listing_id')
         return view.render('pages/base', { page: 'pages/anzeige/home', products })
     }
 
-    async show({ request, view }: HttpContext) {
+    async show({ request, view, session }: HttpContext) {
+        const user = session.get('user')
         const anzeige = await db.rawQuery(`
         SELECT listing.*, image.path 
         FROM listing, image 
         WHERE listing.id = image.listing_id 
         AND listing.id = ${request.params().id}
         LIMIT 1`)
-        return view.render('pages/base', { page: 'pages/anzeige/anzeige', anzeige: anzeige[0] })
+        const poster = await db.from('user').where('username', anzeige[0].username).first()
+        return view.render('pages/base', { page: 'pages/anzeige/anzeige', anzeige: anzeige[0], poster, user: user ? user : null })
     }
 
     async myListings({ view, session, response }: HttpContext) {
@@ -51,12 +53,15 @@ export default class ListingsController {
         }
 
         const title = request.input('title')
-    const description = request.input('description')
-    const price = request.input('price')
+        const description = request.input('description')
+        const price = request.input('price')
+        const negotiable = request.input('negotiable')
+        const shipping = request.input('shipping')
+        const shipping_price = request.input('shipping_price')
 
-    const result = await db.table('listing').insert({title, description, username: 'nikomitk', price })
-    const imageresult = await db.table('image').insert({ path: 'resources/images/sven.jpg', listing_id: result[0] })
-    response.redirect('/meine-anzeigen')
-}
+        const result = await db.table('listing').insert({ title, description, username: user.username, price, negotiable, shipping, shipping_price})
+        const imageresult = await db.table('image').insert({ path: 'resources/images/sven.jpg', listing_id: result[0] })
+        response.redirect('/meine-anzeigen')
+    }
 
 }

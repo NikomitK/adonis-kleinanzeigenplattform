@@ -1,6 +1,6 @@
 <script>
     function disableShippingPrice() {
-        document.getElementById("shipping-price").disabled = !document.getElementById("shipping").checked;
+        document.getElementById("shipping_price").disabled = !document.getElementById("shipping").checked;
     }
 </script>
 
@@ -33,8 +33,8 @@
         </div>
         <div class="anzeige-aufgeben_price">
             <div class="form-floating">
-                <input name="shipping-price" class="form-control" type="number" id="shipping-price" placeholder="Versandkosten" step="any" disabled>
-                <label for="shipping-price">Versandkosten</label>
+                <input name="shipping_price" class="form-control" type="number" id="shipping_price" placeholder="Versandkosten" step="any" disabled>
+                <label for="shipping_price">Versandkosten</label>
             </div>
             <div class="form-check">
                 <input name="shipping" class="form-check-input" type="checkbox" id="shipping" onchange="disableShippingPrice()">
