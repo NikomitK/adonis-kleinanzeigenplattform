@@ -4,11 +4,11 @@
         mobileNavLinks.getAttribute("aria-expanded") == "true" ? mobileNavLinks.setAttribute("aria-expanded", "false") : mobileNavLinks.setAttribute("aria-expanded", "true")
     }
 </script>
-<nav class="container-fluid" role="toolbar">
+<nav class="container-fluid">
     <div class="container-fluid nav-gradient">
         <div class="container nk-navbar ">
             <ul class="nav-link-container">
-                <li><a href="/" aria-selected="true">Home</a></li>
+                <li><a href="/">Home</a></li>
                 <li><a href="/gespeichert">Gespeichert</a></li>
             </ul>
             <div class="nk-nav-brand">
@@ -26,9 +26,9 @@
             </div>
         </div>
     </div>
-    <div class="container-fluid " id="mobile-nav-links" aria-expanded="false">
+    <div class="container-fluid " id="mobile-nav-links" aria-expanded="false" role="navigation">
         <ul class="nav-link-container">
-            <li><a href="/" aria-selected="true">Home</a></li>
+            <li><a href="/">Home</a></li>
             <li><a href="/gespeichert">Gespeichert</a></li>
             <li><a href="/meine-anzeigen">Meine Anzeigen</a></li>
             <li><a href="/anzeige-aufgeben">Anzeige aufgeben</a></li>
@@ -41,9 +41,9 @@
     console.log(window.location.pathname)
     let navLinks = document.querySelectorAll('.nav-link-container a')
     navLinks.forEach(link => {
-        link.setAttribute('aria-selected', 'false')
+        
         if (link.getAttribute('href') == window.location.pathname) {
-            link.setAttribute('aria-selected', 'true')
+            link.ariaCurrent = 'page'
         }
     })
 </script>
