@@ -3,11 +3,18 @@
     <div class="card-body d-flex flex-column justify-content-between">
         <h5 class="card-title">{{ $props.anzeige.title }}</h5>
         <p class="card-text">{{$props.anzeige.description}}</p>
-        <div class="d-flex flex-nowrap gap-3">
-            <button class="btn btn-secondary anzeigen-btn" onclick="test({{$props.anzeige.id}})"><img
-                    src="{{ asset('resources/images/icons/favorite_outline.svg') }}"></button>
-            <a href="#" class="btn btn-secondary anzeigen-btn"><span class="material-symbols-outlined">
-                    chat</span></a>
+        <div class="d-flex flex-nowrap gap-3 align-items-center">
+            @if($props.anzeige.username != $props.username)
+
+            <button class="btn btn-secondary anzeigen-btn" onclick="test({{$props.anzeige.id}})">
+                <img src="{{ asset('resources/images/icons/favorite_outline.svg') }}">
+            </button>
+            <a href="#" class="btn btn-secondary anzeigen-btn">
+                <span class="material-symbols-outlined">chat</span>
+            </a>
+
+            @end
+            <b>{{ $props.anzeige.price }}€</b>
         </div>
     </div>
     <a href='/anzeige/{{ $props.anzeige.id }}' class="stretched-link"></a>

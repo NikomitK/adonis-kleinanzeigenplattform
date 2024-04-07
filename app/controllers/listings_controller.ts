@@ -3,11 +3,14 @@ import db from '@adonisjs/lucid/services/db'
 
 export default class ListingsController {
 
-    async home({ view }: HttpContext) {
+    async home({ view, session }: HttpContext) {
+        const user = session.get('user')
         const products = await db.from('listing')
             .select('listing.*', 'image.path')
             .join('image', 'listing.id', '=', 'image.listing_id')
-        return view.render('pages/base', { page: 'pages/anzeige/home', products })
+            .where('listing.username', '!=', user ? user.username : '')
+
+        return view.render('pages/base', { page: 'pages/anzeige/home', products, user})
     }
 
     async show({ request, view, session }: HttpContext) {
