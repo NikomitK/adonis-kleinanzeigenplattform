@@ -1,0 +1,12 @@
+<div id="profile-top">
+    <img src="{{ ($props.user.picture !== undefined) ? asset($props.user.picture) : asset('resources/images/profile_pictures/default.png')}}" width="100px" height="100px" alt="" id="profile-image">
+    <div>
+        <h2>{{$props.user.username}}</h2>
+        <div>69 Bewertungen</div>
+        <div>Aktiv seit: {{$props.user.since}}</div>
+    </div>
+    @if(!anzeige)
+        <a href="/logout" class="btn btn-danger">Logout</a>
+    @end
+    
+</div>

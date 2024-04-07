@@ -5,16 +5,17 @@
     <div class="anzeige_text-div">
         <h2>{{ anzeige.title }}</h2>
         <p>{{ anzeige.description }}</p>
-    </div>
-    <div class="anzeige_price">
-        <span><b>{{ anzeige.price }}€</b>
-            @if(anzeige.negotiable)
-            Verhandelbar!
+        <div class="anzeige_price">
+            <span><b>{{ anzeige.price }}€</b>
+                @if(anzeige.negotiable)
+                Verhandelbar!
+                @end
+            </span>
+            @if(anzeige.shipping)
+            Versand möglich: {{ anzeige.shipping_price }}€
             @end
-        </span>
-        @if(anzeige.shipping)
-        Versand möglich: {{ anzeige.shippingPrice }}€
-        @end
+        </div>
     </div>
+    @!component('components/profile-top', { user: poster })
 
 </div>
