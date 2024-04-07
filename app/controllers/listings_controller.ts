@@ -1,5 +1,6 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import db from '@adonisjs/lucid/services/db'
+import { table } from 'console'
 
 export default class ListingsController {
 
@@ -9,6 +10,7 @@ export default class ListingsController {
             .select('listing.*', 'image.path')
             .join('image', 'listing.id', '=', 'image.listing_id')
             .where('listing.username', '!=', user ? user.username : '')
+            .where('listing.id', 'not in', db.from('saved').select('listing_id').where('username', user ? user.username : ''))
 
         return view.render('pages/base', { page: 'pages/anzeige/home', products, user})
     }
