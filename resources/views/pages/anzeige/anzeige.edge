@@ -1,5 +1,5 @@
 <div class="container twoxthree-grid detail-anzeige">
-    <div id="anzeige_image-div>">
+    <div class="anzeige_image-div">
         <img class="anzeigen-image" src="{{asset(anzeige.path)}}" alt="">
     </div>
     <div class="anzeige_text-div">
@@ -22,18 +22,18 @@
             <a href="" class="btn btn-secondary">Chat starten</a>
             <a href="" class="btn btn-secondary">Anzeige Speichern</a>
             @else
-            <a href="/anzeige/{{ anzeige.id }}/bearbeiten" class="btn btn-secondary">Anzeige bearbeiten</a>
+            <a href="/anzeige/{{ anzeige.id }}/bearbeiten" class="btn btn-secondary"><span>Anzeige bearbeiten</span></a>
             <div>
                 @if(anzeige.status !== 'inactive')
-                <a href="/anzeige/{{ anzeige.id }}/deaktivieren" class="btn btn-danger">Anzeige deaktivieren</a>
+                <a href="/anzeige/{{ anzeige.id }}/deaktivieren" class="btn btn-danger"><span>Anzeige deaktivieren</span></a>
                 @end
                 @if(anzeige.status !== 'sold')
-                <a href="/anzeige/{{ anzeige.id }}/verkauft" class="btn btn-light">Anzeige verkauft</a>
+                <a href="/anzeige/{{ anzeige.id }}/verkauft" class="btn btn-light"><span>Anzeige verkauft</span></a>
                 @end
             </div>
             @end
         </div>
     </div>
-    @!component('components/profile-top', { user: poster })
+    @!component('components/profile-top', { user: poster})
 
 </div>

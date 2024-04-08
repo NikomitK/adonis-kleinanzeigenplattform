@@ -1,6 +1,6 @@
 <div class="container-fluid">
     <div class="container" id="profile-information">
-        @!component('components/profile-top', { user })
+        @!component('components/profile-top', { user, logout: true})
         <form id="profile-general" action="/konto" method="post">
             {{ csrfField() }}
             <span>Email:</span> <input name="email" class="form-control form-control-sm" type="text"
