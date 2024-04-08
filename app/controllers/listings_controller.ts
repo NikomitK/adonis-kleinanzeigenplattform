@@ -1,6 +1,5 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import db from '@adonisjs/lucid/services/db'
-import { table } from 'console'
 
 export default class ListingsController {
 
@@ -10,6 +9,7 @@ export default class ListingsController {
             .select('listing.*', 'image.path')
             .join('image', 'listing.id', '=', 'image.listing_id')
             .where('listing.username', '!=', user ? user.username : '')
+            .where('listing.status', '=', 'active')
             .where('listing.id', 'not in', db.from('saved').select('listing_id').where('username', user ? user.username : ''))
             .orderBy('listing.id', "desc")
 
@@ -55,6 +55,7 @@ export default class ListingsController {
             .join('image', 'listing.id', '=', 'image.listing_id')
             .join('saved', 'listing.id', '=', 'saved.listing_id')
             .where('saved.username', user.username)
+            .where('listing.status', '=', 'active')
             .orderBy('listing.id', "desc")
 
         return view.render('pages/base', { page: 'pages/anzeige/gespeichert', gespeichert, title: 'Gespeicherte Anzeigen'})
@@ -84,6 +85,66 @@ export default class ListingsController {
         const result = await db.table('listing').insert({ title, description, username: user.username, price, negotiable, shipping, shipping_price })
         const imageresult = await db.table('image').insert({ path: 'resources/images/sven.jpg', listing_id: result[0] })
         response.redirect('/meine-anzeigen')
+    }
+
+    async editForm({ view, request, session, response }: HttpContext) {
+        const user = session.get('user')
+        if (!user) {
+            return response.redirect('/login')
+        }
+        const anzeige = await db.from('listing').where('id', request.params().id).first()
+        if (!anzeige) {
+            return view.render('pages/base', { page: 'pages/errors/not_found' })
+        } else if(anzeige.username !== user.username) {
+            return view.render('pages/base', { page: 'pages/errors/forbidden' })
+        }
+        return view.render('pages/base', { page: 'pages/anzeige/anzeige-bearbeiten', anzeige, title: 'Anzeige bearbeiten'})
+    }
+
+    async editProcess({ request, response, session }: HttpContext) {
+        const user = session.get('user')
+        if (!user) {
+            return response.redirect('/login')
+        }
+        const title = request.input('title')
+        const description = request.input('description')
+        const price = request.input('price')
+        const negotiable = request.input('negotiable')
+        const shipping = request.input('shipping')
+        const shipping_price = request.input('shipping_price')
+
+        const result = await db.from('listing').where('id', request.params().id).update({ title, description, price, negotiable, shipping, shipping_price })
+        response.redirect('/meine-anzeigen')
+    }
+
+    async deactivate({ request, response, session }: HttpContext) {
+        const user = session.get('user')
+        if (!user) {
+            return response.redirect('/login')
+        }
+        const anzeige = await db.from('listing').where('id', request.params().id).first()
+        if (!anzeige) {
+            return response.redirect('/meine-anzeigen')
+        } else if(anzeige.username !== user.username) {
+            return response.redirect('/meine-anzeigen')
+        }
+        const result = await db.from('listing').where('id', request.params().id).update({ status: 'inactive' })
+        return response.redirect('/meine-anzeigen')
+    }
+
+    async sold({ request, response, session }: HttpContext) {
+        const user = session.get('user')
+        if (!user) {
+            return response.redirect('/login')
+        }
+        const anzeige = await db.from('listing').where('id', request.params().id).first()
+        if (!anzeige) {
+            return response.redirect('/meine-anzeigen')
+        } else if(anzeige.username !== user.username) {
+            return response.redirect('/meine-anzeigen')
+        }
+        const result = await db.from('listing').where('id', request.params().id).update({ status: 'sold' })
+        return response.redirect('/meine-anzeigen')
     }
 
 }

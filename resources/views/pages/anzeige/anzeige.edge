@@ -5,14 +5,32 @@
     <div class="anzeige_text-div">
         <h2>{{ anzeige.title }}</h2>
         <p>{{ anzeige.description }}</p>
+        <hr>
         <div class="anzeige_price">
-            <span><b>{{ anzeige.price }}€</b>
+            <span><b>Preis: {{ anzeige.price }}€</b>
                 @if(anzeige.negotiable)
                 Verhandelbar!
                 @end
             </span>
             @if(anzeige.shipping)
             Versand möglich: {{ anzeige.shipping_price }}€
+            @end
+        </div>
+        <hr>
+        <div class="anzeige_interaction">
+            @if(user && user.username != poster.username && anzeige.status === 'active')
+            <a href="" class="btn btn-secondary">Chat starten</a>
+            <a href="" class="btn btn-secondary">Anzeige Speichern</a>
+            @else
+            <a href="/anzeige/{{ anzeige.id }}/bearbeiten" class="btn btn-secondary">Anzeige bearbeiten</a>
+            <div>
+                @if(anzeige.status !== 'inactive')
+                <a href="/anzeige/{{ anzeige.id }}/deaktivieren" class="btn btn-danger">Anzeige deaktivieren</a>
+                @end
+                @if(anzeige.status !== 'sold')
+                <a href="/anzeige/{{ anzeige.id }}/verkauft" class="btn btn-light">Anzeige verkauft</a>
+                @end
+            </div>
             @end
         </div>
     </div>

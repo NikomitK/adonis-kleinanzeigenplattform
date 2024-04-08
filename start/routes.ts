@@ -148,6 +148,14 @@ router.get('/anzeige-aufgeben', [ListingsController, 'createForm'])
 
 router.post('/anzeige-aufgeben', [ListingsController, 'createProcess'])
 
+router.get('/anzeige/:id/bearbeiten', [ListingsController, 'editForm'])
+
+router.post('/anzeige/:id/bearbeiten', [ListingsController, 'editProcess'])
+
+router.get('/anzeige/:id/deaktivieren', [ListingsController, 'deactivate'])
+
+router.get('/anzeige/:id/verkauft', [ListingsController, 'sold'])
+
 router.get('/anzeige/:id', [ListingsController, 'show']) 
 
 router.put('anzeige/save/:id', [UsersController, 'saveListing'])
