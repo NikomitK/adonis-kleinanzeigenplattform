@@ -1,9 +1,11 @@
 <div id="profile-top">
-    <img src="{{ ($props.user.picture != undefined) ? asset(`resources/images/profile_pictures/${$props.user.username}.webp`) : asset('resources/images/profile_pictures/default.png')}}" width="100px" height="100px" alt="" id="profile-image">
-    <div>
-        <h2>{{$props.user.username}}</h2>
-        <div>69 Bewertungen</div>
-        <div>Aktiv seit: {{$props.user.since}}</div>
+    <div id="profile-top_left">
+        <img src="{{ ($props.user.picture != undefined) ? asset(`resources/images/profile_pictures/${$props.user.username}.webp`) : asset('resources/images/profile_pictures/default.png')}}" width="100px" height="100px" alt="" id="profile-image">
+        <div>
+            <h2>{{$props.user.username}}</h2>
+            <div>69 Bewertungen</div>
+            <div>Aktiv seit: {{$props.user.since}}</div>
+        </div>
     </div>
     @if($props.logout)
         <a href="/logout" class="btn btn-danger">Logout</a>

@@ -23814,8 +23814,8 @@ nav {
 #mobile-nav-links[aria-expanded=true] {
   background-color: #dddddd !important;
   display: block;
+  padding-block: 1em;
   top: 0;
-  z-index: -1;
 }
 #mobile-nav-links[aria-expanded=true] .nav-link-container {
   list-style: none;
@@ -24266,6 +24266,12 @@ nav {
   padding-block: 0.5em;
 }
 
+#profile-top_left {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+
 #profile-image {
   border-radius: 50%;
 }
@@ -24342,7 +24348,7 @@ nav {
     padding: 1em;
     display: flex;
     flex-direction: row;
-    justify-content: start;
+    justify-content: space-between;
     gap: 1em;
   }
   #profile-general .btn-secondary {
