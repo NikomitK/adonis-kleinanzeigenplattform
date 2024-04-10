@@ -12,4 +12,6 @@ $body-tertiary-bg: $main-color;
 $enable-shadows: true;
 $enable-gradients: true;
 
+$alert-padding-y: 0.5em;
+
 @import "../../node_modules/bootstrap/scss/bootstrap";

@@ -17,5 +17,11 @@
             <button type="submit" class="btn btn-secondary">Login</button>
             <a href="/register" class="btn btn-outline-secondary">Ich habe noch keinen Account</a>
         </div>
+
+        @if(error)
+        <div class="alert alert-danger" role="alert">
+            {{ error }}
+        </div>
+        @end
     </div>
 </form>

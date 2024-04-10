@@ -19,11 +19,11 @@ export default class UsersController {
         const result = await db.from('user').where('username', request.input('username')).first();
         if (!result) {
             console.log('User not found');
-            return view.render('pages/user/login', { error: 'Invalid username or password' });
+            return view.render('pages/base', { page: 'pages/user/login', error: 'Invalid username or password' });
         }
         const passwordOk = await hash.verify(result.password, request.input('password'))
         if (!passwordOk) {
-            return view.render('pages/user/login', { error: 'Invalid username or password' });
+            return view.render('pages/base', { page: 'pages/user/login', error: 'Invalid username or password' });
         }
         session.put('user', { username: result.username, firstname: result.firstname, lastname: result.lastname, email: result.email, number: result.number, since: result.since, picture: result.picture })
         console.log('User logged in')
@@ -114,8 +114,9 @@ export default class UsersController {
         if (!chat) {
             return view.render('pages/base', { page: 'pages/errors/not_found' })
         }
+        const anzeige = await db.from('listing').where('id', request.params().id).first()
         console.log(chat)
-        return view.render('pages/base', { page: 'pages/user/chat', chat, title: 'Chat', user })
+        return view.render('pages/base', { page: 'pages/user/chat', chat, title: 'Chat', user, anzeige })
     }
 
     async displayOwnChat({ view, response, session, request }: HttpContext) {
@@ -123,12 +124,15 @@ export default class UsersController {
         if (!user) {
             return response.redirect('/login')
         }
-        const chat = await db.rawQuery(`SELECT m.* from messages m, listing l WHERE m.listing_id = l.id AND m.username = '${user.username}' AND l.username = '${request.params().username}'`)
+        console.log(request.params().username)
+        const chat = await db.rawQuery(`SELECT m.* from messages m, listing l WHERE m.listing_id = l.id AND m.username = '${request.params().username}'`)
+        //const chat = await db.from('messages').where('username', user.username).where('listing_id', request.params().id)
         if (!chat) {
             return view.render('pages/base', { page: 'pages/errors/not_found' })
         }
+        const anzeige = await db.from('listing').where('id', request.params().id).first()
         console.log(chat)
-        return view.render('pages/base', { page: 'pages/user/chat', chat, title: 'Chat', user })
+        return view.render('pages/base', { page: 'pages/user/chat', chat, title: 'Chat', user, anzeige })
     }
 
     async displayChatOverview({ view, response, session }: HttpContext) {

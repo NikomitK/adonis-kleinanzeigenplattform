@@ -1,14 +1,25 @@
 <div class="container">
+    @if(ownChats.length == 0 && foreignChats.length == 0) 
+        <h2>Keine Chats vorhanden</h2>
+    @end
+    @if(ownChats.length != 0)
     <h2>Chats zu deinen Anzeigen:</h2>
     <div class="chatlist">
         @each(chat in ownChats)
-            <a href="/chat/{{ chat.listing_id }}/{{ chat.username }}"><h3>{{ chat.title }}</h3></a>
+        <a href="/chat/{{ chat.listing_id }}/{{ chat.username }}">
+            <h3>{{ chat.title }}</h3>
+        </a>
         @end
     </div>
+    @end
+    @if(foreignChats.length != 0) 
     <h2>Chats von dir zu fremden Anzeigen:</h2>
     <div class="chatlist">
         @each(chat in foreignChats)
-            
+        <a href="/chat/{{ chat.listing_id }}">
+            <h3>{{ chat.title }}</h3>
+        </a>
         @end
     </div>
+    @end
 </div>
