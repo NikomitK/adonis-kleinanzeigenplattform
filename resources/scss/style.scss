@@ -508,15 +508,36 @@ nav {
 .chat-container {
     display: flex;
     flex-direction: column;
+    border-radius: 2em;
+    border: 2px solid #dddddd;
+    height: 60vh;
 
     .message-row {
         display: flex;
     
         .message {
-            padding: 1em;
+            padding: 0.5em 1em;
             border-radius: 0.5em;
         }
+        &.right {
+            justify-content: flex-end;
+            
+            .message{
+                background-color: $light-gray;
+            }
+        }
+
+        &.left {
+            justify-content: flex-start;
+
+            .message{
+                border: 2px solid $light-gray;
+                background-color: white;
+            }
+        }
+
     }
+
 }
 
 

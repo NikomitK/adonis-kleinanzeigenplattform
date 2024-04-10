@@ -1,6 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import db from '@adonisjs/lucid/services/db'
 import hash from '@adonisjs/core/services/hash';
+import { messages } from '@vinejs/vine/defaults';
 
 export default class UsersController {
     async loginForm({ view, response, session }: HttpContext) {
@@ -102,5 +103,49 @@ export default class UsersController {
         }
         const result = await db.from('saved').where('username', user.username).where('listing_id', request.params().id).delete()
         //TODO check for errors
+    }
+    
+    async displayForeignChat({ view, response, session, request }: HttpContext) {
+        const user = session.get('user')
+        if (!user) {
+            return response.redirect('/login')
+        }
+        const chat = await db.from('messages').where('listing_id', request.params().id).where('username', user.username)
+        if (!chat) {
+            return view.render('pages/base', { page: 'pages/errors/not_found' })
+        }
+        console.log(chat)
+        return view.render('pages/base', { page: 'pages/user/chat', chat, title: 'Chat', user })
+    }
+
+    async displayOwnChat({ view, response, session, request }: HttpContext) {
+        const user = session.get('user')
+        if (!user) {
+            return response.redirect('/login')
+        }
+        const chat = await db.rawQuery(`SELECT m.* from messages m, listing l WHERE m.listing_id = l.id AND m.username = '${user.username}' AND l.username = '${request.params().username}'`)
+        if (!chat) {
+            return view.render('pages/base', { page: 'pages/errors/not_found' })
+        }
+        console.log(chat)
+        return view.render('pages/base', { page: 'pages/user/chat', chat, title: 'Chat', user })
+    }
+
+    async displayChatOverview({ view, response, session }: HttpContext) {
+        const user = session.get('user')
+        if (!user) {
+            return response.redirect('/login')
+        }
+        //const foreignChats = await db.from('messages').where('username', user.username).distinct('listing_id')
+
+        const foreignChats = await db.rawQuery(`SELECT m.*, l.title, l.username AS poster FROM messages m, listing l WHERE m.listing_id = l.id AND m.username = '${user.username}' GROUP BY(m.listing_id)`)
+
+        //const ownChats = await db.from('messages').whereIn('listing_id', foreignChats.map(chat => chat.listing_id)).distinct('username')
+
+        const ownChats = await db.rawQuery(`SELECT m.*, l.title, l.username AS poster FROM messages m, listing l WHERE m.listing_id = l.id AND l.username = '${user.username}' GROUP BY(m.listing_id)`)
+        console.log(ownChats)
+        console.log(foreignChats)
+
+        return view.render('pages/base', { page: 'pages/user/chat_overview', foreignChats, ownChats, title: 'Chats', user })
     }
 }

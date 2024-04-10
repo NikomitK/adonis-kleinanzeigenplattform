@@ -1,0 +1,8 @@
+<div class="container chat-container">
+    <div>
+        @each(message in chat)
+            @!component('components/chatmessage', { message: message.content, class: user.username === message.sendername ? 'right' : 'left'})
+            
+        @end
+    </div>
+</div>
