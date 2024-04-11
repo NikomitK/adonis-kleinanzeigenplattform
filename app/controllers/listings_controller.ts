@@ -1,6 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import db from '@adonisjs/lucid/services/db'
 import app from "@adonisjs/core/services/app";
+import { cuid } from '@adonisjs/core/helpers'
 
 export default class ListingsController {
 
@@ -100,7 +101,7 @@ export default class ListingsController {
         
         images.forEach(async (image) => {
             await image.move(app.publicPath('/anzeigen'), {
-                name: image.clientName,
+                name: `${cuid()}.${image.extname}`,
                 overwrite: true
             })
             await db.table('image').insert({ path: image.fileName, listing_id: result[0]})

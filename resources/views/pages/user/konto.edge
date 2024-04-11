@@ -1,8 +1,10 @@
 <div class="container-fluid">
     <div class="container" id="profile-information">
         @!component('components/profile-top', { user, logout: true})
-        <form id="profile-general" action="/konto" method="post">
+        <form id="profile-general" action="/konto" method="post" enctype="multipart/form-data">
             {{ csrfField() }}
+            <span>Profilbild:</span> <input name="image" class="form-control form-control-sm" type="file"
+                placeholder="{{user.image}}">
             <span>Email:</span> <input name="email" class="form-control form-control-sm" type="text"
                 placeholder="{{user.email}}">
             <span>Vorname:</span> <input name="firstname" class="form-control form-control-sm" type="text"
@@ -31,6 +33,7 @@
             let disabled = ![].some.call(document.querySelectorAll("input[type=text]"), (input) => {
                 return input.value.length;
             });
+            disabled = disabled && !document.querySelector("input[type=file]").value.length;
 
             let submit = document.getElementById("submit-btn");
 

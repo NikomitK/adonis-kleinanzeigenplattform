@@ -2,6 +2,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import db from '@adonisjs/lucid/services/db'
 import hash from '@adonisjs/core/services/hash';
 import { messages } from '@vinejs/vine/defaults';
+import app from '@adonisjs/core/services/app';
 
 export default class UsersController {
     async loginForm({ view, response, session }: HttpContext) {
@@ -74,11 +75,24 @@ export default class UsersController {
         if (!user) {
             return response.redirect('/login')
         }
+
+        let picture = request.file('image', { size: '3mb', extnames: ['jpg', 'png', 'jpeg', 'webp'] })
+
+        if (!picture?.isValid) {
+            picture = null;
+        } else {
+            await picture.move(app.publicPath('/profile'), {
+                name: `${user.username}.${picture.extname}`,
+                overwrite: true
+            })
+        }
+
         const result = await db.from('user').where('username', user.username).update({
             firstname: request.input('firstname') ? request.input('firstname') : user.firstname,
             lastname: request.input('lastname') ? request.input('lastname') : user.lastname,
             email: request.input('email') ? request.input('email') : user.email,
-            number: request.input('number') ? request.input('number') : user.number
+            number: request.input('number') ? request.input('number') : user.number,
+            picture: picture ? picture.fileName : user.picture
         })
 
         const updatedUser = await db.from('user').where('username', user.username).first()
