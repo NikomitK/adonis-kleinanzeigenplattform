@@ -1,5 +1,6 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import db from '@adonisjs/lucid/services/db'
+import app from "@adonisjs/core/services/app";
 
 export default class ListingsController {
 
@@ -11,6 +12,7 @@ export default class ListingsController {
             .where('listing.username', '!=', user ? user.username : '')
             .where('listing.status', '=', 'active')
             .where('listing.id', 'not in', db.from('saved').select('listing_id').where('username', user ? user.username : ''))
+            .groupBy('listing.id')
             .orderBy('listing.id', "desc")
 
         return view.render('pages/base', { page: 'pages/anzeige/home', products, user})
@@ -27,8 +29,11 @@ export default class ListingsController {
         if (!anzeige) {
             return view.render('pages/base', { page: 'pages/errors/not_found' })
         }
+
+        const images = await db.from('image').where('listing_id', anzeige.id)
+
         const poster = await db.from('user').where('username', anzeige.username).first()
-        return view.render('pages/base', { page: 'pages/anzeige/anzeige', anzeige: anzeige, poster, user: user ? user : null, title: anzeige.title })
+        return view.render('pages/base', { page: 'pages/anzeige/anzeige', anzeige: anzeige, poster, user: user ? user : null, title: anzeige.title, images })
     }
 
     async myListings({ view, session, response }: HttpContext) {
@@ -40,6 +45,7 @@ export default class ListingsController {
             .select('listing.*', 'image.path')
             .join('image', 'listing.id', '=', 'image.listing_id')
             .where('listing.username', user.username)
+            .groupBy('listing.id')
             .orderBy('listing.id', "desc")
 
         return view.render('pages/base', { page: 'pages/anzeige/meine-anzeigen', meineAnzeigen, title: 'Meine Anzeigen'})
@@ -56,6 +62,7 @@ export default class ListingsController {
             .join('saved', 'listing.id', '=', 'saved.listing_id')
             .where('saved.username', user.username)
             .where('listing.status', '=', 'active')
+            .groupBy('listing.id')
             .orderBy('listing.id', "desc")
 
         return view.render('pages/base', { page: 'pages/anzeige/gespeichert', gespeichert, title: 'Gespeicherte Anzeigen'})
@@ -75,6 +82,13 @@ export default class ListingsController {
             return response.redirect('/login')
         }
 
+        const images = request.files('images', { size: '4mb', extnames: ['jpg', 'png', 'jpeg', 'webp']})
+        if (!images === null) {
+            return view.render('pages/anzeige/anzeige-aufgeben', { error: 'Bitte füge ein Bild hinzu'})
+        }
+
+        console.log(images)
+
         const title = request.input('title')
         const description = request.input('description')
         const price = request.input('price')
@@ -83,7 +97,15 @@ export default class ListingsController {
         const shipping_price = request.input('shipping_price')
 
         const result = await db.table('listing').insert({ title, description, username: user.username, price, negotiable, shipping, shipping_price })
-        const imageresult = await db.table('image').insert({ path: 'resources/images/sven.jpg', listing_id: result[0] })
+        
+        images.forEach(async (image) => {
+            await image.move(app.publicPath('/anzeigen'), {
+                name: image.clientName,
+                overwrite: true
+            })
+            await db.table('image').insert({ path: image.fileName, listing_id: result[0]})
+        })
+
         response.redirect('/meine-anzeigen')
     }
 

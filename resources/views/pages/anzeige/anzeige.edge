@@ -1,6 +1,37 @@
 <div class="container twoxthree-grid detail-anzeige">
     <div class="anzeige_image-div">
-        <img class="anzeigen-image" src="{{asset(anzeige.path)}}" alt="">
+        <div id="imageCarousel" class="carousel slide">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#imageCarousel" data-bs-slide-to="0" class="active"
+                    aria-current="true" aria-label="Slide 1"></button>
+                    @each((image, index) in images.slice(1))
+                    <button type="button" data-bs-target="#imageCarousel" data-bs-slide-to="{{ index + 1 }}"
+                        aria-label="Slide {{ index + 2 }}"></button>
+                    @end
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="../../anzeigen/{{ images[0].path }}" class="d-block w-100 anzeigen-image" alt="...">
+                </div>
+
+                @each(image in images.slice(1))
+                <div class="carousel-item">
+                    <img src="../../anzeigen/{{image.path}}" class="d-block w-100 anzeigen-image" alt="...">
+                </div>
+                @end                
+
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#imageCarousel"
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#imageCarousel"
+                data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
     </div>
     <div class="anzeige_text-div">
         <h2>{{ anzeige.title }}</h2>
@@ -18,19 +49,21 @@
         </div>
         <hr>
         <div class="anzeige_interaction">
-            @if(user && user.username != poster.username && anzeige.status === 'active')
-            <a href="/chat/{{ anzeige.id }}/{{ user.username }}" class="btn btn-secondary">Chat starten</a>
-            <a href="" class="btn btn-secondary">Anzeige Speichern</a>
-            @else
+            @if(user && user.username == poster.username)
             <a href="/anzeige/{{ anzeige.id }}/bearbeiten" class="btn btn-secondary"><span>Anzeige bearbeiten</span></a>
             <div>
                 @if(anzeige.status !== 'inactive')
-                <a href="/anzeige/{{ anzeige.id }}/deaktivieren" class="btn btn-danger"><span>Anzeige deaktivieren</span></a>
+                <a href="/anzeige/{{ anzeige.id }}/deaktivieren" class="btn btn-danger"><span>Anzeige
+                        deaktivieren</span></a>
                 @end
                 @if(anzeige.status !== 'sold')
                 <a href="/anzeige/{{ anzeige.id }}/verkauft" class="btn btn-light"><span>Anzeige verkauft</span></a>
                 @end
             </div>
+            @elseif(anzeige.status === 'active')
+            <a href="/chat/{{ anzeige.id }}/{{ user ? user.username : null }}" class="btn btn-secondary">Chat
+                starten</a>
+            <a href="" class="btn btn-secondary">Anzeige Speichern</a>
             @end
         </div>
     </div>

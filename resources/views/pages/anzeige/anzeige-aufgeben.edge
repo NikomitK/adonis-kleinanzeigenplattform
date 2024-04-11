@@ -5,23 +5,26 @@
 </script>
 
 <div class="container">
-    <form class="twoxthree-grid" action="/anzeige-aufgeben" method="post">
+    <form class="twoxthree-grid" action="/anzeige-aufgeben" method="post" enctype="multipart/form-data">
         <div>
-            <img src="https://placehold.co/500x400" alt="">
+            <input name="images" class="form-control" type="file" id="formFileMultiple" multiple maxlength="10">
         </div>
         <div id="anzeige-aufgeben_text-div">
             <div class="form-floating">
-                <input name="title" class="form-control" type="text" id="title" placeholder="Titel der Anzeige" required>
+                <input name="title" class="form-control" type="text" id="title" placeholder="Titel der Anzeige"
+                    required>
                 <label for="title">Titel der Anzeige</label>
             </div>
             <div class="form-floating">
-                <textarea name="description" class="form-control" id="description" placeholder="Titel der Anzeige"></textarea>
+                <textarea name="description" class="form-control" id="description"
+                    placeholder="Titel der Anzeige"></textarea>
                 <label for="title">Beschreibung der Anzeige</label>
             </div>
         </div>
         <div class="anzeige-aufgeben_price">
             <div class="form-floating">
-                <input name="price" class="form-control" type="number" id="price" placeholder="Preis" step="any" required>
+                <input name="price" class="form-control" type="number" id="price" placeholder="Preis" step="any"
+                    required>
                 <label for="price">Preis</label>
             </div>
             <div class="form-check">
@@ -33,11 +36,13 @@
         </div>
         <div class="anzeige-aufgeben_price">
             <div class="form-floating">
-                <input name="shipping_price" class="form-control" type="number" id="shipping_price" placeholder="Versandkosten" step="any" disabled>
+                <input name="shipping_price" class="form-control" type="number" id="shipping_price"
+                    placeholder="Versandkosten" step="any" disabled>
                 <label for="shipping_price">Versandkosten</label>
             </div>
             <div class="form-check">
-                <input name="shipping" class="form-check-input" type="checkbox" id="shipping" onchange="disableShippingPrice()">
+                <input name="shipping" class="form-check-input" type="checkbox" id="shipping"
+                    onchange="disableShippingPrice()">
                 <label class="form-check-label" for="shipping">
                     Versand möglich
                 </label>
