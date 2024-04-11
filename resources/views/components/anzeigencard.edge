@@ -23,7 +23,7 @@
                 @end
             </button>
 
-            <a href="/chat/{{ $props.anzeige.id }}" class="btn btn-secondary anzeigen-btn">
+            <a href="/chat/{{ $props.anzeige.id }}/{{ $props.user ? $props.user.username : null }}" class="btn btn-secondary anzeigen-btn">
                 <span class="material-symbols-outlined">chat</span>
             </a>
 
