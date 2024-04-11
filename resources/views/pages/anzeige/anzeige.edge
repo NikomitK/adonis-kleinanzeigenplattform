@@ -19,7 +19,7 @@
         <hr>
         <div class="anzeige_interaction">
             @if(user && user.username != poster.username && anzeige.status === 'active')
-            <a href="" class="btn btn-secondary">Chat starten</a>
+            <a href="/chat/{{ anzeige.id }}/{{ user.username }}" class="btn btn-secondary">Chat starten</a>
             <a href="" class="btn btn-secondary">Anzeige Speichern</a>
             @else
             <a href="/anzeige/{{ anzeige.id }}/bearbeiten" class="btn btn-secondary"><span>Anzeige bearbeiten</span></a>

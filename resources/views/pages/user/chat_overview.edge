@@ -16,7 +16,7 @@
     <h2>Chats von dir zu fremden Anzeigen:</h2>
     <div class="chatlist">
         @each(chat in foreignChats)
-        <a href="/chat/{{ chat.listing_id }}">
+        <a href="/chat/{{ chat.listing_id }}/{{ user.username }}">
             <h3>{{ chat.title }}</h3>
         </a>
         @end

@@ -104,36 +104,6 @@ export default class UsersController {
         const result = await db.from('saved').where('username', user.username).where('listing_id', request.params().id).delete()
         //TODO check for errors
     }
-    
-    async displayForeignChat({ view, response, session, request }: HttpContext) {
-        const user = session.get('user')
-        if (!user) {
-            return response.redirect('/login')
-        }
-        const chat = await db.from('messages').where('listing_id', request.params().id).where('username', user.username)
-        if (!chat) {
-            return view.render('pages/base', { page: 'pages/errors/not_found' })
-        }
-        const anzeige = await db.from('listing').where('id', request.params().id).first()
-        console.log(chat)
-        return view.render('pages/base', { page: 'pages/user/chat', chat, title: 'Chat', user, anzeige })
-    }
-
-    async displayOwnChat({ view, response, session, request }: HttpContext) {
-        const user = session.get('user')
-        if (!user) {
-            return response.redirect('/login')
-        }
-        console.log(request.params().username)
-        const chat = await db.rawQuery(`SELECT m.* from messages m, listing l WHERE m.listing_id = l.id AND m.username = '${request.params().username}'`)
-        //const chat = await db.from('messages').where('username', user.username).where('listing_id', request.params().id)
-        if (!chat) {
-            return view.render('pages/base', { page: 'pages/errors/not_found' })
-        }
-        const anzeige = await db.from('listing').where('id', request.params().id).first()
-        console.log(chat)
-        return view.render('pages/base', { page: 'pages/user/chat', chat, title: 'Chat', user, anzeige })
-    }
 
     async displayChatOverview({ view, response, session }: HttpContext) {
         const user = session.get('user')
@@ -152,4 +122,35 @@ export default class UsersController {
 
         return view.render('pages/base', { page: 'pages/user/chat_overview', foreignChats, ownChats, title: 'Chats', user })
     }
+
+    async displayOwnChat({ view, response, session, request }: HttpContext) {
+        const user = session.get('user')
+        if (!user) {
+            return response.redirect('/login')
+        }
+        const chat = await db.rawQuery(`SELECT m.* from messages m, listing l WHERE m.listing_id = l.id AND l.id = ${request.params().id} AND m.username = '${request.params().username}'`)
+        //const chat = await db.from('messages').where('username', user.username).where('listing_id', request.params().id)
+        if (!chat) {
+            return view.render('pages/base', { page: 'pages/errors/not_found' })
+        }
+        /*chat.array.forEach((element: any) => {
+            element.content.replace('\\r\\n', '\n');
+        });*/
+        const anzeige = await db.from('listing').where('id', request.params().id).first()
+        //console.log(chat)
+        return view.render('pages/base', { page: 'pages/user/chat', chat, title: 'Chat', user, anzeige })
+    }
+
+    async processChatMessage({ request, response, session }: HttpContext) {
+        const user = session.get('user')
+        if (!user) {
+            return response.redirect('/login')
+        }
+        let message = request.input('message');
+        console.log(message)
+        console.log(message)
+        const result = await db.table('messages').insert({ listing_id: request.params().id, username: request.params().username, content: request.input('message'), sendername: user.username })
+        return response.redirect('back')
+    }
+
 }

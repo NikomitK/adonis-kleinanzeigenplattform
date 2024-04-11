@@ -8,17 +8,19 @@
         </div>
     </div>
     <div class="message-container">
-        @each(message in chat)
+        <!-- Reverse, because flex-direction column-reverse auto scrolls to bottom -->
+        @each(message in chat.reverse())
         @!component('components/chatmessage', { message: message.content, class: user.username === message.sendername ?
         'right' : 'left'})
         @end
     </div>
     <form method="POST" class="send-container">
-        <textarea class="" type="text" placeholder="Schreibe hier deine Nachricht" rows="3" autofocus></textarea>
+        {{ csrfField() }}
+        <textarea class="" name="message" id="message" type="text" placeholder="Schreibe hier deine Nachricht" rows="2"
+            autofocus></textarea>
         <input class="btn btn-secondary" type="submit">
     </form>
 </div>
-{{ inspect(chat) }}
 <script>
 
 </script>

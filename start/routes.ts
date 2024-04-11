@@ -162,8 +162,8 @@ router.put('anzeige/save/:id', [UsersController, 'saveListing'])
 
 router.put('anzeige/unsave/:id', [UsersController, 'unsaveListing'])
 
-router.get('/chat/:id', [UsersController, 'displayForeignChat'])
-
 router.get('/chat/:id/:username', [UsersController, 'displayOwnChat'])
+
+router.post('/chat/:id/:username', [UsersController, 'processChatMessage'])
 
 router.get('/chat-overview', [UsersController, 'displayChatOverview'])

@@ -506,15 +506,32 @@ nav {
 }
 
 .chat-container {
+    $chat-container-border-radius: 2em;
     display: grid;
     grid-template-rows: 1fr 5fr 1fr;
-    border-radius: 2em;
+    border-radius: $chat-container-border-radius;
     border: 2px solid #dddddd;
-    height: 60vh;
+    height: 80vh;
+    width: 90%;
+    padding-inline: 0em;
+
+    >* {
+        padding-inline: 1em;
+    }
+
+    .top-container {
+        background-color: $light-gray;
+        border-radius: $chat-container-border-radius $chat-container-border-radius 0 0;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-content: center;
+    }
 
     .message-container {
         display: flex;
-        flex-direction: column;
+        flex-direction: column-reverse;
+        overflow-x: hidden;
+        padding-block: 1em;
 
         .message-row {
             display: flex;
@@ -522,6 +539,10 @@ nav {
             .message {
                 padding: 0.5em 1em;
                 border-radius: 0.5em;
+                max-width: 80%;
+                overflow-wrap: break-word !important;
+                overflow-x: hidden;
+                text-wrap: wrap;
             }
 
             &.right {
@@ -545,14 +566,8 @@ nav {
 
     }
 
-    .top-container {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        align-content: center;
-    }
-
     .send-container {
-
+        border-radius: 0 0 $chat-container-border-radius $chat-container-border-radius;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -574,6 +589,14 @@ nav {
             height: 70%;
         }
     }
+}
+
+@media screen and (min-width: 768px) {
+    .chat-container {
+        height: 70vh;
+        width: 80%;
+    }
+    
 }
 
 footer {
