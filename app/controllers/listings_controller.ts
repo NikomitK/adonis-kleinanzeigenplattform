@@ -97,7 +97,7 @@ export default class ListingsController {
         const shipping = request.input('shipping')
         const shipping_price = request.input('shipping_price')
 
-        const result = await db.table('listing').insert({ title, description, username: user.username, price, negotiable, shipping, shipping_price })
+        const result = await db.table('listing').insert({ title, description, username: user.username, price: (Math.round(price * 100) / 100).toFixed(2), negotiable, shipping, shipping_price })
         
         images.forEach(async (image) => {
             await image.move(app.publicPath('/anzeigen'), {
