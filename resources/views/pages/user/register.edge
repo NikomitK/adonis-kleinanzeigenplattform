@@ -1,33 +1,44 @@
+<form action="/register" method="POST">
+    {{ csrfField() }}
+    <div class="login-form">
+        <h2>Herzlich Willkommen auf meiner Kleinanzeigenseite</h2>
 
-    <form action="/register" method="POST">
-        {{ csrfField() }}
-        <div class="login-form">
-            <h2>Herzlich Willkommen auf meiner Kleinanzeigenseite</h2>
-
-            <div class="form-floating">
-                <input type="text" class="form-control" name="username" id="username" placeholder="Nutzername" required>
-                <label for="username">Nutzername</label>
-            </div>
-
-            <div class="form-floating">
-                <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com" required>
-                <label for="email">Email Addresse</label>
-            </div>
-
-            <div class="form-floating">
-                <input type="password" class="form-control" name="password" id="password" placeholder="Passwort" required>
-                <label for="password">Passwort</label>
-            </div>
-
-            <div class="form-floating">
-                <input type="password" class="form-control" id="password-repeat" placeholder="Passwort wiederholen"
-                    required>
-                <label for="password-repeat">Passwort wiederholen</label>
-            </div>
-
-            <div class="login-buttons">
-                <button type="submit" class="btn btn-secondary">Registrieren</button>
-                <a href="/login" class="btn btn-outline-secondary">Ich habe schon einen Account</a>
-            </div>
+        <div class="form-floating">
+            <input type="text" class="form-control" name="username" id="username" placeholder="Nutzername" required>
+            <label for="username">Nutzername</label>
         </div>
-    </form>
+
+        @if(usernameTaken)
+            <div class="alert alert-danger">Der Nutzername ist schon vergeben, du loser</div>
+        @end
+
+        <div class="form-floating">
+            <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com" required>
+            <label for="email">Email Addresse</label>
+        </div>
+
+        @if(emailTaken)
+            <div class="alert alert-danger">Diese Email ist schon vergeben, du loser</div>
+        @end
+
+        <div class="form-floating">
+            <input type="password" class="form-control" name="password" id="password" placeholder="Passwort" required>
+            <label for="password">Passwort</label>
+        </div>
+
+        <div class="form-floating">
+            <input type="password" class="form-control" name="password-repeat" id="password-repeat" placeholder="Passwort wiederholen"
+                required>
+            <label for="password-repeat">Passwort wiederholen</label>
+        </div>
+
+        @if(passwordMismatch) 
+            <div class="alert alert-danger">Passwörter stimmen nicht überein</div>
+        @end
+
+        <div class="login-buttons">
+            <button type="submit" class="btn btn-secondary">Registrieren</button>
+            <a href="/login" class="btn btn-outline-secondary">Ich habe schon einen Account</a>
+        </div>
+    </div>
+</form>

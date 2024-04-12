@@ -43,6 +43,25 @@ export default class UsersController {
         if (session.get('user')) {
             return response.redirect('back')
         }
+        const username = request.input('username')
+
+        if (await db.from('user').where('username', username).first()) {
+            return view.render('pages/base', { page: 'pages/user/register', title: 'Registrieren', usernameTaken: true })
+        }
+
+        const email = request.input('email')
+
+        if (await db.from('user').where('email', email).first()) {
+            return view.render('pages/base', { page: 'pages/user/register', title: 'Registrieren', emailTaken: true })
+        }
+
+        const password = request.input('password')
+        const passwordRepeat = request.input('password-repeat')
+
+        if(password !== passwordRepeat) {
+            return view.render('pages/base', { page: 'pages/user/register', title: 'Registrieren', passwordMismatch: true })
+        }
+
         const hashedPassword = await hash.make(request.input('password'));
         const now = new Date();
         try {
