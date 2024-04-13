@@ -3,6 +3,7 @@ import db from '@adonisjs/lucid/services/db'
 import hash from '@adonisjs/core/services/hash';
 import { messages } from '@vinejs/vine/defaults';
 import app from '@adonisjs/core/services/app';
+import { Exception } from '@adonisjs/core/exceptions';
 
 export default class UsersController {
     async loginForm({ view, response, session }: HttpContext) {
@@ -163,7 +164,7 @@ export default class UsersController {
         }
         const listing = await db.from('listing').where('id', request.params().id).first()
         if (user.username !== request.params().username && user.username !== listing.username) {
-            return view.render('pages/base', { page: 'pages/errors/forbidden' })
+            throw new Exception('Unauthorized', {status: 403})
         }
         const chat = await db.rawQuery(`SELECT m.* from messages m, listing l WHERE m.listing_id = l.id AND l.id = ${request.params().id} AND m.username = '${request.params().username}'`)
         //const chat = await db.from('messages').where('username', user.username).where('listing_id', request.params().id)
