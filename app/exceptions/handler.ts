@@ -25,7 +25,7 @@ export default class HttpExceptionHandler extends ExceptionHandler {
       return view.render('pages/base', { page: 'pages/errors/not_found', error })
     },
     '500..599': (error, { view }) => {
-      return view.render('pages/base', { page: 'pages/errors/not_found', error })
+      return view.render('pages/base', { page: 'pages/errors/server_error', error })
     },
   }
 
