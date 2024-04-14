@@ -214,6 +214,7 @@ nav {
 
     h3 {
         font-size: 1.3em;
+        @include line-clamp(2);
     }
 
     .card-text {
@@ -423,6 +424,7 @@ nav {
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 5fr;
     row-gap: 1em;
+
 
     textarea {
         height: 100%;
