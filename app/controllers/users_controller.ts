@@ -6,31 +6,6 @@ import app from '@adonisjs/core/services/app';
 import { Exception } from '@adonisjs/core/exceptions';
 
 export default class UsersController {
-    async loginForm({ view, response, session }: HttpContext) {
-        const user = session.get('user')
-        if (user) {
-            return response.redirect('back')
-        }
-        return view.render('pages/base', { page: 'pages/user/login', title: 'Login' })
-    }
-
-    async loginProcess({ view, request, response, session }: HttpContext) {
-        if (session.get('user')) {
-            return response.redirect('back')
-        }
-        const result = await db.from('user').where('username', request.input('username')).first();
-        if (!result) {
-            console.log('User not found');
-            return view.render('pages/base', { page: 'pages/user/login', error: 'Invalid username or password' });
-        }
-        const passwordOk = await hash.verify(result.password, request.input('password'))
-        if (!passwordOk) {
-            return view.render('pages/base', { page: 'pages/user/login', error: 'Invalid username or password' });
-        }
-        session.put('user', { username: result.username, firstname: result.firstname, lastname: result.lastname, email: result.email, number: result.number, since: result.since, picture: result.picture })
-        console.log('User logged in')
-        return response.redirect('/');
-    }
 
     async registerForm({ view, response, session }: HttpContext) {
         const user = session.get('user')
@@ -59,7 +34,7 @@ export default class UsersController {
         const password = request.input('password')
         const passwordRepeat = request.input('password-repeat')
 
-        if(password !== passwordRepeat) {
+        if (password !== passwordRepeat) {
             return view.render('pages/base', { page: 'pages/user/register', title: 'Registrieren', passwordMismatch: true })
         }
 
@@ -75,9 +50,39 @@ export default class UsersController {
         }
     }
 
+    async loginForm({ view, response, session }: HttpContext) {
+        const user = session.get('user')
+        if (user) {
+            return response.redirect('back')
+        }
+        return view.render('pages/base', { page: 'pages/user/login', title: 'Login' })
+    }
+
+    async loginProcess({ view, request, response, session }: HttpContext) {
+        if (session.get('user')) {
+            return response.redirect('back')
+        }
+        const result = await db.from('user').where('username', request.input('username')).first();
+        if (!result) {
+            console.log('User not found');
+            return view.render('pages/base', { page: 'pages/user/login', error: 'Invalid username or password' });
+        }
+        const passwordOk = await hash.verify(result.password, request.input('password'))
+        if (!passwordOk) {
+            return view.render('pages/base', { page: 'pages/user/login', error: 'Invalid username or password' });
+        }
+        session.put('user', { username: result.username, firstname: result.firstname, lastname: result.lastname, email: result.email, number: result.number, since: result.since, picture: result.picture })
+        console.log('User logged in')
+        return response.redirect('/');
+    }
+
     async logout({ response, session }: HttpContext) {
         session.clear()
         return response.redirect('/')
+    }
+
+    async coffee(){
+        throw new Exception("I'm a teapot", { status: 418 })
     }
 
     async konto({ view, response, session }: HttpContext) {
@@ -164,7 +169,7 @@ export default class UsersController {
         }
         const listing = await db.from('listing').where('id', request.params().id).first()
         if (user.username !== request.params().username && user.username !== listing.username) {
-            throw new Exception('Unauthorized', {status: 403})
+            throw new Exception('Unauthorized', { status: 403 })
         }
         const chat = await db.rawQuery(`SELECT m.* from messages m, listing l WHERE m.listing_id = l.id AND l.id = ${request.params().id} AND m.username = '${request.params().username}'`)
         //const chat = await db.from('messages').where('username', user.username).where('listing_id', request.params().id)

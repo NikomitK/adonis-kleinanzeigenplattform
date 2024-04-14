@@ -27,6 +27,9 @@ export default class HttpExceptionHandler extends ExceptionHandler {
         '404': (error, { view }) => {
             return view.render('pages/base', { page: 'pages/errors/not_found', error })
         },
+        '418': (error, { view }) => {
+            return view.render('pages/base', { page: 'pages/errors/im_a_teapot', error })
+        },
         '500..599': (error, { view }) => {
             return view.render('pages/base', { page: 'pages/errors/server_error', error })
         },

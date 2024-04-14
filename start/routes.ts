@@ -88,65 +88,19 @@ router.post('/login', [UsersController, 'loginProcess'])
 
 router.get('/logout', [UsersController, 'logout'])
 
-router.get('/gespeichert', [ListingsController, 'savedListings'])
-
-/*router.get('/konto', async ({ view }) => {
-    const konto = {
-        image: 'resources/images/sven.jpg',
-        nutzername: 'Svenjamin',
-        email: 'svenjamin@test.com',
-        vorname: 'Sven',
-        nachname: 'Benjamin',
-        telefon: '123456789',
-        adresse: 'Musterstraße 123',
-        plz: '12345',
-        ort: 'Musterort',
-        seit: '27.01.1975',
-        achievments: [{
-            title: 'Svenjamin',
-            description: 'Verkaufe einen Svenjamin',
-            done: true,
-            image: 'resources/images/achievments/sven.jpg'
-        },
-        {
-            title: 'Svenjamin',
-            description: 'Verkaufe einen Svenjamin',
-            done: true,
-            image: 'resources/images/achievments/sven.jpg'
-        }, {
-            title: 'Svenjamin',
-            description: 'Verkaufe einen Svenjamin',
-            done: true,
-            image: 'resources/images/achievments/sven.jpg'
-        }, {
-            title: 'Svenjamin',
-            description: 'Verkaufe einen Svenjamin',
-            done: true,
-            image: 'resources/images/achievments/sven.jpg'
-        }, {
-            title: 'Svenjamin',
-            description: 'Verkaufe einen Svenjamin',
-            done: false,
-            image: 'resources/images/achievments/sven.jpg'
-        }, {
-            title: 'Svenjamin',
-            description: 'Verkaufe einen Svenjamin',
-            done: false,
-            image: 'resources/images/achievments/sven.jpg'
-        }]
-    }
-    return view.render('pages/base', { page: 'pages/user/konto', konto })
-})*/
+router.get('/kaffee', [UsersController, 'coffee'])
 
 router.get('/konto', [UsersController, 'konto'])
 
 router.post('/konto', [UsersController, 'updateProfile'])
 
-router.get('meine-anzeigen', [ListingsController, 'myListings'])
+router.get('/meine-anzeigen', [ListingsController, 'myListings'])
 
 router.get('/anzeige-aufgeben', [ListingsController, 'createForm'])
 
 router.post('/anzeige-aufgeben', [ListingsController, 'createProcess'])
+
+router.get('/anzeige/:id', [ListingsController, 'show']) 
 
 router.get('/anzeige/:id/bearbeiten', [ListingsController, 'editForm'])
 
@@ -156,14 +110,14 @@ router.get('/anzeige/:id/deaktivieren', [ListingsController, 'deactivate'])
 
 router.get('/anzeige/:id/verkauft', [ListingsController, 'sold'])
 
-router.get('/anzeige/:id', [ListingsController, 'show']) 
+router.put('anzeige/:id/save', [UsersController, 'saveListing'])
 
-router.put('anzeige/save/:id', [UsersController, 'saveListing'])
+router.put('anzeige/:id/unsave', [UsersController, 'unsaveListing'])
 
-router.put('anzeige/unsave/:id', [UsersController, 'unsaveListing'])
+router.get('/gespeichert', [ListingsController, 'savedListings'])
+
+router.get('/chat-overview', [UsersController, 'displayChatOverview'])
 
 router.get('/chat/:id/:username', [UsersController, 'displayOwnChat'])
 
 router.post('/chat/:id/:username', [UsersController, 'processChatMessage'])
-
-router.get('/chat-overview', [UsersController, 'displayChatOverview'])
