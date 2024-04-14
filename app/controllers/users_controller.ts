@@ -171,14 +171,19 @@ export default class UsersController {
         if (user.username !== request.params().username && user.username !== listing.username) {
             throw new Exception('Unauthorized', { status: 403 })
         }
+
+        let other = user.username === request.params().username ? await db.from('user').where('username', listing.username).first() : await db.from('user').where('username', request.params().username).first()
+
+
+        const listingImage = await db.from('image').where('listing_id', request.params().id).first()
+
         const chat = await db.rawQuery(`SELECT m.* from messages m, listing l WHERE m.listing_id = l.id AND l.id = ${request.params().id} AND m.username = '${request.params().username}'`)
         //const chat = await db.from('messages').where('username', user.username).where('listing_id', request.params().id)
         if (!chat) {
             return view.render('pages/base', { page: 'pages/errors/not_found' })
         }
-        const anzeige = await db.from('listing').where('id', request.params().id).first()
         //console.log(chat)
-        return view.render('pages/base', { page: 'pages/user/chat', chat, title: 'Chat', user, anzeige })
+        return view.render('pages/base', { page: 'pages/user/chat', title: 'Chat', chat, user, other, listing, listingImage })
     }
 
     async processChatMessage({ request, response, session }: HttpContext) {

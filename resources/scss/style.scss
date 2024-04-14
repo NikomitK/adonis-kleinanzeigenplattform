@@ -464,7 +464,8 @@ nav {
             object-fit: contain;
         }
 
-        .carousel-control-prev, .carousel-control-next {
+        .carousel-control-prev,
+        .carousel-control-next {
             background-image: none;
         }
 
@@ -535,6 +536,27 @@ nav {
         display: grid;
         grid-template-columns: 1fr 1fr;
         align-content: center;
+
+        img {
+            width: 3em;
+            height: 3em;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .anzeigen-container {
+            display: flex;
+            gap: 1em;
+            justify-content: start;
+            align-items: center;
+        }
+
+        .user-container {
+            display: flex;
+            gap: 1em;
+            justify-content: end;
+            align-items: center;
+        }
     }
 
     .message-container {

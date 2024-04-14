@@ -1,10 +1,14 @@
 <div class="container chat-container">
     <div class="top-container">
-        <div>
-            {{ anzeige.title }}
+        
+        <div class="anzeigen-container">
+            <img src="/anzeigen/{{ listingImage.path }}" alt="">
+            <a href="/anzeige/{{ listing.id }}">{{ listing.title }}</a>
         </div>
-        <div>
-            {{ user.username === anzeige.username ? chat[0].username : anzeige.username }}
+
+        <div class="user-container">
+            {{ other.username }}
+            <img src="/profile/{{ other.picture }}" alt="">
         </div>
     </div>
     <div class="message-container">
