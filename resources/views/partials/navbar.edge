@@ -1,7 +1,9 @@
 <script>
-    function testfunction() {
+    function expandMobileNavbar() {
         let mobileNavLinks = document.getElementById('mobile-nav-links')
-        mobileNavLinks.getAttribute("aria-expanded") == "true" ? mobileNavLinks.setAttribute("aria-expanded", "false") : mobileNavLinks.setAttribute("aria-expanded", "true")
+        let navbarToggler = document.getElementById('navbar-toggler')
+        navbarToggler.getAttribute("aria-expanded") == "true" ? mobileNavLinks.setAttribute("aria-expanded", "false") : mobileNavLinks.setAttribute("aria-expanded", "true")
+        mobileNavLinks.style.display = mobileNavLinks.style.display == "block" ? "none" : "block"
     }
 </script>
 <nav class="container-fluid">
@@ -22,12 +24,12 @@
                 <li><a href="/konto">Konto</a></li>
             </ul>
             <div class="nk-nav-toggler">
-                <button id="navbar-toggler" onclick="testfunction()"><span
+                <button id="navbar-toggler" onclick="expandMobileNavbar()" aria-controls="mobile-nav-links" aria-expanded="false" aria-label="Toggle navigation"><span
                         class="material-symbols-outlined">menu</span></button>
             </div>
         </div>
     </div>
-    <div class="container-fluid " id="mobile-nav-links" aria-expanded="false" role="navigation">
+    <div class="container-fluid " id="mobile-nav-links" role="navigation" style="display: none;">
         <ul class="nav-link-container">
             <li><a href="/">Home</a></li>
             <li><a href="/gespeichert">Gespeichert</a></li>
@@ -46,6 +48,7 @@
         
         if (link.getAttribute('href') == window.location.pathname) {
             link.ariaCurrent = 'page'
+            link.ariaDisabled = 'true'
         }
     })
 </script>

@@ -516,6 +516,50 @@ nav {
     }
 }
 
+.chatlist {
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    list-style: none;
+    padding-left: 0;
+
+    .chat {
+        text-decoration: none;
+        padding-block: 0.2em;
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
+        gap: 0.5em;
+
+        ::after:not(:last-of-type){
+            content: "<hr>";
+        }
+
+        img {
+            width: 3em;
+            height: 3em;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        h3 {
+            display: inline;
+            margin-bottom: 0;
+            display: flex;
+            flex-wrap: nowrap;
+            align-items: center;
+        }
+        
+        span {
+            display: flex;
+            align-items: baseline;
+            gap: 0.5em;
+        }
+    }
+
+}
+
 .chat-container {
     $chat-container-border-radius: 2em;
     display: grid;
@@ -557,7 +601,7 @@ nav {
             justify-content: end;
             align-items: center;
         }
-    }  
+    }
 
     .message-container {
         display: flex;

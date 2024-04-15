@@ -1,5 +1,6 @@
 <div class="card anzeige">
-    <img src="../../anzeigen/{{anzeige.path}}" class="card-img-top anzeigen-image" alt="..." />
+    <a href='/anzeige/{{ $props.anzeige.id }}' class="stretched-link" aria-label="Erfahre mehr über diese Anzeige: {{ $props.anzeige.title }}"></a>
+    <img src="../../anzeigen/{{ $props.anzeige.path }}" class="card-img-top anzeigen-image" alt="..." / loading="lazy">
     @if($props.anzeige.status == 'sold')
     <div class="anzeigen-status sold">
         <h3>Verkauft</h3>
@@ -23,10 +24,10 @@
             @end
             ">
                 @if($props.saved)
-                <img src="{{ asset('resources/images/icons/favorite_fill.svg') }}" alt="Speicher diese Anzeige">
+                <img src="{{ asset('resources/images/icons/favorite_fill.svg') }}" alt="Speicher diese Anzeige nicht mehr">
                 @else
                 <img src="{{ asset('resources/images/icons/favorite_outline.svg') }}"
-                    alt="Speicher diese Anzeige nicht mehr">
+                    alt="Speicher diese Anzeige">
                 @end
             </button>
 
@@ -40,5 +41,4 @@
             <b>{{ $props.anzeige.price }}€</b>
         </div>
     </div>
-    <a href='/anzeige/{{ $props.anzeige.id }}' class="stretched-link" aria-label="Erfahre mehr über diese Anzeige"></a>
 </div>
