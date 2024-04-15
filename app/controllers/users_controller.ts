@@ -162,7 +162,7 @@ export default class UsersController {
         return view.render('pages/base', { page: 'pages/user/chat_overview', foreignChats, ownChats, title: 'Chats', user })
     }
 
-    async displayOwnChat({ view, response, session, request }: HttpContext) {
+    async displayChat({ view, response, session, request }: HttpContext) {
         const user = session.get('user')
         if (!user) {
             return response.redirect('/login')

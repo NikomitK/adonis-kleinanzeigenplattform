@@ -2,7 +2,7 @@
     <div class="top-container">
         
         <div class="anzeigen-container">
-            <img src="/anzeigen/{{ listingImage.path }}" alt="">
+            <img src="/anzeigen/{{ listingImage ? listingImage.path : 'default.png' }}" alt="">
             <a href="/anzeige/{{ listing.id }}">{{ listing.title }}</a>
         </div>
 
