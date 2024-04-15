@@ -10,7 +10,6 @@ build
 
 # Frontend assets compiled code
 public/assets
-public/anzeigen
 
 # Build tools specific
 npm-debug.log
