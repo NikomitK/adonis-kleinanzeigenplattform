@@ -62,7 +62,8 @@
     "bootstrap": "^5.3.3",
     "edge.js": "^6.0.1",
     "luxon": "^3.4.4",
-    "reflect-metadata": "^0.2.1"
+    "reflect-metadata": "^0.2.1",
+    "sharp": "^0.33.3"
   },
   "eslintConfig": {
     "extends": "@adonisjs/eslint-config/app"

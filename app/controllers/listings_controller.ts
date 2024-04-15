@@ -2,8 +2,10 @@ import type { HttpContext } from '@adonisjs/core/http'
 import db from '@adonisjs/lucid/services/db'
 import app from "@adonisjs/core/services/app";
 import { cuid } from '@adonisjs/core/helpers'
+import sharp from 'sharp'
 
 export default class ListingsController {
+
 
     async home({ view, session }: HttpContext) {
         const user = session.get('user')
@@ -16,7 +18,7 @@ export default class ListingsController {
             .groupBy('listing.id')
             .orderBy('listing.id', "desc")
 
-        return view.render('pages/base', { page: 'pages/anzeige/home', products, user})
+        return view.render('pages/base', { page: 'pages/anzeige/home', products, user })
     }
 
     async show({ request, view, session }: HttpContext) {
@@ -49,7 +51,7 @@ export default class ListingsController {
             .groupBy('listing.id')
             .orderBy('listing.id', "desc")
 
-        return view.render('pages/base', { page: 'pages/anzeige/meine-anzeigen', meineAnzeigen, title: 'Meine Anzeigen'})
+        return view.render('pages/base', { page: 'pages/anzeige/meine-anzeigen', meineAnzeigen, title: 'Meine Anzeigen' })
     }
 
     async savedListings({ view, session, response }: HttpContext) {
@@ -66,7 +68,7 @@ export default class ListingsController {
             .groupBy('listing.id')
             .orderBy('listing.id', "desc")
 
-        return view.render('pages/base', { page: 'pages/anzeige/gespeichert', gespeichert, title: 'Gespeicherte Anzeigen', user})
+        return view.render('pages/base', { page: 'pages/anzeige/gespeichert', gespeichert, title: 'Gespeicherte Anzeigen', user })
     }
 
     async createForm({ view, session, response }: HttpContext) {
@@ -74,7 +76,7 @@ export default class ListingsController {
         if (!user) {
             return response.redirect('/login')
         }
-        return view.render('pages/base', { page: 'pages/anzeige/anzeige-aufgeben', title: 'Anzeige aufgeben'})
+        return view.render('pages/base', { page: 'pages/anzeige/anzeige-aufgeben', title: 'Anzeige aufgeben' })
     }
 
     async createProcess({ view, request, response, session }: HttpContext) {
@@ -83,9 +85,9 @@ export default class ListingsController {
             return response.redirect('/login')
         }
 
-        const images = request.files('images', { size: '4mb', extnames: ['jpg', 'png', 'jpeg', 'webp']})
+        const images = request.files('images', { size: '4mb', extnames: ['jpg', 'png', 'jpeg', 'webp'] })
         if (!images === null) {
-            return view.render('pages/anzeige/anzeige-aufgeben', { error: 'Bitte füge ein Bild hinzu'})
+            return view.render('pages/anzeige/anzeige-aufgeben', { error: 'Bitte füge ein Bild hinzu' })
         }
 
         console.log(images)
@@ -100,11 +102,9 @@ export default class ListingsController {
         const result = await db.table('listing').insert({ title, description, username: user.username, price: (Math.round(price * 100) / 100).toFixed(2), negotiable, shipping, shipping_price })
         
         images.forEach(async (image) => {
-            await image.move(app.publicPath('/anzeigen'), {
-                name: `${cuid()}.${image.extname}`,
-                overwrite: true
-            })
-            await db.table('image').insert({ path: image.fileName, listing_id: result[0]})
+            const tmpCuid = cuid();
+            const resizedImg = await sharp(image.tmpPath).toFile(app.publicPath(`/anzeigen/${tmpCuid}.webp`))
+            await db.table('image').insert({ path: `${tmpCuid}.webp`, listing_id: result[0]})
         })
 
         response.redirect('/meine-anzeigen')
@@ -118,10 +118,10 @@ export default class ListingsController {
         const anzeige = await db.from('listing').where('id', request.params().id).first()
         if (!anzeige) {
             return view.render('pages/base', { page: 'pages/errors/not_found' })
-        } else if(anzeige.username !== user.username) {
+        } else if (anzeige.username !== user.username) {
             return view.render('pages/base', { page: 'pages/errors/forbidden' })
         }
-        return view.render('pages/base', { page: 'pages/anzeige/anzeige-bearbeiten', anzeige, title: 'Anzeige bearbeiten'})
+        return view.render('pages/base', { page: 'pages/anzeige/anzeige-bearbeiten', anzeige, title: 'Anzeige bearbeiten' })
     }
 
     async editProcess({ request, response, session }: HttpContext) {
@@ -148,7 +148,7 @@ export default class ListingsController {
         const anzeige = await db.from('listing').where('id', request.params().id).first()
         if (!anzeige) {
             return response.redirect('/meine-anzeigen')
-        } else if(anzeige.username !== user.username) {
+        } else if (anzeige.username !== user.username) {
             return response.redirect('/meine-anzeigen')
         }
         const result = await db.from('listing').where('id', request.params().id).update({ status: 'inactive' })
@@ -163,7 +163,7 @@ export default class ListingsController {
         const anzeige = await db.from('listing').where('id', request.params().id).first()
         if (!anzeige) {
             return response.redirect('/meine-anzeigen')
-        } else if(anzeige.username !== user.username) {
+        } else if (anzeige.username !== user.username) {
             return response.redirect('/meine-anzeigen')
         }
         const result = await db.from('listing').where('id', request.params().id).update({ status: 'sold' })
