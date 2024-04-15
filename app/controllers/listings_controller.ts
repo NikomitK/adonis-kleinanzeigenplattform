@@ -66,7 +66,7 @@ export default class ListingsController {
             .groupBy('listing.id')
             .orderBy('listing.id', "desc")
 
-        return view.render('pages/base', { page: 'pages/anzeige/gespeichert', gespeichert, title: 'Gespeicherte Anzeigen'})
+        return view.render('pages/base', { page: 'pages/anzeige/gespeichert', gespeichert, title: 'Gespeicherte Anzeigen', user})
     }
 
     async createForm({ view, session, response }: HttpContext) {

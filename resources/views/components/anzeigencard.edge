@@ -32,7 +32,8 @@
 
             <a href="/chat/{{ $props.anzeige.id }}/{{ $props.user ? $props.user.username : null }}"
                 class="btn btn-secondary anzeigen-btn">
-                <span class="material-symbols-outlined">chat</span>
+                <img src="{{ asset('resources/images/icons/chat.svg') }}"
+                    alt="Starte einen Chat zu dieser Anzeige">
             </a>
 
             @end
