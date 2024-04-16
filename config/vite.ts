@@ -21,7 +21,7 @@ const viteBackendConfig = defineConfig({
   assetsUrl: '/assets',
 
   scriptAttributes: {
-    defer: true,
+    defer: false,
   },
 })
 

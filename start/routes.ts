@@ -45,9 +45,9 @@ router.get('/anzeige/:id/bearbeiten', [ListingsController, 'editForm'])
 
 router.post('/anzeige/:id/bearbeiten', [ListingsController, 'editProcess'])
 
-router.get('/anzeige/:id/deaktivieren', [ListingsController, 'deactivate'])
+router.get('/anzeige/:id/deaktivieren', [ListingsController, 'changeState'])
 
-router.get('/anzeige/:id/verkauft', [ListingsController, 'sold'])
+router.get('/anzeige/:id/verkauft', [ListingsController, 'changeState'])
 
 router.put('anzeige/:id/save', [UsersController, 'saveListing'])
 

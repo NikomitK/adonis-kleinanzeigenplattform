@@ -1,6 +1,4 @@
 <div class="card anzeige">
-    <a href='/anzeige/{{ $props.anzeige.id }}' class="stretched-link" aria-label="Erfahre mehr über diese Anzeige: {{ $props.anzeige.title }}"></a>
-    <img src="../../anzeigen/{{ $props.anzeige.path }}" class="card-img-top anzeigen-image" alt="..." / loading="lazy">
     @if($props.anzeige.status == 'sold')
     <div class="anzeigen-status sold">
         <h3>Verkauft</h3>
@@ -11,6 +9,8 @@
         <h3>Inaktiv</h3>
     </div>
     @end
+    <a href='/anzeige/{{ $props.anzeige.id }}' class="stretched-link" aria-label="Erfahre mehr über diese Anzeige: {{ $props.anzeige.title }}"></a>
+    <img src="../../anzeigen/{{ $props.anzeige.path }}" class="card-img-top anzeigen-image" alt="..." / loading="lazy">
     <div class="card-body d-flex flex-column justify-content-between">
         <h3 class="card-title">{{ $props.anzeige.title }}</h3>
         <p class="card-text">{{$props.anzeige.description}}</p>
@@ -24,16 +24,16 @@
             @end
             ">
                 @if($props.saved)
-                <img src="{{ asset('resources/images/icons/favorite_fill.svg') }}" alt="Speicher diese Anzeige nicht mehr">
+                <img src="{{ asset('resources/images/favorite_fill.svg') }}" alt="Speicher diese Anzeige nicht mehr">
                 @else
-                <img src="{{ asset('resources/images/icons/favorite_outline.svg') }}"
+                <img src="{{ asset('resources/images/favorite_outline.svg') }}"
                     alt="Speicher diese Anzeige">
                 @end
             </button>
 
             <a href="/chat/{{ $props.anzeige.id }}/{{ $props.user ? $props.user.username : null }}"
                 class="btn btn-secondary anzeigen-btn">
-                <img src="{{ asset('resources/images/icons/chat.svg') }}"
+                <img src="{{ asset('resources/images/chat.svg') }}"
                     alt="Starte einen Chat zu dieser Anzeige">
             </a>
 

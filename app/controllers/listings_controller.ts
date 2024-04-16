@@ -3,6 +3,7 @@ import db from '@adonisjs/lucid/services/db'
 import app from "@adonisjs/core/services/app";
 import { cuid } from '@adonisjs/core/helpers'
 import sharp from 'sharp'
+import { Exception } from '@adonisjs/core/exceptions';
 
 export default class ListingsController {
 
@@ -22,7 +23,7 @@ export default class ListingsController {
     }
 
     async show({ request, view, session }: HttpContext) {
-        const user = session.get('user')
+        const user = session.get('user') || null
         const anzeige = await db.from('listing')
             .select('listing.*', 'image.path')
             .join('image', 'listing.id', '=', 'image.listing_id')
@@ -30,13 +31,13 @@ export default class ListingsController {
             .first()
 
         if (!anzeige) {
-            return view.render('pages/base', { page: 'pages/errors/not_found' })
+            throw new Exception('Not found', { status: 404 })
         }
 
         const images = await db.from('image').where('listing_id', anzeige.id)
 
         const poster = await db.from('user').where('username', anzeige.username).first()
-        return view.render('pages/base', { page: 'pages/anzeige/anzeige', anzeige: anzeige, poster, user: user ? user : null, title: anzeige.title, images })
+        return view.render('pages/base', { page: 'pages/anzeige/anzeige', anzeige: anzeige, poster, user, title: anzeige.title, images })
     }
 
     async myListings({ view, session, response }: HttpContext) {
@@ -128,6 +129,8 @@ export default class ListingsController {
         const user = session.get('user')
         if (!user) {
             return response.redirect('/login')
+        } else if(user.username !== (await db.from('listing').where('id', request.params().id).first()).username) {
+            throw new Exception('Unauthorized', { status: 403 })
         }
         const title = request.input('title')
         const description = request.input('description')
@@ -140,7 +143,7 @@ export default class ListingsController {
         response.redirect('/meine-anzeigen')
     }
 
-    async deactivate({ request, response, session }: HttpContext) {
+    async changeState({ request, response, session }: HttpContext) {
         const user = session.get('user')
         if (!user) {
             return response.redirect('/login')
@@ -149,24 +152,9 @@ export default class ListingsController {
         if (!anzeige) {
             return response.redirect('/meine-anzeigen')
         } else if (anzeige.username !== user.username) {
-            return response.redirect('/meine-anzeigen')
+            throw new Exception('Unauthorized', { status: 403 })
         }
-        const result = await db.from('listing').where('id', request.params().id).update({ status: 'inactive' })
-        return response.redirect('/meine-anzeigen')
-    }
-
-    async sold({ request, response, session }: HttpContext) {
-        const user = session.get('user')
-        if (!user) {
-            return response.redirect('/login')
-        }
-        const anzeige = await db.from('listing').where('id', request.params().id).first()
-        if (!anzeige) {
-            return response.redirect('/meine-anzeigen')
-        } else if (anzeige.username !== user.username) {
-            return response.redirect('/meine-anzeigen')
-        }
-        const result = await db.from('listing').where('id', request.params().id).update({ status: 'sold' })
+        const result = await db.from('listing').where('id', request.params().id).update({ status: request.url().includes('verkauft') ? 'sold' : 'inactive'})
         return response.redirect('/meine-anzeigen')
     }
 
