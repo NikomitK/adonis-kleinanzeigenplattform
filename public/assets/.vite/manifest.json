@@ -1,0 +1,79 @@
+{
+  "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js?commonjs-entry": {
+    "file": "bootstrap.bundle.min-BhBRfVql.js",
+    "src": "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js?commonjs-entry",
+    "isEntry": true
+  },
+  "resources/css/app.css": {
+    "file": "app-CMBOs-0l.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/css/style.css": {
+    "file": "style-koeqOkvd.css",
+    "src": "resources/css/style.css",
+    "isEntry": true
+  },
+  "resources/images/achievments/sven.jpg": {
+    "file": "sven-CVycXKuC.jpg",
+    "src": "resources/images/sven.jpg"
+  },
+  "resources/images/alles.jpg": {
+    "file": "alles-EM_X0jsx.jpg",
+    "src": "resources/images/alles.jpg"
+  },
+  "resources/images/apple-google.jpg": {
+    "file": "apple-google-dUTPIhaA.jpg",
+    "src": "resources/images/apple-google.jpg"
+  },
+  "resources/images/auto.webp": {
+    "file": "auto-Dyng4uIb.webp",
+    "src": "resources/images/auto.webp"
+  },
+  "resources/images/aziz.png": {
+    "file": "aziz-C4zHpHwq.png",
+    "src": "resources/images/aziz.png"
+  },
+  "resources/images/chart.png": {
+    "file": "chart-xeGpRwZZ.png",
+    "src": "resources/images/chart.png"
+  },
+  "resources/images/gniesbert.png": {
+    "file": "gniesbert-DmSL0PSD.png",
+    "src": "resources/images/gniesbert.png"
+  },
+  "resources/images/kleinanzeigenplattform.webp": {
+    "file": "kleinanzeigenplattform-CGoqqH20.webp",
+    "src": "resources/images/kleinanzeigenplattform.webp"
+  },
+  "resources/images/nk.png": {
+    "file": "nk-DMoN_-NE.png",
+    "src": "resources/images/nk.png"
+  },
+  "resources/images/nk_dark.png": {
+    "file": "nk_dark-BLsuHHNp.png",
+    "src": "resources/images/nk_dark.png"
+  },
+  "resources/images/profile_pictures/buegelbrett.webp": {
+    "file": "buegelbrett-DFaS0C3b.webp",
+    "src": "resources/images/profile_pictures/buegelbrett.webp"
+  },
+  "resources/images/profile_pictures/nikomitk.webp": {
+    "file": "nikomitk-BWfNxEe8.webp",
+    "src": "resources/images/profile_pictures/nikomitk.webp"
+  },
+  "resources/images/sven.jpg": {
+    "file": "sven-CVycXKuC.jpg",
+    "src": "resources/images/sven.jpg"
+  },
+  "resources/js/app.js": {
+    "file": "app-C3S-8paM.js",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  },
+  "resources/js/cards.js": {
+    "file": "cards-l0sNRNKZ.js",
+    "src": "resources/js/cards.js",
+    "isEntry": true
+  }
+}
