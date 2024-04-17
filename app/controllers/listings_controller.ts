@@ -104,7 +104,7 @@ export default class ListingsController {
         
         images.forEach(async (image) => {
             const tmpCuid = cuid();
-            const resizedImg = await sharp(image.tmpPath).toFile(app.publicPath(`/anzeigen/${tmpCuid}.webp`))
+            await sharp(image.tmpPath).toFile(app.publicPath(`/anzeigen/${tmpCuid}.webp`))
             await db.table('image').insert({ path: `${tmpCuid}.webp`, listing_id: result[0]})
         })
 
@@ -139,7 +139,7 @@ export default class ListingsController {
         const shipping = request.input('shipping')
         const shipping_price = request.input('shipping_price')
 
-        const result = await db.from('listing').where('id', request.params().id).update({ title, description, price, negotiable, shipping, shipping_price })
+        await db.from('listing').where('id', request.params().id).update({ title, description, price, negotiable, shipping, shipping_price })
         response.redirect('/meine-anzeigen')
     }
 
@@ -154,7 +154,7 @@ export default class ListingsController {
         } else if (anzeige.username !== user.username) {
             throw new Exception('Unauthorized', { status: 403 })
         }
-        const result = await db.from('listing').where('id', request.params().id).update({ status: request.url().includes('verkauft') ? 'sold' : 'inactive'})
+        await db.from('listing').where('id', request.params().id).update({ status: request.url().includes('verkauft') ? 'sold' : 'inactive'})
         return response.redirect('/meine-anzeigen')
     }
 

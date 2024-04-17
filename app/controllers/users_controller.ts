@@ -1,7 +1,6 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import db from '@adonisjs/lucid/services/db'
 import hash from '@adonisjs/core/services/hash';
-import { messages } from '@vinejs/vine/defaults';
 import app from '@adonisjs/core/services/app';
 import { Exception } from '@adonisjs/core/exceptions';
 
@@ -41,7 +40,7 @@ export default class UsersController {
         const hashedPassword = await hash.make(request.input('password'));
         const now = new Date();
         try {
-            const result = await db.table('user')
+            await db.table('user')
                 .insert({ username: request.input('username'), password: hashedPassword, firstname: request.input('firstname'), lastname: request.input('lastname'), since: now, email: request.input('email') })
             response.redirect('/');
         } catch (error) {
@@ -112,7 +111,7 @@ export default class UsersController {
             })
         }
 
-        const result = await db.from('user').where('username', user.username).update({
+        await db.from('user').where('username', user.username).update({
             firstname: request.input('firstname') ? request.input('firstname') : user.firstname,
             lastname: request.input('lastname') ? request.input('lastname') : user.lastname,
             email: request.input('email') ? request.input('email') : user.email,
@@ -131,7 +130,7 @@ export default class UsersController {
         if (!user) {
             return
         }
-        const result = await db.table('saved').insert({ username: user.username, listing_id: request.params().id })
+        await db.table('saved').insert({ username: user.username, listing_id: request.params().id })
         //TODO check for errors
     }
 
@@ -140,7 +139,7 @@ export default class UsersController {
         if (!user) {
             return
         }
-        const result = await db.from('saved').where('username', user.username).where('listing_id', request.params().id).delete()
+        await db.from('saved').where('username', user.username).where('listing_id', request.params().id).delete()
         //TODO check for errors
     }
 
@@ -193,7 +192,7 @@ export default class UsersController {
         let message = request.input('message');
         console.log(message)
         console.log(message)
-        const result = await db.table('messages').insert({ listing_id: request.params().id, username: request.params().username, content: request.input('message'), sendername: user.username })
+        await db.table('messages').insert({ listing_id: request.params().id, username: request.params().username, content: request.input('message'), sendername: user.username })
         return response.redirect('back')
     }
 
