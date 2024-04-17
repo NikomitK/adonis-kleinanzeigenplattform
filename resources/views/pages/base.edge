@@ -5,8 +5,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Kleinanzeigen Website" />
-    @vite(['resources/css/app.css', 'resources/css/style.css', 'resources/js/app.js', 'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js?commonjs-entry', 'resources/js/cards.js'])
+    @vite(['resources/css/app.css', 'resources/css/style.css', 'resources/js/app.js', 'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js?commonjs-entry'])
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <script src="{{ asset('resources/js/cards.js') }}"></script>
     <title>
         @if (title)
             {{ title }}
