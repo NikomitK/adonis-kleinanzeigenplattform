@@ -1,6 +1,6 @@
 function saveListing(id) {
     console.log('clicked');
-    fetch(`anzeige/${id}/save`,
+    fetch(`/anzeige/${id}/save`,
         {
             method: 'PUT',
             headers: {
@@ -15,7 +15,7 @@ function saveListing(id) {
 
 function unsaveListing(id) {
     console.log('clicked');
-    fetch(`anzeige/${id}/unsave`,
+    fetch(`/anzeige/${id}/unsave`,
         {
             method: 'PUT',
             headers: {

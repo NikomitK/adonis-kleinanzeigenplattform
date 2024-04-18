@@ -16,7 +16,4 @@ export default defineConfig({
       reload: ['resources/views/**/*.edge', 'resources/js/**/*.js'],
     }),
   ],
-  server: {
-    host: '192.168.0.238'
-  },
 })

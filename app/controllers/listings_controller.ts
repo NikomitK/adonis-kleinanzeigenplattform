@@ -37,7 +37,8 @@ export default class ListingsController {
         const images = await db.from('image').where('listing_id', anzeige.id)
 
         const poster = await db.from('user').where('username', anzeige.username).first()
-        return view.render('pages/base', { page: 'pages/anzeige/anzeige', anzeige: anzeige, poster, user, title: anzeige.title, images })
+        const saved = user ? await db.from('saved').where('username', user.username).where('listing_id', anzeige.id).first() : null
+        return view.render('pages/base', { page: 'pages/anzeige/anzeige', anzeige: anzeige, poster, user, title: anzeige.title, images, saved })
     }
 
     async myListings({ view, session, response }: HttpContext) {
