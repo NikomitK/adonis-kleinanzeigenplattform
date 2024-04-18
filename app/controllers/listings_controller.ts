@@ -123,7 +123,8 @@ export default class ListingsController {
         } else if (anzeige.username !== user.username) {
             return view.render('pages/base', { page: 'pages/errors/forbidden' })
         }
-        return view.render('pages/base', { page: 'pages/anzeige/anzeige-bearbeiten', anzeige, title: 'Anzeige bearbeiten' })
+        const images = await db.from('image').where('listing_id', anzeige.id)
+        return view.render('pages/base', { page: 'pages/anzeige/anzeige-bearbeiten', title: 'Anzeige bearbeiten', anzeige, images })
     }
 
     async editProcess({ request, response, session }: HttpContext) {
