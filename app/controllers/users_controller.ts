@@ -42,7 +42,7 @@ export default class UsersController {
         try {
             await db.table('user')
                 .insert({ username: request.input('username'), password: hashedPassword, firstname: request.input('firstname'), lastname: request.input('lastname'), since: now, email: request.input('email') })
-            response.redirect('/');
+            response.redirect('/login');
         } catch (error) {
             console.log(error)
             return error;
@@ -59,7 +59,7 @@ export default class UsersController {
 
     async loginProcess({ view, request, response, session }: HttpContext) {
         if (session.get('user')) {
-            return response.redirect('back')
+            return response.redirect('/konto')
         }
         const result = await db.from('user').where('username', request.input('username')).first();
         if (!result) {
@@ -72,7 +72,7 @@ export default class UsersController {
         }
         session.put('user', { username: result.username, firstname: result.firstname, lastname: result.lastname, email: result.email, number: result.number, since: result.since, picture: result.picture })
         console.log('User logged in')
-        return response.redirect('/');
+        return response.redirect('/konto');
     }
 
     async logout({ response, session }: HttpContext) {
