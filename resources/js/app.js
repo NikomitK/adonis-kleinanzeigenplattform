@@ -1,7 +1,7 @@
 import.meta.glob(['../images/**'])
 import.meta.glob(['../images/icons/**'])
 
-function saveListing(id) {
+window.saveListing = function saveListing(id) {
     console.log('clicked');
     fetch(`/anzeige/${id}/save`,
         {
@@ -12,11 +12,11 @@ function saveListing(id) {
         }).then(response => {
             response.status == 200 ? location.reload() : console.log('error');
         }).catch(error => {
-            console.log('error');
+            console.log(error);
         });
 }
 
-function unsaveListing(id) {
+window.unsaveListing = function unsaveListing(id) {
     console.log('clicked');
     fetch(`/anzeige/${id}/unsave`,
         {
@@ -27,6 +27,6 @@ function unsaveListing(id) {
         }).then(response => {
             response.status == 200 ? location.reload() : console.log('error');
         }).catch(error => {
-            console.log('error');
+            console.log(error);
         });
 } 
