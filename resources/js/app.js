@@ -14,7 +14,7 @@ let navbarToggler = document.getElementById('navbar-toggler')
 let mobileNavLinks = document.getElementById('mobile-nav-links')
 
 if (window.screen.width > 768) {
-    mobileNavLinks.style.display = "none"
+    mobileNavLinks.ariaHidden = 'true'
 }
 
 navbarToggler.addEventListener('click', function () {
