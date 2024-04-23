@@ -111,6 +111,12 @@ export default class UsersController {
             })
         }
 
+        const email = request.input('email')
+
+        if (await db.from('user').where('email', email).first()) {
+            response.redirect('back')
+        }
+
         await db.from('user').where('username', user.username).update({
             firstname: request.input('firstname') ? request.input('firstname') : user.firstname,
             lastname: request.input('lastname') ? request.input('lastname') : user.lastname,
