@@ -67,39 +67,38 @@ nav {
 }
 
 #mobile-nav-links {
-    position: relative;
-    top: -5em;
+    height: 0px;
+    overflow: hidden;
     transition: 0.5s;
     z-index: -1;
-}
 
-#mobile-nav-links[aria-expanded="true"] {
-    background-color: #dddddd !important;
-    display: block;
-    padding-block: 1em;
-    top: 0;
-
-    .nav-link-container {
-        list-style: none;
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-        width: 100%;
-        margin: 0;
-
-        li {
-            a {
-                color: #0f0f0f;
-                text-decoration: none;
-                transition: 0.3s;
-
-                &:hover {
-                    color: $light-gray;
+    &.shown {
+        display: block;
+        background-color: #dddddd !important;
+        padding-block: 1em;
+    
+        .nav-link-container {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            width: 100%;
+            margin: 0;
+    
+            li {
+                a {
+                    color: #0f0f0f;
+                    text-decoration: none;
+                    transition: 0.3s;
+    
+                    &:hover {
+                        color: $light-gray;
+                    }
                 }
-            }
-
-            a[aria-selected="true"] {
-                color: #1f1f1f;
+    
+                a[aria-selected="true"] {
+                    color: #1f1f1f;
+                }
             }
         }
     }
@@ -147,6 +146,7 @@ nav {
 
     }
 }
+
 
 
 @mixin hover-shadow {

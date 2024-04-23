@@ -1,11 +1,3 @@
-<script>
-    function expandMobileNavbar() {
-        let mobileNavLinks = document.getElementById('mobile-nav-links')
-        let navbarToggler = document.getElementById('navbar-toggler')
-        navbarToggler.getAttribute("aria-expanded") == "true" ? mobileNavLinks.setAttribute("aria-expanded", "false") : mobileNavLinks.setAttribute("aria-expanded", "true")
-        mobileNavLinks.style.display = mobileNavLinks.style.display == "block" ? "none" : "block"
-    }
-</script>
 <nav class="container-fluid">
     <div class="container-fluid nav-gradient">
         <div class="container nk-navbar ">
@@ -24,7 +16,7 @@
                 <li><a href="/konto">Konto</a></li>
             </ul>
             <div class="nk-nav-toggler">
-                <button id="navbar-toggler" onclick="expandMobileNavbar()" aria-controls="mobile-nav-links" aria-expanded="false" aria-label="Toggle navigation"><span
+                <button id="navbar-toggler" onclick="" aria-expanded="false" aria-controls="nav-link-container" aria-label="Toggle navigation"><span
                         class="material-symbols-outlined">menu</span></button>
             </div>
         </div>
@@ -40,15 +32,3 @@
         </ul>
     </div>
 </nav>
-
-<script>
-    console.log(window.location.pathname)
-    let navLinks = document.querySelectorAll('.nav-link-container a')
-    navLinks.forEach(link => {
-        
-        if (link.getAttribute('href') == window.location.pathname) {
-            link.ariaCurrent = 'page'
-            link.ariaDisabled = 'true'
-        }
-    })
-</script>
