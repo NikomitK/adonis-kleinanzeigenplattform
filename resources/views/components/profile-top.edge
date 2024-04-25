@@ -1,6 +1,6 @@
 <div id="profile-top">
     <div id="profile-top_left">
-        <img src="{{ ($props.user.picture != undefined) ? `/profile/${$props.user.picture}` : asset('resources/images/profile_pictures/default.png')}}" width="100px" height="100px" alt="" id="profile-image">
+        <img src="{{ ($props.user.picture != undefined) ? `/profile/${$props.user.picture}` : asset('resources/images/default_profile.webp')}}" width="100px" height="100px" alt="" id="profile-image">
         <div>
             <h2>{{$props.user.username}}</h2>
             <div>Aktiv seit: {{new Date($props.user.since).toLocaleDateString("de-DE")}}</div>
