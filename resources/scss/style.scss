@@ -480,6 +480,10 @@ nav {
         align-content: start;
         row-gap: 1em;
 
+        h2 {
+            word-wrap: break-word;
+        }
+
         >p {
             overflow-wrap: anywhere;
             text-overflow: hidden;
