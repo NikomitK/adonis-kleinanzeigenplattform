@@ -24,16 +24,16 @@
             @end
             ">
                 @if($props.saved)
-                <img src="{{ asset('resources/images/favorite_fill.svg') }}" alt="Speicher diese Anzeige nicht mehr">
+                <img src="{{ asset('resources/images/icons/favorite_fill.svg') }}" alt="Speicher diese Anzeige nicht mehr">
                 @else
-                <img src="{{ asset('resources/images/favorite_outline.svg') }}"
+                <img src="{{ asset('resources/images/icons/favorite_outline.svg') }}"
                     alt="Speicher diese Anzeige">
                 @end
             </button>
 
             <a href="/chat/{{ $props.anzeige.id }}/{{ $props.user ? $props.user.username : null }}"
                 class="btn btn-secondary anzeigen-btn">
-                <img src="{{ asset('resources/images/chat.svg') }}"
+                <img src="{{ asset('resources/images/icons/chat.svg') }}"
                     alt="Starte einen Chat zu dieser Anzeige">
             </a>
 

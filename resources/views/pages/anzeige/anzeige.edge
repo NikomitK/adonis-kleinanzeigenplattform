@@ -64,7 +64,7 @@
             </div>
             @elseif(anzeige.status === 'active')
             <a href="/chat/{{ anzeige.id }}/{{ user ? user.username : null }}" class="btn btn-secondary anzeigen-btn">
-                <span>Chat starten <img src="{{ asset('resources/images/chat.svg') }}" alt=""></span></a>
+                <span>Chat starten <img src="{{ asset('resources/images/icons/chat.svg') }}" alt=""></span></a>
             <button class="btn btn-secondary anzeigen-btn" onclick="
                 @if(saved)
                 unsaveListing({{anzeige.id}})
@@ -73,10 +73,10 @@
                 @end
                 ">
                 @if(saved)
-                <span>Speicher diese Anzeige nicht mehr<img src="{{ asset('resources/images/favorite_fill.svg') }}"
+                <span>Speicher diese Anzeige nicht mehr<img src="{{ asset('resources/images/icons/favorite_fill.svg') }}"
                         alt=""></span>
                 @else
-                <span>Speicher diese Anzeige <img src="{{ asset('resources/images/favorite_outline.svg') }}"
+                <span>Speicher diese Anzeige <img src="{{ asset('resources/images/icons/favorite_outline.svg') }}"
                         alt=""></span>
                 @end
             </button>
