@@ -160,6 +160,7 @@ export default class UsersController {
 
         //const ownChats = await db.from('messages').whereIn('listing_id', foreignChats.map(chat => chat.listing_id)).distinct('username')
 
+        //TODO
         const ownChats = await db.rawQuery(`SELECT m.*, l.title, i.path, l.username AS poster, m.username AS other FROM messages m, listing l, image i WHERE m.listing_id = l.id AND l.username = '${user.username}' AND i.listing_id = l.id GROUP BY m.listing_id, m.username`)
         console.log(ownChats)
 
@@ -181,6 +182,7 @@ export default class UsersController {
 
         const listingImage = await db.from('image').where('listing_id', request.params().id).first()
 
+        //TODO
         const chat = await db.rawQuery(`SELECT m.* from messages m, listing l WHERE m.listing_id = l.id AND l.id = ${request.params().id} AND m.username = '${request.params().username}'`)
         //const chat = await db.from('messages').where('username', user.username).where('listing_id', request.params().id)
         if (!chat) {
