@@ -156,7 +156,7 @@ export default class UsersController {
         }
         //const foreignChats = await db.from('messages').where('username', user.username).distinct('listing_id')
 
-        const foreignChats = await db.rawQuery(`SELECT m.*, l.title, i.path, l.username AS poster, m.username AS other FROM messages m, listing l, image i WHERE m.listing_id = l.id AND m.username = '${user.username}' AND i.listing_id = l.id GROUP BY(m.listing_id)`)
+        const foreignChats = await db.rawQuery(`SELECT m.*, l.title, i.path, l.username AS other, m.username AS poster FROM messages m, listing l, image i WHERE m.listing_id = l.id AND m.username = '${user.username}' AND i.listing_id = l.id GROUP BY(m.listing_id)`)
 
         //const ownChats = await db.from('messages').whereIn('listing_id', foreignChats.map(chat => chat.listing_id)).distinct('username')
 
