@@ -109,7 +109,7 @@ export default class ListingsController {
             await db.table('image').insert({ path: `${tmpCuid}.webp`, listing_id: result[0]})
         })
 
-        response.redirect('/meine-anzeigen')
+        return response.redirect('/meine-anzeigen')
     }
 
     async editForm({ view, request, session, response }: HttpContext) {
@@ -119,9 +119,9 @@ export default class ListingsController {
         }
         const anzeige = await db.from('listing').where('id', request.params().id).first()
         if (!anzeige) {
-            return view.render('pages/base', { page: 'pages/errors/not_found' })
+            throw new Exception('Not found', { status: 404 })
         } else if (anzeige.username !== user.username) {
-            return view.render('pages/base', { page: 'pages/errors/forbidden' })
+            throw new Exception('Unauthorized', { status: 403 })
         }
         const images = await db.from('image').where('listing_id', anzeige.id)
         return view.render('pages/base', { page: 'pages/anzeige/anzeige-bearbeiten', title: 'Anzeige bearbeiten', anzeige, images })
