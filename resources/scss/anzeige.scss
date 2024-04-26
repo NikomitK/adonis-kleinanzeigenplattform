@@ -1,0 +1,138 @@
+@import "./style.scss";
+
+.twoxthree-grid {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 1em;
+    justify-items: center;
+    align-items: center;
+    padding: 1em;
+
+    >div {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: flex-start;
+    }
+
+    .anzeige_image-div {
+        width: 100%;
+        display: flex;
+        align-items: center !important;
+
+        * {
+            border-radius: 0.5em;
+        }
+
+        .anzeigen-image {
+            width: 100%;
+            height: 340pt;
+            border-radius: 0.4em;
+            object-fit: contain;
+        }
+
+        .carousel-control-prev,
+        .carousel-control-next {
+            background-image: none;
+        }
+
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .twoxthree-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: 1em;
+    }
+
+}
+
+#anzeige-aufgeben_text-div {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 5fr;
+    row-gap: 1em;
+
+
+    textarea {
+        height: 100%;
+        resize: none;
+    }
+}
+
+.anzeige-aufgeben_price {
+    width: 100%;
+    display: flex;
+    gap: 1em;
+    align-items: center;
+    justify-content: start;
+}
+
+.detail-anzeige {
+
+    >div:not(:last-of-type) {
+        justify-content: center;
+        border-radius: 0.5em;
+        border: $light-gray 3pt solid;
+    }
+
+    .anzeige_text-div {
+        height: 100%;
+        width: 100%;
+        padding: 1em;
+        display: flex;
+        flex-direction: column;
+        justify-content: start !important;
+        align-content: start;
+        row-gap: 1em;
+
+        h2 {
+            word-wrap: break-word;
+        }
+
+        >p {
+            overflow-wrap: anywhere;
+            text-overflow: hidden;
+            overflow: auto;
+            max-height: 120pt;
+        }
+
+
+    }
+
+
+    .anzeige_price {
+        width: 100%;
+        display: flex;
+        gap: 3em;
+        align-items: center;
+        justify-content: start;
+    }
+
+    .anzeige_interaction {
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+        justify-content: start;
+
+        >div {
+            display: grid;
+            gap: 1em;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .anzeigen-btn {
+            span{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 0.5em;
+            }
+        }
+
+    }
+}

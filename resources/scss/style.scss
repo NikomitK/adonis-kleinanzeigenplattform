@@ -1,3 +1,25 @@
+* {
+    margin: 0;
+    padding: 0;
+    min-width: 0;
+  }
+  
+  html,
+  body {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  main {
+      flex: 1;
+      padding-top: 1em;
+  }
+  
+  
+
 @import "../scss/custom.scss";
 
 $light-gray: #f0f0f0;
@@ -146,8 +168,6 @@ nav {
     }
 }
 
-
-
 @mixin hover-shadow {
     transition: box-shadow 0.3s;
 
@@ -163,74 +183,6 @@ nav {
     overflow: hidden;
 }
 
-
-.anzeige {
-    $anzeigen-width: 90%;
-
-    width: $anzeigen-width;
-    height: 1.3 * $anzeigen-width !important;
-
-    .anzeigen-status,
-    .anzeigen-image {
-        width: 100%;
-        object-fit: cover;
-        aspect-ratio: 1.5 / 1;
-    }
-
-    .anzeigen-status {
-        position: absolute;
-        height: 100%;
-        min-height: 50%;
-        z-index: 10;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-
-        ~.stretched-link {
-            z-index: 100;
-        }
-
-        h3 {
-            font-size: 2em;
-        }
-
-        &.sold {
-            background-color: rgba($light, 0.7);
-        }
-
-        &.inactive {
-            background-color: rgba($light-gray, 0.7);
-        }
-    }
-
-
-    .anzeigen-btn {
-        max-width: fit-content;
-        display: grid !important;
-        z-index: 100;
-    }
-
-    h3 {
-        font-size: 1.3em;
-        @include line-clamp(2);
-    }
-
-    .card-text {
-        @include line-clamp(3);
-    }
-
-    @include hover-shadow;
-}
-
-@media (min-width: 768px) {
-    .anzeige {
-        $anzeigen-width: 18rem;
-        width: $anzeigen-width;
-        height: 1.4 * $anzeigen-width !important;
-    }
-}
-
 @for $i from 1 through 10 {
     @each $breakpoint in map-keys($grid-breakpoints) {
         @media (min-width: map-get($grid-breakpoints, $breakpoint)) {
@@ -243,26 +195,6 @@ nav {
 
 #nav-search-row {
     background-color: $light-gray;
-}
-
-
-.login-form {
-    margin-inline: auto;
-    display: grid;
-    grid-template-columns: 80%;
-    justify-content: center;
-    row-gap: 1em;
-    width: 90%;
-    padding: 1em 0 2em;
-    border: 0.4em solid $main-color;
-    border-radius: 1em;
-    text-align: center;
-}
-
-.login-buttons {
-    display: grid;
-    grid-template-columns: 1fr;
-    row-gap: 0.5em;
 }
 
 #profile-information {
@@ -307,65 +239,11 @@ nav {
     }
 }
 
-#achievment-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 1.5em;
-}
-
-.achievment {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 0.7fr 1fr;
-    justify-items: center;
-    align-items: start;
-    background-color: $light-red;
-    padding: 0.5em 0.5em 0.5em 0;
-    border-radius: 1em;
-    width: 80%;
-    text-align: center;
-    overflow-wrap: break-word !important;
-
-    h3 {
-        word-break: break-word;
-    }
-
-    img {
-        width: 5em;
-        height: 5em;
-    }
-
-    &.done {
-        background-color: $light;
-    }
-}
-
-
-
 @media screen and (min-width: 768px) {
 
     #profile-general {
         grid-template-columns: 1fr 1fr;
         row-gap: 1em;
-    }
-
-    #achievment-list {
-        justify-content: space-between;
-    }
-
-    .achievment {
-        width: 14em;
-    }
-
-    .login-form {
-        width: 50%;
-        grid-template-columns: 75%;
-    }
-
-    .login-buttons {
-        grid-template-columns: 1fr 1fr;
-        column-gap: 1em;
     }
 
     #profile-information {
@@ -386,302 +264,6 @@ nav {
         .btn-secondary {
             max-width: fit-content;
         }
-    }
-
-}
-
-.twoxthree-grid {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    row-gap: 1em;
-    justify-items: center;
-    align-items: center;
-    padding: 1em;
-
-    >div {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: flex-start;
-    }
-
-    .anzeige_image-div {
-        width: 100%;
-        display: flex;
-        align-items: center !important;
-
-        * {
-            border-radius: 0.5em;
-        }
-
-        .anzeigen-image {
-            width: 100%;
-            height: 340pt;
-            border-radius: 0.4em;
-            object-fit: contain;
-        }
-
-        .carousel-control-prev,
-        .carousel-control-next {
-            background-image: none;
-        }
-
-    }
-}
-
-@media screen and (min-width: 768px) {
-    .twoxthree-grid {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        column-gap: 1em;
-    }
-
-}
-
-#anzeige-aufgeben_text-div {
-    height: 100%;
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 5fr;
-    row-gap: 1em;
-
-
-    textarea {
-        height: 100%;
-        resize: none;
-    }
-}
-
-.anzeige-aufgeben_price {
-    width: 100%;
-    display: flex;
-    gap: 1em;
-    align-items: center;
-    justify-content: start;
-}
-
-.detail-anzeige {
-
-    >div:not(:last-of-type) {
-        justify-content: center;
-        border-radius: 0.5em;
-        border: $light-gray 3pt solid;
-    }
-
-    .anzeige_text-div {
-        height: 100%;
-        width: 100%;
-        padding: 1em;
-        display: flex;
-        flex-direction: column;
-        justify-content: start !important;
-        align-content: start;
-        row-gap: 1em;
-
-        h2 {
-            word-wrap: break-word;
-        }
-
-        >p {
-            overflow-wrap: anywhere;
-            text-overflow: hidden;
-            overflow: auto;
-            max-height: 120pt;
-        }
-
-
-    }
-
-
-    .anzeige_price {
-        width: 100%;
-        display: flex;
-        gap: 3em;
-        align-items: center;
-        justify-content: start;
-    }
-
-    .anzeige_interaction {
-        display: flex;
-        flex-direction: column;
-        gap: 1em;
-        justify-content: start;
-
-        >div {
-            display: grid;
-            gap: 1em;
-            grid-template-columns: 1fr 1fr;
-        }
-
-        .anzeigen-btn {
-            span{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                gap: 0.5em;
-            }
-        }
-
-    }
-}
-
-.chatlist {
-    width: fit-content;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5em;
-    list-style: none;
-    padding-left: 0;
-
-    .chat {
-        text-decoration: none;
-        padding-block: 0.2em;
-        display: flex;
-        flex-wrap: nowrap;
-        align-items: center;
-        gap: 0.5em;
-
-        ::after:not(:last-of-type){
-            content: "<hr>";
-        }
-
-        img {
-            width: 3em;
-            height: 3em;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        h3 {
-            display: inline;
-            margin-bottom: 0;
-            display: flex;
-            flex-wrap: nowrap;
-            align-items: center;
-        }
-        
-        span {
-            display: flex;
-            align-items: baseline;
-            gap: 0.5em;
-        }
-    }
-
-}
-
-.chat-container {
-    $chat-container-border-radius: 2em;
-    display: grid;
-    grid-template-rows: 1fr 5fr 1fr;
-    border-radius: $chat-container-border-radius;
-    border: 2px solid #dddddd;
-    height: 80vh;
-    width: 90%;
-    padding-inline: 0em;
-
-    >* {
-        padding-inline: 1em;
-    }
-
-    .top-container {
-        background-color: $light-gray;
-        border-radius: $chat-container-border-radius $chat-container-border-radius 0 0;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        align-content: center;
-
-        img {
-            width: 3em;
-            height: 3em;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .anzeigen-container {
-            display: flex;
-            gap: 1em;
-            justify-content: start;
-            align-items: center;
-        }
-
-        .user-container {
-            display: flex;
-            gap: 1em;
-            justify-content: end;
-            align-items: center;
-        }
-    }
-
-    .message-container {
-        display: flex;
-        flex-direction: column-reverse;
-        overflow-x: hidden;
-        padding-block: 1em;
-
-        .message-row {
-            display: flex;
-
-            .message {
-                padding: 0.5em 1em;
-                border-radius: 0.5em;
-                max-width: 80%;
-                overflow-wrap: break-word !important;
-                overflow-x: hidden;
-                text-wrap: wrap;
-            }
-
-            &.right {
-                justify-content: flex-end;
-
-                .message {
-                    background-color: $light-gray;
-                }
-            }
-
-            &.left {
-                justify-content: flex-start;
-
-                .message {
-                    border: 2px solid $light-gray;
-                    background-color: white;
-                }
-            }
-
-        }
-
-    }
-
-    .send-container {
-        border-radius: 0 0 $chat-container-border-radius $chat-container-border-radius;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: $light-gray;
-
-        textarea {
-            width: 80%;
-            height: 70%;
-            resize: none;
-            border-radius: 3em 0 0 3em;
-            padding: 0.5em 1em;
-            border-color: $secondary;
-        }
-
-        input {
-            border-radius: 0 3em 3em 0;
-            min-width: fit-content;
-            max-width: 5%;
-            height: 70%;
-        }
-    }
-}
-
-@media screen and (min-width: 768px) {
-    .chat-container {
-        height: 70vh;
-        width: 80%;
     }
 
 }

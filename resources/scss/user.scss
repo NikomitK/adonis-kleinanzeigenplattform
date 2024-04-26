@@ -1,0 +1,48 @@
+@import "./style.scss";
+
+#achievment-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5em;
+}
+
+.achievment {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 0.7fr 1fr;
+    justify-items: center;
+    align-items: start;
+    background-color: $light-red;
+    padding: 0.5em 0.5em 0.5em 0;
+    border-radius: 1em;
+    width: 80%;
+    text-align: center;
+    overflow-wrap: break-word !important;
+
+    h3 {
+        word-break: break-word;
+    }
+
+    img {
+        width: 5em;
+        height: 5em;
+    }
+
+    &.done {
+        background-color: $light;
+    }
+}
+
+
+@media screen and (min-width: 768px) {
+    
+    #achievment-list {
+        justify-content: space-between;
+    }
+
+    .achievment {
+        width: 14em;
+    }
+
+}

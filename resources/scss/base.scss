@@ -1,0 +1,68 @@
+@import "./style.scss";
+
+.anzeige {
+    $anzeigen-width: 90%;
+
+    width: $anzeigen-width;
+    height: 1.3 * $anzeigen-width !important;
+
+    .anzeigen-status,
+    .anzeigen-image {
+        width: 100%;
+        object-fit: cover;
+        aspect-ratio: 1.5 / 1;
+    }
+
+    .anzeigen-status {
+        position: absolute;
+        height: 100%;
+        min-height: 50%;
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        ~.stretched-link {
+            z-index: 100;
+        }
+
+        h3 {
+            font-size: 2em;
+        }
+
+        &.sold {
+            background-color: rgba($light, 0.7);
+        }
+
+        &.inactive {
+            background-color: rgba($light-gray, 0.7);
+        }
+    }
+
+
+    .anzeigen-btn {
+        max-width: fit-content;
+        display: grid !important;
+        z-index: 100;
+    }
+
+    h3 {
+        font-size: 1.3em;
+        @include line-clamp(2);
+    }
+
+    .card-text {
+        @include line-clamp(3);
+    }
+
+    @include hover-shadow;
+}
+
+@media (min-width: 768px) {
+    .anzeige {
+        $anzeigen-width: 18rem;
+        width: $anzeigen-width;
+        height: 1.4 * $anzeigen-width !important;
+    }
+}

@@ -11,11 +11,14 @@
 
 import router from '@adonisjs/core/services/router'
 
+import HomeController from '#controllers/home_controller'
 import ListingsController from '#controllers/listings_controller'
 import UsersController from '#controllers/users_controller'
+import ChatsController from '#controllers/chats_controller'
 
 
-router.get('/', [ListingsController, 'home'])
+
+router.get('/', [HomeController, 'home'])
 
 router.get('/register', [UsersController, 'registerForm'])
 
@@ -33,7 +36,7 @@ router.get('/konto', [UsersController, 'konto'])
 
 router.post('/konto', [UsersController, 'updateProfile'])
 
-router.get('/meine-anzeigen', [ListingsController, 'myListings'])
+router.get('/meine-anzeigen', [HomeController, 'myListings'])
 
 router.get('/anzeige-aufgeben', [ListingsController, 'createForm'])
 
@@ -53,10 +56,10 @@ router.put('anzeige/:id/save', [UsersController, 'saveListing'])
 
 router.put('anzeige/:id/unsave', [UsersController, 'unsaveListing'])
 
-router.get('/gespeichert', [ListingsController, 'savedListings'])
+router.get('/gespeichert', [HomeController, 'savedListings'])
 
-router.get('/chat-overview', [UsersController, 'displayChatOverview'])
+router.get('/chat-overview', [ChatsController, 'displayChatOverview'])
 
-router.get('/chat/:id/:username', [UsersController, 'displayChat'])
+router.get('/chat/:id/:username', [ChatsController, 'displayChat'])
 
-router.post('/chat/:id/:username', [UsersController, 'processChatMessage'])
+router.post('/chat/:id/:username', [ChatsController, 'processChatMessage'])

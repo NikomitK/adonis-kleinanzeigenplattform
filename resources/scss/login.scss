@@ -1,0 +1,33 @@
+@import "./style.scss";
+
+.login-form {
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: 80%;
+    justify-content: center;
+    row-gap: 1em;
+    width: 90%;
+    padding: 1em 0 2em;
+    border: 0.4em solid $main-color;
+    border-radius: 1em;
+    text-align: center;
+}
+
+.login-buttons {
+    display: grid;
+    grid-template-columns: 1fr;
+    row-gap: 0.5em;
+}
+
+@media screen and (min-width: 768px) {
+    
+    .login-form {
+        width: 50%;
+        grid-template-columns: 75%;
+    }
+
+    .login-buttons {
+        grid-template-columns: 1fr 1fr;
+        column-gap: 1em;
+    }
+}
