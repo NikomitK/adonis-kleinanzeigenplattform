@@ -1,6 +1,4 @@
 import.meta.glob(['../images/**'])
-import.meta.glob(['../images/icons/**'])
-import.meta.filename = '../images/icons/menu.svg'
 
 let navLinks = document.querySelectorAll('.nav-link-container a')
 navLinks.forEach(link => {
