@@ -8,7 +8,7 @@ export default defineConfig({
        * Entrypoints of your application. Each entrypoint will
        * result in a separate bundle.
        */
-      entrypoints: ['resources/css/app.css', 'resources/js/app.js', 'resources/js/cards.js', 'resources/css/style.css', 'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js'],
+      entrypoints: ['resources/js/app.js', 'resources/js/anzeige.js', 'resources/js/base.js', 'resources/js/chat.js', 'resources/js/login.js', 'resources/js/user.js'],
 
       /**
        * Paths to watch and reload the browser on file change

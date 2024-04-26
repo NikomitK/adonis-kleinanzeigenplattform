@@ -20,10 +20,6 @@ const viteBackendConfig = defineConfig({
    */
   assetsUrl: '/assets',
 
-  scriptAttributes: {
-    defer: false,
-    async: true
-  },
 })
 
 export default viteBackendConfig

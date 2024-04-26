@@ -37,14 +37,24 @@ export default class ChatsController {
             throw new Exception('Unauthorized', { status: 403 })
         }
 
-        let other = user.username === request.params().username ? await db.from('user').where('username', listing.username).first() : await db.from('user').where('username', request.params().username).first()
+        let other = user.username === request.params().username ? 
+        await db.from('user')
+        .where('username', listing.username)
+        .first() 
+        : 
+        await db.from('user')
+        .where('username', request.params().username)
+        .first()
 
 
-        const listingImage = await db.from('image').where('listing_id', request.params().id).first()
+        const listingImage = await db.from('image')
+        .where('listing_id', request.params().id)
+        .first()
 
-        //TODO
-        const chat = await db.rawQuery(`SELECT m.* from messages m, listing l WHERE m.listing_id = l.id AND l.id = ${request.params().id} AND m.username = '${request.params().username}'`)
-        //const chat = await db.from('messages').where('username', user.username).where('listing_id', request.params().id)
+        const chat = await db.from('messages')
+        .where('listing_id', request.params().id)
+        .where('username', request.params().username)
+
         if (!chat) {
             return view.render('layouts/base', { page: 'pages/errors/not_found' })
         }
