@@ -80,7 +80,7 @@ export default class UsersController {
         return response.redirect('/')
     }
 
-    async coffee(){
+    async coffee() {
         throw new Exception("I'm a teapot", { status: 418 })
     }
 
@@ -154,15 +154,20 @@ export default class UsersController {
         if (!user) {
             return response.redirect('/login')
         }
-        //const foreignChats = await db.from('messages').where('username', user.username).distinct('listing_id')
 
-        const foreignChats = await db.rawQuery(`SELECT m.*, l.title, i.path, l.username AS other, m.username AS poster FROM messages m, listing l, image i WHERE m.listing_id = l.id AND m.username = '${user.username}' AND i.listing_id = l.id GROUP BY(m.listing_id)`)
+        const ownChats = await db.from('messages')
+        .join('listing', 'messages.listing_id', 'listing.id')
+        .join('image', 'listing.id', 'image.listing_id')
+        .where('listing.username', user.username)
+        .groupBy('messages.listing_id', 'messages.username')
+        .select('messages.*', 'listing.title', 'listing.username as poster', 'messages.username as other', 'image.path')
 
-        //const ownChats = await db.from('messages').whereIn('listing_id', foreignChats.map(chat => chat.listing_id)).distinct('username')
-
-        //TODO
-        const ownChats = await db.rawQuery(`SELECT m.*, l.title, i.path, l.username AS poster, m.username AS other FROM messages m, listing l, image i WHERE m.listing_id = l.id AND l.username = '${user.username}' AND i.listing_id = l.id GROUP BY m.listing_id, m.username`)
-        console.log(ownChats)
+        const foreignChats = await db.from('messages')
+        .join('listing', 'messages.listing_id', 'listing.id')
+        .join('image', 'listing.id', 'image.listing_id')
+        .where('messages.username', user.username)
+        .groupBy('messages.listing_id')
+        .select('messages.*', 'listing.title', 'listing.username as other', 'messages.username as poster', 'image.path')
 
         return view.render('pages/base', { page: 'pages/user/chat_overview', foreignChats, ownChats, title: 'Chats', user })
     }
