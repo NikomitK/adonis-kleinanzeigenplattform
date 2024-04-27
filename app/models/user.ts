@@ -5,26 +5,32 @@ import { compose } from '@adonisjs/core/helpers'
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
-  uids: ['email'],
-  passwordColumnName: 'password',
+    uids: ['email'],
+    passwordColumnName: 'password',
 })
 
 export default class User extends compose(BaseModel, AuthFinder) {
-  @column({ isPrimary: true })
-  declare id: number
+    @column({ isPrimary: true })
+    declare username: string
 
-  @column()
-  declare fullName: string | null
+    @column()
+    declare firstname: string | null
 
-  @column()
-  declare email: string
+    @column()
+    declare lastname: string | null
 
-  @column()
-  declare password: string
+    @column()
+    declare email: string
 
-  @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime
+    @column()
+    declare since: string
 
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime | null
+    @column()
+    declare password: string
+
+    @column()
+    declare picture: string
+
+    @column()
+    declare number: string | null
 }
