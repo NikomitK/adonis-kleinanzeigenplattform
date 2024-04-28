@@ -14,7 +14,7 @@ export default class Listing extends BaseModel {
     declare description: string
 
     @column()
-    declare price: number
+    declare price: string
 
     @column()
     declare negotiable: boolean
@@ -23,7 +23,7 @@ export default class Listing extends BaseModel {
     declare shipping: boolean
 
     @column()
-    declare shipping_price: number
+    declare shipping_price: string
 
     @column()
     declare status: string

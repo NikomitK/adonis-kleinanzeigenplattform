@@ -9,10 +9,10 @@ export default class extends BaseSchema {
             table.string('username').references('username').inTable('users').notNullable()
             table.string('title').notNullable()
             table.string('description').notNullable()
-            table.decimal('price').notNullable()
+            table.string('price').notNullable()
             table.boolean('negotiable').notNullable().defaultTo(false)
             table.boolean('shipping').notNullable().defaultTo(false)
-            table.decimal('shipping_price').nullable()
+            table.string('shipping_price').notNullable().defaultTo('0.00')
             table.string('status').notNullable().defaultTo('active')
         })
     }
