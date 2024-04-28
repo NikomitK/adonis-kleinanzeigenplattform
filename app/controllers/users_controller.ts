@@ -20,13 +20,13 @@ export default class UsersController {
         }
         const username = request.input('username')
 
-        if (await db.from('user').where('username', username).first()) {
+        if (await db.from('users').where('username', username).first()) {
             return view.render('layouts/login', { page: 'pages/user/register', title: 'Registrieren', usernameTaken: true })
         }
 
         const email = request.input('email')
 
-        if (await db.from('user').where('email', email).first()) {
+        if (await db.from('users').where('email', email).first()) {
             return view.render('layouts/login', { page: 'pages/user/register', title: 'Registrieren', emailTaken: true })
         }
 
@@ -61,7 +61,7 @@ export default class UsersController {
         if (session.get('user')) {
             return response.redirect('/konto')
         }
-        const result = await db.from('user').where('username', request.input('username')).first();
+        const result = await db.from('users').where('username', request.input('username')).first();
         if (!result) {
             console.log('User not found');
             return view.render('layouts/login', { page: 'pages/user/login', error: 'Invalid username or password' });
@@ -89,8 +89,8 @@ export default class UsersController {
         if (!user) {
             return response.redirect('/login')
         }
-        const unAchieved = await db.from('achievment').whereNotIn('title', db.from('achieved').where('username', user.username).select('title'))
-        const achieved = await db.from('achievment').whereIn('title', db.from('achieved').where('username', user.username).select('title'))
+        const unAchieved = await db.from('achievments').whereNotIn('title', db.from('achieveds').where('username', user.username).select('title'))
+        const achieved = await db.from('achievments').whereIn('title', db.from('achieveds').where('username', user.username).select('title'))
         return view.render('layouts/user', { page: 'pages/user/konto', user, achieved, unAchieved, title: 'Konto' })
     }
 
@@ -114,11 +114,11 @@ export default class UsersController {
         const email = request.input('email')
 
         //TODO
-        if (await db.from('user').where('email', email).first()) {
+        if (await db.from('users').where('email', email).first()) {
             response.redirect('back')
         }
 
-        await db.from('user').where('username', user.username).update({
+        await db.from('users').where('username', user.username).update({
             firstname: request.input('firstname') ? request.input('firstname') : user.firstname,
             lastname: request.input('lastname') ? request.input('lastname') : user.lastname,
             email: request.input('email') ? request.input('email') : user.email,
@@ -126,7 +126,7 @@ export default class UsersController {
             picture: picture ? picture.fileName : user.picture
         })
 
-        const updatedUser = await db.from('user').where('username', user.username).first()
+        const updatedUser = await db.from('users').where('username', user.username).first()
 
         session.put('user', { username: updatedUser.username, firstname: updatedUser.firstname, lastname: updatedUser.lastname, email: updatedUser.email, number: updatedUser.number, since: updatedUser.since, picture: updatedUser.picture })
         return response.redirect('/konto')
@@ -137,7 +137,7 @@ export default class UsersController {
         if (!user) {
             return
         }
-        await db.table('saved').insert({ username: user.username, listing_id: request.params().id })
+        await db.table('saveds').insert({ username: user.username, listing_id: request.params().id })
         //TODO check for errors
     }
 
@@ -146,7 +146,7 @@ export default class UsersController {
         if (!user) {
             return
         }
-        await db.from('saved').where('username', user.username).where('listing_id', request.params().id).delete()
+        await db.from('saveds').where('username', user.username).where('listing_id', request.params().id).delete()
         //TODO check for errors
     }
 

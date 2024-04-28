@@ -11,18 +11,18 @@ export default class ChatsController {
         }
 
         const ownChats = await db.from('messages')
-        .join('listing', 'messages.listing_id', 'listing.id')
-        .join('image', 'listing.id', 'image.listing_id')
-        .where('listing.username', user.username)
+        .join('listings', 'messages.listing_id', 'listings.id')
+        .join('images', 'listings.id', 'images.listing_id')
+        .where('listings.username', user.username)
         .groupBy('messages.listing_id', 'messages.username')
-        .select('messages.*', 'listing.title', 'listing.username as poster', 'messages.username as other', 'image.path')
+        .select('messages.*', 'listings.title', 'listings.username as poster', 'messages.username as other', 'images.path')
 
         const foreignChats = await db.from('messages')
-        .join('listing', 'messages.listing_id', 'listing.id')
-        .join('image', 'listing.id', 'image.listing_id')
+        .join('listings', 'messages.listing_id', 'listings.id')
+        .join('images', 'listings.id', 'images.listing_id')
         .where('messages.username', user.username)
         .groupBy('messages.listing_id')
-        .select('messages.*', 'listing.title', 'listing.username as other', 'messages.username as poster', 'image.path')
+        .select('messages.*', 'listings.title', 'listings.username as other', 'messages.username as poster', 'images.path')
 
         return view.render('layouts/chat', { page: 'pages/user/chat_overview', foreignChats, ownChats, title: 'Chats', user })
     }
@@ -32,22 +32,18 @@ export default class ChatsController {
         if (!user) {
             return response.redirect('/login')
         }
-        const listing = await db.from('listing').where('id', request.params().id).first()
+        const listing = await db.from('listings').where('id', request.params().id).first()
         if (user.username !== request.params().username && user.username !== listing.username) {
             throw new Exception('Unauthorized', { status: 403 })
         }
 
-        let other = user.username === request.params().username ? 
-        await db.from('user')
-        .where('username', listing.username)
+        let other =  
+        await db.from('users')
+        .where('username', user.username === request.params().username ?listing.username : request.params().username)
         .first() 
-        : 
-        await db.from('user')
-        .where('username', request.params().username)
-        .first()
+        
 
-
-        const listingImage = await db.from('image')
+        const listingImage = await db.from('images')
         .where('listing_id', request.params().id)
         .first()
 
