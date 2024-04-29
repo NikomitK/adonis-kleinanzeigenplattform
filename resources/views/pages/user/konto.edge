@@ -5,12 +5,22 @@
             {{ csrfField() }}
             <label for="image">Profilbild:</label> <input id="image" name="image" class="form-control form-control-sm" type="file"
                 placeholder="{{user.image}}">
-            <label for="email">Email:</label> <input id="email" name="email" class="form-control form-control-sm" type="text"
+            <label for="email">Email: 
+                @inputError('email')
+                <div class="alert alert-danger">Email wird bereits benutzt</div>
+                @end
+            </label> 
+            <input id="email" name="email" class="form-control form-control-sm" type="text"
                 placeholder="{{user.email}}">
-            <label for="firstname">Vorname:</label> <input id="firstname" name="firstname" class="form-control form-control-sm" type="text"
+
+            <label for="firstname">Vorname:</label> 
+            <input id="firstname" name="firstname" class="form-control form-control-sm" type="text"
                 placeholder="{{user.firstname ? user.firstname : 'Vorname'}}">
-            <label for="lastname">Nachname:</label> <input id="lastname" name="lastname" class="form-control form-control-sm" type="text"
+
+            <label for="lastname">Nachname:</label> 
+            <input id="lastname" name="lastname" class="form-control form-control-sm" type="text"
                 placeholder="{{user.lastname ? user.lastname : 'Nachname'}}">
+                
             <label for="number">Telefon:</label> <input id="number" name="number" class="form-control form-control-sm" type="text"
                 placeholder="{{user.number ? user.number : 'Telefon'}}">
             <input id="submit-btn" type="submit" class="btn btn-secondary" value="Änderungen Speichern 🚀" disabled>

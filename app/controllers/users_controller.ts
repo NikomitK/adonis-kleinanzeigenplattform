@@ -5,6 +5,7 @@ import app from '@adonisjs/core/services/app';
 import { Exception } from '@adonisjs/core/exceptions';
 import User from '#models/user';
 import Saved from '#models/saved';
+import { updateProfileValidator } from '#validators/user';
 
 export default class UsersController {
 
@@ -127,12 +128,12 @@ export default class UsersController {
         }
 
         const email = request.input('email')
+        console.log(email)
+        const payload = await updateProfileValidator.validate(request.all())
+        console.log(payload)
 
         //TODO
-        if (await db.from('users').where('email', email).first()) {
-            response.redirect('back')
-        }
-
+            
         const updatedUser = await User.find(user.username)
 
         if(!updatedUser){
