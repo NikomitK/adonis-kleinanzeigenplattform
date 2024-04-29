@@ -5,7 +5,7 @@ import app from '@adonisjs/core/services/app';
 import { Exception } from '@adonisjs/core/exceptions';
 import User from '#models/user';
 import Saved from '#models/saved';
-import { updateProfileValidator } from '#validators/user';
+import { registerValidator, updateProfileValidator } from '#validators/user';
 
 export default class UsersController {
 
@@ -24,24 +24,7 @@ export default class UsersController {
             return response.redirect('back')
         }
 
-        const username = request.input('username')
-
-        if (await User.find(username)) {
-            return view.render('layouts/login', { page: 'pages/user/register', title: 'Registrieren', usernameTaken: true })
-        }
-
-        const email = request.input('email')
-
-        if (await User.findBy('email', email)) {
-            return view.render('layouts/login', { page: 'pages/user/register', title: 'Registrieren', emailTaken: true })
-        }
-
-        const password = request.input('password')
-        const passwordRepeat = request.input('password-repeat')
-
-        if (password !== passwordRepeat) {
-            return view.render('layouts/login', { page: 'pages/user/register', title: 'Registrieren', passwordMismatch: true })
-        }
+        const { username, email, password } = await request.validateUsing(registerValidator)
 
         const tmpUser = new User()
         tmpUser.username = username
@@ -127,29 +110,26 @@ export default class UsersController {
             })
         }
 
-        const email = request.input('email')
-        console.log(email)
-        const payload = await updateProfileValidator.validate(request.all())
-        console.log(payload)
+        const {email, firstname, lastname, number} = await request.validateUsing(updateProfileValidator)
 
-        //TODO
-            
         const updatedUser = await User.find(user.username)
 
         if(!updatedUser){
             throw new Exception('User not found', { status: 404 })
         }
 
-        updatedUser.firstname = request.input('firstname') ? request.input('firstname') : user.firstname,
-        updatedUser.lastname = request.input('lastname') ? request.input('lastname') : user.lastname,
-        updatedUser.email = request.input('email') ? request.input('email') : user.email,
-        updatedUser.number = request.input('number') ? request.input('number') : user.number,
-        updatedUser.picture = picture ? picture.fileName : user.picture
-        await updatedUser.save()
 
-        session.put('user', { username: updatedUser!.username, firstname: updatedUser!.firstname, lastname: updatedUser!.lastname, email: updatedUser!.email, number: updatedUser!.number, since: updatedUser!.since, picture: updatedUser!.picture })
+        updatedUser.firstname = firstname ?? updatedUser.firstname;
+        updatedUser.lastname = lastname ?? updatedUser.lastname;
+        updatedUser.email = email ?? updatedUser.email;
+        updatedUser.number = number ?? updatedUser.number;
+        updatedUser.picture = picture?.fileName ?? updatedUser.picture;
+
+        await updatedUser.save();
+
+        session.put('user', { username: updatedUser.username, firstname: updatedUser.firstname, lastname: updatedUser.lastname, email: updatedUser.email, number: updatedUser.number, since: updatedUser.since, picture: updatedUser.picture });
         
-        return response.redirect('/konto')
+        return response.redirect('/konto');
     }
 
     async saveListing({ request, session }: HttpContext) {
