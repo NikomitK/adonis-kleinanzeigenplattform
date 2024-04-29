@@ -27,19 +27,23 @@ export default class ListingsController {
 
     async createForm({ view, session, response }: HttpContext) {
         const user = session.get('user')
+
         if (!user) {
             return response.redirect('/login')
         }
+        
         return view.render('layouts/anzeige', { page: 'pages/anzeige/anzeige-aufgeben', title: 'Anzeige aufgeben' })
     }
 
     async createProcess({ view, request, response, session }: HttpContext) {
         const user = session.get('user')
+
         if (!user) {
             return response.redirect('/login')
         }
 
         const images = request.files('images', { size: '4mb', extnames: ['jpg', 'png', 'jpeg', 'webp'] })
+
         if (!images === null) {
             return view.render('layouts/anzeige', { page: 'pages/anzeige/anzeige-aufgeben', error: 'Bitte füge ein Bild hinzu' })
         }
@@ -69,16 +73,21 @@ export default class ListingsController {
 
     async editForm({ view, request, session, response }: HttpContext) {
         const user = session.get('user')
+
         if (!user) {
             return response.redirect('/login')
         }
+
         const anzeige = await Listing.find(request.params().id)
+
         if (!anzeige) {
             throw new Exception('Not found', { status: 404 })
         } else if (anzeige.username !== user.username) {
             throw new Exception('Unauthorized', { status: 403 })
         }
+
         const images = await Image.findManyBy('listing_id', anzeige.id)
+
         return view.render('layouts/anzeige', { page: 'pages/anzeige/anzeige-bearbeiten', title: 'Anzeige bearbeiten', anzeige, images })
     }
 
@@ -107,18 +116,23 @@ export default class ListingsController {
 
     async changeState({ request, response, session }: HttpContext) {
         const user = session.get('user')
+
         if (!user) {
             return response.redirect('/login')
         }
+
         const anzeige = await Listing.find(request.params().id)
+
         if (!anzeige) {
             return response.redirect('/meine-anzeigen')
         } else if (anzeige.username !== user.username) {
             throw new Exception('Unauthorized', { status: 403 })
         }
+
         await Listing.find(request.params().id).then((listing) => {
             listing?.merge({ status: request.url().includes('verkauft') ? 'sold' : 'inactive' }).save()
         })
+
         return response.redirect('/meine-anzeigen')
     }
 

@@ -4,6 +4,7 @@ export default class HomeController {
     
     async home({ view, session }: HttpContext) {
         const user = session.get('user')
+
         const products = await db.from('listings')
             .select('listings.*', 'images.path')
             .join('images', 'listings.id', '=', 'images.listing_id')
@@ -15,12 +16,14 @@ export default class HomeController {
 
         return view.render('layouts/base', { page: 'pages/anzeige/home', products, user })
     }
-    
+
     async myListings({ view, session, response }: HttpContext) {
         const user = session.get('user')
+
         if (!user) {
             return response.redirect('/login')
         }
+
         const meineAnzeigen = await db.from('listings')
             .select('listings.*', 'images.path')
             .join('images', 'listings.id', '=', 'images.listing_id')
@@ -30,12 +33,14 @@ export default class HomeController {
 
         return view.render('layouts/base', { page: 'pages/anzeige/meine-anzeigen', meineAnzeigen, title: 'Meine Anzeigen' })
     }
-    
+
     async savedListings({ view, session, response }: HttpContext) {
         const user = session.get('user')
+
         if (!user) {
             return response.redirect('/login')
         }
+        
         const gespeichert = await db.from('listings')
             .select('listings.*', 'images.path')
             .join('images', 'listings.id', '=', 'images.listing_id')
