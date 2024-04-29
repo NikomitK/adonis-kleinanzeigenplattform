@@ -1,9 +1,9 @@
 import { BaseModel, column } from '@adonisjs/lucid/orm'
 
 export default class Saved extends BaseModel {
-    @column()
+    @column({ isPrimary: true })
     declare username: string
 
-    @column()
+    @column({ isPrimary: true })
     declare listing_id: number
 }
