@@ -3,6 +3,8 @@ import db from '@adonisjs/lucid/services/db'
 import hash from '@adonisjs/core/services/hash';
 import app from '@adonisjs/core/services/app';
 import { Exception } from '@adonisjs/core/exceptions';
+import User from '#models/user';
+import Saved from '#models/saved';
 
 export default class UsersController {
 
@@ -20,13 +22,13 @@ export default class UsersController {
         }
         const username = request.input('username')
 
-        if (await db.from('users').where('username', username).first()) {
+        if (await User.find(username)) {
             return view.render('layouts/login', { page: 'pages/user/register', title: 'Registrieren', usernameTaken: true })
         }
 
         const email = request.input('email')
 
-        if (await db.from('users').where('email', email).first()) {
+        if (await User.findBy('email', email)) {
             return view.render('layouts/login', { page: 'pages/user/register', title: 'Registrieren', emailTaken: true })
         }
 
@@ -37,16 +39,14 @@ export default class UsersController {
             return view.render('layouts/login', { page: 'pages/user/register', title: 'Registrieren', passwordMismatch: true })
         }
 
-        const hashedPassword = await hash.make(request.input('password'));
-        const now = new Date();
-        try {
-            await db.table('user')
-                .insert({ username: request.input('username'), password: hashedPassword, firstname: request.input('firstname'), lastname: request.input('lastname'), since: now, email: request.input('email') })
-            response.redirect('/login');
-        } catch (error) {
-            console.log(error)
-            return error;
-        }
+        const tmpUser = new User()
+        tmpUser.username = username
+        tmpUser.firstname = request.input('firstname')
+        tmpUser.lastname = request.input('lastname')
+        tmpUser.email = email
+        tmpUser.password = password
+        tmpUser.save()
+
     }
 
     async loginForm({ view, response, session }: HttpContext) {
@@ -61,16 +61,16 @@ export default class UsersController {
         if (session.get('user')) {
             return response.redirect('/konto')
         }
-        const result = await db.from('users').where('username', request.input('username')).first();
-        if (!result) {
+        const user = await User.find(request.input('username'))
+        if (!user) {
             console.log('User not found');
             return view.render('layouts/login', { page: 'pages/user/login', error: 'Invalid username or password' });
         }
-        const passwordOk = await hash.verify(result.password, request.input('password'))
+        const passwordOk = await hash.verify(user.password, request.input('password'))
         if (!passwordOk) {
             return view.render('layouts/login', { page: 'pages/user/login', error: 'Invalid username or password' });
         }
-        session.put('user', { username: result.username, firstname: result.firstname, lastname: result.lastname, email: result.email, number: result.number, since: result.since, picture: result.picture })
+        session.put('user', { username: user.username, firstname: user.firstname, lastname: user.lastname, email: user.email, number: user.number, since: user.since, picture: user.picture })
         console.log('User logged in')
         return response.redirect('/konto');
     }
@@ -118,17 +118,18 @@ export default class UsersController {
             response.redirect('back')
         }
 
-        await db.from('users').where('username', user.username).update({
-            firstname: request.input('firstname') ? request.input('firstname') : user.firstname,
-            lastname: request.input('lastname') ? request.input('lastname') : user.lastname,
-            email: request.input('email') ? request.input('email') : user.email,
-            number: request.input('number') ? request.input('number') : user.number,
-            picture: picture ? picture.fileName : user.picture
-        })
+        const updatedUser = await User.find(user.username)
+        if(!updatedUser){
+            throw new Exception('User not found', { status: 404 })
+        }
+        updatedUser.firstname = request.input('firstname') ? request.input('firstname') : user.firstname,
+        updatedUser.lastname = request.input('lastname') ? request.input('lastname') : user.lastname,
+        updatedUser.email = request.input('email') ? request.input('email') : user.email,
+        updatedUser.number = request.input('number') ? request.input('number') : user.number,
+        updatedUser.picture = picture ? picture.fileName : user.picture
+        await updatedUser.save()
 
-        const updatedUser = await db.from('users').where('username', user.username).first()
-
-        session.put('user', { username: updatedUser.username, firstname: updatedUser.firstname, lastname: updatedUser.lastname, email: updatedUser.email, number: updatedUser.number, since: updatedUser.since, picture: updatedUser.picture })
+        session.put('user', { username: updatedUser!.username, firstname: updatedUser!.firstname, lastname: updatedUser!.lastname, email: updatedUser!.email, number: updatedUser!.number, since: updatedUser!.since, picture: updatedUser!.picture })
         return response.redirect('/konto')
     }
 
@@ -137,7 +138,7 @@ export default class UsersController {
         if (!user) {
             return
         }
-        await db.table('saveds').insert({ username: user.username, listing_id: request.params().id })
+        new Saved().fill({ username: user.username, listing_id: parseInt(request.params().id)}).save()
         //TODO check for errors
     }
 
@@ -146,7 +147,7 @@ export default class UsersController {
         if (!user) {
             return
         }
-        await db.from('saveds').where('username', user.username).where('listing_id', request.params().id).delete()
+        await Saved.findBy({username: user.username, listing_id: request.params().id}).then((saved) => {saved?.delete()})        
         //TODO check for errors
     }
 

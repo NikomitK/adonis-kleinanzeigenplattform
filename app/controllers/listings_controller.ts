@@ -4,25 +4,25 @@ import app from "@adonisjs/core/services/app";
 import { cuid } from '@adonisjs/core/helpers'
 import sharp from 'sharp'
 import { Exception } from '@adonisjs/core/exceptions';
+import Listing from '#models/listing';
+import Image from '#models/image';
+import User from '#models/user';
+import Saved from '#models/saved';
 
 export default class ListingsController {
 
     async show({ request, view, session }: HttpContext) {
         const user = session.get('user') || null
-        const anzeige = await db.from('listings')
-            .select('listings.*', 'images.path')
-            .join('images', 'listings.id', '=', 'images.listing_id')
-            .where('listings.id', request.params().id)
-            .first()
+
+        const anzeige = await Listing.find(request.params().id)
 
         if (!anzeige) {
             throw new Exception('Not found', { status: 404 })
         }
 
-        const images = await db.from('images').where('listing_id', anzeige.id)
-
-        const poster = await db.from('users').where('username', anzeige.username).first()
-        const saved = user ? await db.from('saveds').where('username', user.username).where('listing_id', anzeige.id).first() : null
+        const images = await Image.findManyBy('listing_id', anzeige.id)
+        const poster = await User.find(anzeige.username)
+        const saved = user ? await Saved.findBy({username: user.username, listing_id: request.params().id}) : null
         return view.render('layouts/anzeige', { page: 'pages/anzeige/anzeige', anzeige: anzeige, poster, user, title: anzeige.title, images, saved })
     }
 
@@ -47,19 +47,22 @@ export default class ListingsController {
 
         console.log(images)
 
-        const title = request.input('title')
-        const description = request.input('description')
-        const price = request.input('price')
-        const negotiable = request.input('negotiable')
-        const shipping = request.input('shipping')
-        const shipping_price = request.input('shipping_price')
+        const tmpListing = new Listing()
+        tmpListing.username = user.username
+        tmpListing.title = request.input('title')
+        tmpListing.description = request.input('description')
+        tmpListing.price = parseFloat(request.input('price')).toFixed(2)
+        tmpListing.negotiable = request.input('negotiable') || false
+        tmpListing.shipping = request.input('shipping') || false
+        tmpListing.shipping_price = parseFloat(request.input('shipping_price')).toFixed(2)
 
-        const result = await db.table('listing').insert({ title, description, username: user.username, price: (Math.round(price * 100) / 100).toFixed(2), negotiable, shipping, shipping_price })
-        
+        const result = await tmpListing.save()
+
+        // Bewusste Entscheidung, browser nicht zu unterstützen, die kein webp können. Wer seit 5 Jahren kein browser update mehr gemacht hat selbst schuld
         images.forEach(async (image) => {
             const tmpCuid = cuid();
             await sharp(image.tmpPath).toFile(app.publicPath(`/anzeigen/${tmpCuid}.webp`))
-            await db.table('image').insert({ path: `${tmpCuid}.webp`, listing_id: result[0]})
+            await new Image().fill({ path: `${tmpCuid}.webp`, listing_id: result.id }).save()
         })
 
         return response.redirect('/meine-anzeigen')
@@ -70,31 +73,36 @@ export default class ListingsController {
         if (!user) {
             return response.redirect('/login')
         }
-        const anzeige = await db.from('listings').where('id', request.params().id).first()
+        const anzeige = await Listing.find(request.params().id)
         if (!anzeige) {
             throw new Exception('Not found', { status: 404 })
         } else if (anzeige.username !== user.username) {
             throw new Exception('Unauthorized', { status: 403 })
         }
-        const images = await db.from('images').where('listing_id', anzeige.id)
+        const images = await Image.findManyBy('listing_id', anzeige.id)
         return view.render('layouts/anzeige', { page: 'pages/anzeige/anzeige-bearbeiten', title: 'Anzeige bearbeiten', anzeige, images })
     }
 
     async editProcess({ request, response, session }: HttpContext) {
         const user = session.get('user')
+        const listing = await Listing.find(request.params().id)
+
         if (!user) {
             return response.redirect('/login')
-        } else if(user.username !== (await db.from('listings').where('id', request.params().id).first()).username) {
+        } else if (!listing) {
+            throw new Exception('Not found', { status: 404})
+        } else if (user.username !== listing.username) {
             throw new Exception('Unauthorized', { status: 403 })
         }
-        const title = request.input('title')
-        const description = request.input('description')
-        const price = request.input('price')
-        const negotiable = request.input('negotiable')
-        const shipping = request.input('shipping')
-        const shipping_price = request.input('shipping_price')
 
-        await db.from('listings').where('id', request.params().id).update({ title, description, price, negotiable, shipping, shipping_price })
+        listing.title = request.input('title')
+        listing.description = request.input('description')
+        listing.price = parseFloat(request.input('price')).toFixed(2)
+        listing.negotiable = request.input('negotiable')
+        listing.shipping = request.input('shipping')
+        listing.shipping_price = parseFloat(request.input('shipping_price')).toFixed(2)
+        await listing.save()
+
         response.redirect('/meine-anzeigen')
     }
 
@@ -103,13 +111,15 @@ export default class ListingsController {
         if (!user) {
             return response.redirect('/login')
         }
-        const anzeige = await db.from('listings').where('id', request.params().id).first()
+        const anzeige = await Listing.find(request.params().id)
         if (!anzeige) {
             return response.redirect('/meine-anzeigen')
         } else if (anzeige.username !== user.username) {
             throw new Exception('Unauthorized', { status: 403 })
         }
-        await db.from('listings').where('id', request.params().id).update({ status: request.url().includes('verkauft') ? 'sold' : 'inactive'})
+        await Listing.find(request.params().id).then((listing) => {
+            listing?.merge({ status: request.url().includes('verkauft') ? 'sold' : 'inactive' }).save()
+        })
         return response.redirect('/meine-anzeigen')
     }
 

@@ -1,6 +1,10 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import db from '@adonisjs/lucid/services/db'
 import { Exception } from '@adonisjs/core/exceptions';
+import User from '#models/user';
+import Image from '#models/image';
+import Message from '#models/message';
+import Listing from '#models/listing';
 
 export default class ChatsController {
     
@@ -9,6 +13,8 @@ export default class ChatsController {
         if (!user) {
             return response.redirect('/login')
         }
+
+        //die langen queries mit join, subqueries, etc. fand ich zu kompliziert, um sie auf die model schreibweise zu übersetzen
 
         const ownChats = await db.from('messages')
         .join('listings', 'messages.listing_id', 'listings.id')
@@ -32,29 +38,27 @@ export default class ChatsController {
         if (!user) {
             return response.redirect('/login')
         }
-        const listing = await db.from('listings').where('id', request.params().id).first()
+        const listing =  await Listing.find(request.params().id)
+        if(!listing) {
+            throw new Exception('Not found', { status: 404 })
+        }
         if (user.username !== request.params().username && user.username !== listing.username) {
             throw new Exception('Unauthorized', { status: 403 })
         }
 
         let other =  
-        await db.from('users')
-        .where('username', user.username === request.params().username ?listing.username : request.params().username)
-        .first() 
+        await User.find(user.username === request.params().username ? listing.username : request.params().username)
         
 
-        const listingImage = await db.from('images')
-        .where('listing_id', request.params().id)
-        .first()
+        const listingImage = await Image.findBy('listing_id', request.params().id)
 
-        const chat = await db.from('messages')
-        .where('listing_id', request.params().id)
-        .where('username', request.params().username)
-
+        // irgendwie findet der die methode nicht :C
+        //const chat = await Message.findMany([ {listing_id: request.params().id, username: request.params().username} ])
+        const chat = await Message.query().where('listing_id', request.params().id).where('username', request.params().username)
+        console.log(chat)
         if (!chat) {
             return view.render('layouts/base', { page: 'pages/errors/not_found' })
         }
-        //console.log(chat)
         return view.render('layouts/chat', { page: 'pages/user/chat', title: 'Chat', chat, user, other, listing, listingImage })
     }
 
@@ -63,10 +67,13 @@ export default class ChatsController {
         if (!user) {
             return response.redirect('/login')
         }
-        let message = request.input('message');
-        console.log(message)
-        console.log(message)
-        await db.table('messages').insert({ listing_id: request.params().id, username: request.params().username, content: request.input('message'), sendername: user.username })
+
+        await Message.create({
+            listing_id: request.params().id,
+            username: request.params().username,
+            content: request.input('message'),
+            sendername: user.username
+        })
         return response.redirect('back')
     }
 
