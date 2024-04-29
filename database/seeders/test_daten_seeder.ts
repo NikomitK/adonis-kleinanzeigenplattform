@@ -34,17 +34,17 @@ export default class extends BaseSeeder {
             username: 'nikomitk',
             title: 'Gniesbert',
             description: 'Mein scheiss Hund Gniesbert ist schon wieder in meinen Gaming pc geklettert, weshalb ich ihn verkaufen muss. Er ist 3 Jahre alt und hat schon 2 mal meinen Gaming pc zerstört. Ich verkaufe ihn für 999999€. Versand ist möglich, er läuft dann zu dir.',
-            price: '9999',
+            price: '9999.00',
             negotiable: false,
             shipping: true,
-            shipping_price: '0',
+            shipping_price: '0.00',
             status: 'active'
         },
         {
             username: 'buegelbrett',
             title: 'Mich',
             description: 'Ich bin ein Bügelbrett. Ich bin 1 Jahr alt und habe schon 1000 Hemden gebügelt. Ich bin sehr gut erhalten und habe keine Gebrauchsspuren. Ich verkaufe mich für 100€. Versand ist möglich.',
-            price: '0',
+            price: '0.00',
             negotiable: false,
             shipping: false,
             status: 'active'
@@ -53,7 +53,7 @@ export default class extends BaseSeeder {
             username: 'nikomitk',
             title: 'Fast neues Auto',
             description: 'Hat ein paar kleine Kratzer und Dellen, aber das ist der Charakterdes Autos.',
-            price: '10',
+            price: '10.00',
             status: 'active'
         },
         {
@@ -67,7 +67,7 @@ export default class extends BaseSeeder {
             username: 'buegelbrett',
             title: 'Applegoogle',
             description: 'ApplegoogleApplegoogleApplegoogleApplegoogleApplegoogleApplegoogleApplegoogle',
-            price: '8',
+            price: '8.00',
             status: 'active'
         },
         {

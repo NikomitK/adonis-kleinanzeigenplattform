@@ -89,8 +89,8 @@ export default class UsersController {
         if (!user) {
             return response.redirect('/login')
         }
-        const unAchieved = await db.from('achievments').whereNotIn('title', db.from('achieveds').where('username', user.username).select('title'))
         const achieved = await db.from('achievments').whereIn('title', db.from('achieveds').where('username', user.username).select('title'))
+        const unAchieved = await db.from('achievments').whereNotIn('title', db.from('achieveds').where('username', user.username).select('title'))
         return view.render('layouts/user', { page: 'pages/user/konto', user, achieved, unAchieved, title: 'Konto' })
     }
 

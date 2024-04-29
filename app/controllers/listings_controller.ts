@@ -1,5 +1,4 @@
 import type { HttpContext } from '@adonisjs/core/http'
-import db from '@adonisjs/lucid/services/db'
 import app from "@adonisjs/core/services/app";
 import { cuid } from '@adonisjs/core/helpers'
 import sharp from 'sharp'
