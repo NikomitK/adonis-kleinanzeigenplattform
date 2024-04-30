@@ -5,7 +5,7 @@ import app from '@adonisjs/core/services/app';
 import { Exception } from '@adonisjs/core/exceptions';
 import User from '#models/user';
 import Saved from '#models/saved';
-import { registerValidator, updateProfileValidator } from '#validators/user';
+import { loginValidator, registerValidator, updateProfileValidator } from '#validators/user';
 
 export default class UsersController {
 
@@ -53,7 +53,8 @@ export default class UsersController {
             return response.redirect('/konto')
         }
 
-        const user = await User.find(request.input('username'))
+
+        /*const user = await User.find(request.input('username'))
 
         if (!user) {
             console.log('User not found');
@@ -65,8 +66,16 @@ export default class UsersController {
         if (!passwordOk) {
             return view.render('layouts/login', { page: 'pages/user/login', error: 'Invalid username or password' });
         }
+*/
+        const username = request.input('username')
+        await request.validateUsing(loginValidator, {
+            meta: {
+                username
+            }
+        })
+        const user = await User.find(username)
 
-        session.put('user', { username: user.username, firstname: user.firstname, lastname: user.lastname, email: user.email, number: user.number, since: user.since, picture: user.picture })
+        session.put('user', { username: user!.username, firstname: user!.firstname, lastname: user!.lastname, email: user!.email, number: user!.number, since: user!.since, picture: user!.picture })
 
         return response.redirect('/konto');
     }

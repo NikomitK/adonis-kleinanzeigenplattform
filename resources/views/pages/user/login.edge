@@ -18,9 +18,9 @@
             <a href="/register" class="btn btn-outline-secondary">Ich habe noch keinen Account</a>
         </div>
 
-        @if(error)
+        @if(flashMessages.has('inputErrorsBag.username') || flashMessages.has('inputErrorsBag.password'))
         <div class="alert alert-danger" role="alert">
-            {{ error }}
+            Falscher Nutzername oder Passwort
         </div>
         @end
     </div>
