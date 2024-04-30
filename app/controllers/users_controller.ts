@@ -19,21 +19,23 @@ export default class UsersController {
         return view.render('layouts/login', { page: 'pages/user/register', title: 'Registrieren' })
     }
 
-    async registerProcess({ view, request, response, session }: HttpContext) {
+    async registerProcess({ request, response, session }: HttpContext) {
         if (session.get('user')) {
             return response.redirect('back')
         }
 
-        const { username, email, password } = await request.validateUsing(registerValidator)
+        const { username, firstname, lastname, email, password } = await registerValidator.validate(request.all())
 
         const tmpUser = new User()
         tmpUser.username = username
-        tmpUser.firstname = request.input('firstname')
-        tmpUser.lastname = request.input('lastname')
+        tmpUser.firstname = firstname ?? null
+        tmpUser.lastname = lastname ?? null
         tmpUser.email = email
         tmpUser.password = password
         tmpUser.save()
 
+        session.put('user', { username: tmpUser.username, firstname: tmpUser.firstname, lastname: tmpUser.lastname, email: tmpUser.email, number: tmpUser.number, since: tmpUser.since, picture: tmpUser.picture })
+        response.redirect('/konto')
     }
 
     async loginForm({ view, response, session }: HttpContext) {
