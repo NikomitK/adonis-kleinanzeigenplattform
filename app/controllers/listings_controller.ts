@@ -7,6 +7,7 @@ import Listing from '#models/listing';
 import Image from '#models/image';
 import User from '#models/user';
 import Saved from '#models/saved';
+import { lisitingFormValidator } from '#validators/listing';
 
 export default class ListingsController {
 
@@ -49,15 +50,17 @@ export default class ListingsController {
         }
 
         console.log(images)
-
+        
+        const { title, description, price, shipping_price} = await request.validateUsing(lisitingFormValidator)
+        
         const tmpListing = new Listing()
         tmpListing.username = user.username
-        tmpListing.title = request.input('title')
-        tmpListing.description = request.input('description')
-        tmpListing.price = parseFloat(request.input('price')).toFixed(2)
+        tmpListing.title = title
+        tmpListing.description = description
+        tmpListing.price = price
         tmpListing.negotiable = request.input('negotiable') || false
         tmpListing.shipping = request.input('shipping') || false
-        tmpListing.shipping_price = parseFloat(request.input('shipping_price')).toFixed(2)
+        tmpListing.shipping_price = shipping_price
 
         const result = await tmpListing.save()
 
