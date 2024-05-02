@@ -4,7 +4,7 @@
         <h2>Herzlich Willkommen auf meiner Kleinanzeigenseite</h2>
 
         <div class="form-floating">
-            <input type="text" class="form-control" name="username" id="username" placeholder="Nutzername" required value="{{ old('username') || '' }}">
+            <input type="text" class="form-control" name="username" id="username" placeholder="Nutzername" required value="{{ old('username') ?? '' }}">
             <label for="username">Nutzername</label>
         </div>
 
@@ -13,7 +13,7 @@
         @end
 
         <div class="form-floating">
-            <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com" required value="{{ old('email') || '' }}">
+            <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com" required value="{{ old('email') ?? '' }}">
             <label for="email">Email Addresse</label>
         </div>
 

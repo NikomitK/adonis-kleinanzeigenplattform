@@ -49,15 +49,6 @@ type LoginValidatorMetaData = {
 }
 export const loginValidator = vine.withMetaData<LoginValidatorMetaData>().compile(
     vine.object({
-        /*username: vine.string().unique(async (db, value) => {
-            const user = await User.findBy('username', value)
-            return !!user
-        }),*/
-        /*username: vine.string().in( (field) => {
-            const usernames =  (await db.from('users').select('username').first()).map((user: { username: string; }) => user.username)
-            return usernames
-        
-        }),*/
         username: vine.string().use(usernameExists()),
         password: vine.string().use(passwordMatches())
     })

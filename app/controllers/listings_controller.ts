@@ -43,14 +43,12 @@ export default class ListingsController {
             return response.redirect('/login')
         }
 
-        const images = request.files('images', { size: '4mb', extnames: ['jpg', 'png', 'jpeg', 'webp'] })
+        const images = request.files('images', { extnames: ['jpg', 'png', 'jpeg', 'webp'] })
 
         if (!images === null) {
             return view.render('layouts/anzeige', { page: 'pages/anzeige/anzeige-aufgeben', error: 'Bitte füge ein Bild hinzu' })
         }
 
-        console.log(images)
-        
         const { title, description, price, shipping_price} = await request.validateUsing(lisitingFormValidator)
         
         const tmpListing = new Listing()
@@ -60,7 +58,7 @@ export default class ListingsController {
         tmpListing.price = price
         tmpListing.negotiable = request.input('negotiable') || false
         tmpListing.shipping = request.input('shipping') || false
-        tmpListing.shipping_price = shipping_price
+        tmpListing.shipping_price = shipping_price ?? '0.00'
 
         const result = await tmpListing.save()
 
@@ -106,12 +104,14 @@ export default class ListingsController {
             throw new Exception('Unauthorized', { status: 403 })
         }
 
-        listing.title = request.input('title')
-        listing.description = request.input('description')
-        listing.price = parseFloat(request.input('price')).toFixed(2)
+        const { title, description, price, shipping_price} = await request.validateUsing(lisitingFormValidator)
+
+        listing.title = title
+        listing.description = description
+        listing.price = price
         listing.negotiable = request.input('negotiable')
         listing.shipping = request.input('shipping')
-        listing.shipping_price = parseFloat(request.input('shipping_price')).toFixed(2)
+        listing.shipping_price = shipping_price ?? '0.00'
         await listing.save()
 
         response.redirect('/meine-anzeigen')
