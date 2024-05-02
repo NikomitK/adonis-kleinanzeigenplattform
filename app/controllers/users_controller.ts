@@ -10,7 +10,7 @@ import { loginValidator, registerValidator, updateProfileValidator } from '#vali
 export default class UsersController {
 
     async registerForm({ view, response, session }: HttpContext) {
-        const user = session.get('user')
+        const user = auth.user!
 
         if (user) {
             return response.redirect('back')
@@ -20,7 +20,7 @@ export default class UsersController {
     }
 
     async registerProcess({ request, response, session }: HttpContext) {
-        if (session.get('user')) {
+        if (auth.user!) {
             return response.redirect('back')
         }
 
@@ -38,8 +38,8 @@ export default class UsersController {
         response.redirect('/konto')
     }
 
-    async loginForm({ view, response, session }: HttpContext) {
-        const user = session.get('user')
+    async loginForm({ view, response, auth }: HttpContext) {
+        const user = auth.user!
 
         if (user) {
             return response.redirect('back')
@@ -48,36 +48,19 @@ export default class UsersController {
         return view.render('layouts/login', { page: 'pages/user/login', title: 'Login' })
     }
 
-    async loginProcess({ view, request, response, session }: HttpContext) {
-        if (session.get('user')) {
-            return response.redirect('/konto')
-        }
+    async loginProcess({ view, request, response, auth }: HttpContext) {
 
-
-        /*const user = await User.find(request.input('username'))
-
-        if (!user) {
-            console.log('User not found');
-            return view.render('layouts/login', { page: 'pages/user/login', error: 'Invalid username or password' });
-        }
-
-        const passwordOk = await hash.verify(user.password, request.input('password'))
-
-        if (!passwordOk) {
-            return view.render('layouts/login', { page: 'pages/user/login', error: 'Invalid username or password' });
-        }
-*/
         const username = request.input('username')
-        await request.validateUsing(loginValidator, {
-            meta: {
-                username
-            }
-        })
-        const user = await User.find(username)
+        const password = request.input('password')
+        console.log(username, password)
 
-        session.put('user', { username: user!.username, firstname: user!.firstname, lastname: user!.lastname, email: user!.email, number: user!.number, since: user!.since, picture: user!.picture })
+        const user = await User.verifyCredentials(username, password)
+        console.log(user)
+        await auth.use('web').login(user)
+        console.log('logged in')
+        //session.put('user', { username: user!.username, firstname: user!.firstname, lastname: user!.lastname, email: user!.email, number: user!.number, since: user!.since, picture: user!.picture })
 
-        return response.redirect('/konto');
+        return response.redirect().toPath('/konto');
     }
 
     async logout({ response, session }: HttpContext) {
@@ -89,22 +72,18 @@ export default class UsersController {
         throw new Exception("I'm a teapot", { status: 418 })
     }
 
-    async konto({ view, response, session }: HttpContext) {
-        const user = session.get('user')
-
-        if (!user) {
-            return response.redirect('/login')
-        }
+    async konto({ view, response, auth }: HttpContext) {
+        const user = auth.user!
 
         const achieved = await db.from('achievments').whereIn('title', db.from('achieveds').where('username', user.username).select('title'))
-        
+
         const unAchieved = await db.from('achievments').whereNotIn('title', db.from('achieveds').where('username', user.username).select('title'))
-        
+
         return view.render('layouts/user', { page: 'pages/user/konto', user, achieved, unAchieved, title: 'Konto' })
     }
 
-    async updateProfile({ request, response, session }: HttpContext) {
-        const user = session.get('user')
+    async updateProfile({ request, response, auth }: HttpContext) {
+        const user = auth.user!
 
         if (!user) {
             return response.redirect('/login')
@@ -121,11 +100,11 @@ export default class UsersController {
             })
         }
 
-        const {email, firstname, lastname, number} = await request.validateUsing(updateProfileValidator)
+        const { email, firstname, lastname, number } = await request.validateUsing(updateProfileValidator)
 
         const updatedUser = await User.find(user.username)
 
-        if(!updatedUser){
+        if (!updatedUser) {
             throw new Exception('User not found', { status: 404 })
         }
 
@@ -139,29 +118,25 @@ export default class UsersController {
         await updatedUser.save();
 
         session.put('user', { username: updatedUser.username, firstname: updatedUser.firstname, lastname: updatedUser.lastname, email: updatedUser.email, number: updatedUser.number, since: updatedUser.since, picture: updatedUser.picture });
-        
+
         return response.redirect('/konto');
     }
 
-    async saveListing({ request, session }: HttpContext) {
-        const user = session.get('user')
+    async saveListing({ request, auth }: HttpContext) {
+        const user = auth.user!
 
-        if (!user) {
-            return
-        }
-
-        new Saved().fill({ username: user.username, listing_id: parseInt(request.params().id)}).save()
+        new Saved().fill({ username: user.username, listing_id: parseInt(request.params().id) }).save()
         //TODO check for errors
     }
 
-    async unsaveListing({ request, session }: HttpContext) {
-        const user = session.get('user')
+    async unsaveListing({ request, auth }: HttpContext) {
+        const user = auth.user!
 
         if (!user) {
             return
         }
-        
-        await Saved.findBy({username: user.username, listing_id: request.params().id}).then((saved) => {saved?.delete()})        
+
+        await Saved.findBy({ username: user.username, listing_id: request.params().id }).then((saved) => { saved?.delete() })
         //TODO check for errors
     }
 

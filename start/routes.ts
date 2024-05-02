@@ -15,6 +15,7 @@ import HomeController from '#controllers/home_controller'
 import ListingsController from '#controllers/listings_controller'
 import UsersController from '#controllers/users_controller'
 import ChatsController from '#controllers/chats_controller'
+import { middleware } from './kernel.js'
 
 
 
@@ -28,38 +29,38 @@ router.get('/login', [UsersController, 'loginForm'])
 
 router.post('/login', [UsersController, 'loginProcess'])
 
-router.get('/logout', [UsersController, 'logout'])
+router.get('/logout', [UsersController, 'logout']).use(middleware.auth())
 
 router.get('/kaffee', [UsersController, 'coffee'])
 
-router.get('/konto', [UsersController, 'konto'])
+router.get('/konto', [UsersController, 'konto']).use(middleware.auth())
 
-router.post('/konto', [UsersController, 'updateProfile'])
+router.post('/konto', [UsersController, 'updateProfile']).use(middleware.auth())
 
-router.get('/meine-anzeigen', [HomeController, 'myListings'])
+router.get('/meine-anzeigen', [HomeController, 'myListings']).use(middleware.auth())
 
-router.get('/anzeige-aufgeben', [ListingsController, 'createForm'])
+router.get('/anzeige-aufgeben', [ListingsController, 'createForm']).use(middleware.auth())
 
-router.post('/anzeige-aufgeben', [ListingsController, 'createProcess'])
+router.post('/anzeige-aufgeben', [ListingsController, 'createProcess']).use(middleware.auth())
 
-router.get('/anzeige/:id', [ListingsController, 'show']) 
+router.get('/anzeige/:id', [ListingsController, 'show'])
 
-router.get('/anzeige/:id/bearbeiten', [ListingsController, 'editForm'])
+router.get('/anzeige/:id/bearbeiten', [ListingsController, 'editForm']).use(middleware.auth())
 
-router.post('/anzeige/:id/bearbeiten', [ListingsController, 'editProcess'])
+router.post('/anzeige/:id/bearbeiten', [ListingsController, 'editProcess']).use(middleware.auth())
 
-router.get('/anzeige/:id/deaktivieren', [ListingsController, 'changeState'])
+router.get('/anzeige/:id/deaktivieren', [ListingsController, 'changeState']).use(middleware.auth())
 
-router.get('/anzeige/:id/verkauft', [ListingsController, 'changeState'])
+router.get('/anzeige/:id/verkauft', [ListingsController, 'changeState']).use(middleware.auth())
 
-router.put('anzeige/:id/save', [UsersController, 'saveListing'])
+router.put('anzeige/:id/save', [UsersController, 'saveListing']).use(middleware.auth())
 
-router.put('anzeige/:id/unsave', [UsersController, 'unsaveListing'])
+router.put('anzeige/:id/unsave', [UsersController, 'unsaveListing']).use(middleware.auth())
 
-router.get('/gespeichert', [HomeController, 'savedListings'])
+router.get('/gespeichert', [HomeController, 'savedListings']).use(middleware.auth())
 
-router.get('/chat-overview', [ChatsController, 'displayChatOverview'])
+router.get('/chat-overview', [ChatsController, 'displayChatOverview']).use(middleware.auth())
 
-router.get('/chat/:id/:username', [ChatsController, 'displayChat'])
+router.get('/chat/:id/:username', [ChatsController, 'displayChat']).use(middleware.auth())
 
-router.post('/chat/:id/:username', [ChatsController, 'processChatMessage'])
+router.post('/chat/:id/:username', [ChatsController, 'processChatMessage']).use(middleware.auth())
