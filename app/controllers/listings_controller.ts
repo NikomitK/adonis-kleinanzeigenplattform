@@ -65,13 +65,13 @@ export default class ListingsController {
         const result = await tmpListing.save()
 
         // Bewusste Entscheidung, browser nicht zu unterstützen, die kein webp können. Wer seit 5 Jahren kein browser update mehr gemacht hat selbst schuld
-        images.forEach(async (image) => {
+        for await (const image of images) {
             const tmpCuid = cuid();
             await sharp(image.tmpPath).toFile(app.publicPath(`/anzeigen/${tmpCuid}.webp`))
             await new Image().fill({ path: `${tmpCuid}.webp`, listing_id: result.id }).save()
-        })
+        }
 
-        return response.redirect('/meine-anzeigen')
+        return response.redirect(`/anzeige/${result.id}`)
     }
 
     async editForm({ view, request, session, response }: HttpContext) {
