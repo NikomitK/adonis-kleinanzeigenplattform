@@ -22,35 +22,10 @@ export const registerValidator = vine.compile(
     })
 )
 
-
-
-const usernameExists = vine.createRule(async (value, options, field) => {
-    const user = await User.findBy('username', value)
-    if(!user) {
-        field.report('username', 'username not found', field)
-    }
-
-    return !!user
-})
-const passwordMatches = vine.createRule(async (value, options, field) => {
-    if(typeof value !== 'string') {
-        return
-    }
-    const user = await User.findBy('username', field.meta.username)
-    const passwordOk = await hash.verify(user!.password, value)
-    if(!passwordOk) {
-        field.report('password', 'password does not match', field)
-    }
-    return passwordOk
-})
-
-type LoginValidatorMetaData = {
-    username: string
-}
-export const loginValidator = vine.withMetaData<LoginValidatorMetaData>().compile(
+export const loginValidator = vine.compile(
     vine.object({
-        username: vine.string().use(usernameExists()),
-        password: vine.string().use(passwordMatches())
+        username: vine.string(),
+        password: vine.string()
     })
 )
 

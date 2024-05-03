@@ -32,8 +32,7 @@ export default class UsersController {
     }
 
     async loginProcess({ request, response, auth, session }: HttpContext) {
-        const username = request.input('username')
-        const password = request.input('password')
+        const { username, password } = await request.validateUsing(loginValidator)
 
         const user = await User.verifyCredentials(username, password)
         await auth.use('web').login(user)
