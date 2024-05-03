@@ -21,13 +21,17 @@ import { middleware } from './kernel.js'
 
 router.get('/', [HomeController, 'home'])
 
-router.get('/register', [UsersController, 'registerForm'])
+router.get('/gespeichert', [HomeController, 'savedListings']).use(middleware.auth())
 
-router.post('/register', [UsersController, 'registerProcess'])
+router.get('/meine-anzeigen', [HomeController, 'myListings']).use(middleware.auth())
 
-router.get('/login', [UsersController, 'loginForm'])
+router.get('/register', [UsersController, 'registerForm']).use(middleware.guest())
 
-router.post('/login', [UsersController, 'loginProcess'])
+router.post('/register', [UsersController, 'registerProcess']).use(middleware.guest())
+
+router.get('/login', [UsersController, 'loginForm']).use(middleware.guest())
+
+router.post('/login', [UsersController, 'loginProcess']).use(middleware.guest())
 
 router.get('/logout', [UsersController, 'logout']).use(middleware.auth())
 
@@ -37,7 +41,9 @@ router.get('/konto', [UsersController, 'konto']).use(middleware.auth())
 
 router.post('/konto', [UsersController, 'updateProfile']).use(middleware.auth())
 
-router.get('/meine-anzeigen', [HomeController, 'myListings']).use(middleware.auth())
+router.put('anzeige/:id/save', [UsersController, 'saveListing']).use(middleware.auth())
+
+router.put('anzeige/:id/unsave', [UsersController, 'unsaveListing']).use(middleware.auth())
 
 router.get('/anzeige-aufgeben', [ListingsController, 'createForm']).use(middleware.auth())
 
@@ -52,12 +58,6 @@ router.post('/anzeige/:id/bearbeiten', [ListingsController, 'editProcess']).use(
 router.get('/anzeige/:id/deaktivieren', [ListingsController, 'changeState']).use(middleware.auth())
 
 router.get('/anzeige/:id/verkauft', [ListingsController, 'changeState']).use(middleware.auth())
-
-router.put('anzeige/:id/save', [UsersController, 'saveListing']).use(middleware.auth())
-
-router.put('anzeige/:id/unsave', [UsersController, 'unsaveListing']).use(middleware.auth())
-
-router.get('/gespeichert', [HomeController, 'savedListings']).use(middleware.auth())
 
 router.get('/chat-overview', [ChatsController, 'displayChatOverview']).use(middleware.auth())
 
