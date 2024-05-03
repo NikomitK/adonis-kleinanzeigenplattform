@@ -44,11 +44,8 @@ export default class ChatsController {
         let other =  
         await User.find(user.username === request.params().username ? listing.username : request.params().username)
         
-
         const listingImage = await Image.findBy('listing_id', request.params().id)
 
-        // irgendwie findet der die methode nicht :C
-        //const chat = await Message.findMany([ {listing_id: request.params().id, username: request.params().username} ])
         const chat = await Message.query().where('listing_id', request.params().id).where('username', request.params().username)
         console.log(chat)
         if (!chat) {

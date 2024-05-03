@@ -7,7 +7,22 @@
 <div class="container">
     <form class="twoxthree-grid" action="/anzeige-aufgeben" method="post" enctype="multipart/form-data">
         <div class="anzeige-aufgeben_bild-div">
-            <input name="images" class="form-control" type="file" id="formFileMultiple" multiple maxlength="10">
+            <input name="images" class="form-control" type="file" id="imageInput" multiple maxlength="10">
+            <div id="previewCarousel" class="carousel slide">
+                <div class="carousel-inner">
+
+                </div>
+                <button class="carousel-control-prev d-none" type="button" data-bs-target="#previewCarousel"
+                    data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next d-none" type="button" data-bs-target="#previewCarousel"
+                    data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
         </div>
         <div id="anzeige-aufgeben_text-div">
             <div class="form-floating">
@@ -20,7 +35,8 @@
             </div>
             <div class="form-floating">
                 <textarea name="description" class="form-control" id="description"
-                    placeholder="Beschreibung der Anzeige" minlength="50" required>{{ old('description') ?? '' }}</textarea>
+                    placeholder="Beschreibung der Anzeige" minlength="50"
+                    required>{{ old('description') ?? '' }}</textarea>
                 <label for="description">Beschreibung der Anzeige</label>
 
             </div>
@@ -67,3 +83,69 @@
         {{ csrfField() }}
     </form>
 </div>
+<script>
+    function newImage(props) {
+        const newDiv = document.createElement('div')
+        newDiv.classList.add('carousel-item')
+        if (elPreview.children.length === 0) newDiv.classList.add('active')
+        const newImage = new Image()
+        newImage.src = props.src
+        newImage.classList.add('d-block')
+        newImage.classList.add('w-100')
+        newDiv.appendChild(newImage)
+        return newDiv
+    }
+
+    // Preview images before upload:
+
+    const elFiles = document.querySelector("#imageInput");
+    const elPreview = document.querySelector(".carousel-inner");
+
+    const reader = (file, method = "readAsDataURL") => new Promise((resolve, reject) => {
+        const fr = new FileReader();
+        fr.onload = () => resolve({ file, result: fr.result });
+        fr.onerror = (err) => reject(err);
+        fr[method](file);
+    });
+    const previewImages = async (files) => {
+        // Remove existing preview images
+        elPreview.innerHTML = "";
+
+        let filesData = [];
+
+        try {
+            // Read all files. Return Array of Promises
+            const readerPromises = files.map((file) => reader(file));
+            filesData = await Promise.all(readerPromises);
+        } catch (err) {
+            // Notify the user that something went wrong.
+            elPreview.textContent = "An error occurred while loading images. Try again.";
+            // In this specific case Promise.all() might be preferred over
+            // Promise.allSettled(), since it isn't trivial to modify a FileList
+            // to a subset of files of what the user initially selected.
+            // Therefore, let's just stash the entire operation.
+            console.error(err);
+            return; // Exit function here.
+        }
+
+        // All OK. Preview images:
+        filesData.forEach(data => {
+            elPreview.append(newImage(
+                {
+                    src: data.result, // Base64 String
+                    alt: data.file.name // File.name String
+                })
+            );
+        });
+    };
+
+    elFiles.addEventListener("change", (ev) => {
+        if (!ev.currentTarget.files) return; // Do nothing.
+        previewImages([...ev.currentTarget.files]);
+
+        document.querySelectorAll('#previewCarousel button').forEach(
+            button => {
+                button.classList.remove('d-none')
+            });
+    });
+</script>
