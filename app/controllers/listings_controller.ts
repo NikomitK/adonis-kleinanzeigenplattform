@@ -11,8 +11,8 @@ import { lisitingFormValidator } from '#validators/listing';
 
 export default class ListingsController {
 
-    async show({ request, view, session }: HttpContext) {
-        const user = session.get('user') || null
+    async show({ request, view, auth }: HttpContext) {
+        const user = await auth.check() ? auth.user! : null
 
         const anzeige = await Listing.find(request.params().id)
 
@@ -26,22 +26,12 @@ export default class ListingsController {
         return view.render('layouts/anzeige', { page: 'pages/anzeige/anzeige', anzeige: anzeige, poster, user, title: anzeige.title, images, saved })
     }
 
-    async createForm({ view, session, response }: HttpContext) {
-        const user = session.get('user')
-
-        if (!user) {
-            return response.redirect('/login')
-        }
-        
+    async createForm({ view }: HttpContext) {
         return view.render('layouts/anzeige', { page: 'pages/anzeige/anzeige-aufgeben', title: 'Anzeige aufgeben' })
     }
 
-    async createProcess({ view, request, response, session }: HttpContext) {
-        const user = session.get('user')
-
-        if (!user) {
-            return response.redirect('/login')
-        }
+    async createProcess({ view, request, response, auth }: HttpContext) {
+        const user = auth.user!
 
         const images = request.files('images', { extnames: ['jpg', 'png', 'jpeg', 'webp'] })
 
@@ -72,12 +62,8 @@ export default class ListingsController {
         return response.redirect(`/anzeige/${result.id}`)
     }
 
-    async editForm({ view, request, session, response }: HttpContext) {
-        const user = session.get('user')
-
-        if (!user) {
-            return response.redirect('/login')
-        }
+    async editForm({ view, request, auth }: HttpContext) {
+        const user = auth.user!
 
         const anzeige = await Listing.find(request.params().id)
 
@@ -92,13 +78,11 @@ export default class ListingsController {
         return view.render('layouts/anzeige', { page: 'pages/anzeige/anzeige-bearbeiten', title: 'Anzeige bearbeiten', anzeige, images })
     }
 
-    async editProcess({ request, response, session }: HttpContext) {
-        const user = session.get('user')
+    async editProcess({ request, response, auth }: HttpContext) {
+        const user = auth.user!
         const listing = await Listing.find(request.params().id)
 
-        if (!user) {
-            return response.redirect('/login')
-        } else if (!listing) {
+        if (!listing) {
             throw new Exception('Not found', { status: 404})
         } else if (user.username !== listing.username) {
             throw new Exception('Unauthorized', { status: 403 })
@@ -117,12 +101,8 @@ export default class ListingsController {
         response.redirect('/meine-anzeigen')
     }
 
-    async changeState({ request, response, session }: HttpContext) {
-        const user = session.get('user')
-
-        if (!user) {
-            return response.redirect('/login')
-        }
+    async changeState({ request, response, auth }: HttpContext) {
+        const user = auth.user!
 
         const anzeige = await Listing.find(request.params().id)
 

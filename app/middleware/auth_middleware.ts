@@ -19,7 +19,9 @@ export default class AuthMiddleware {
       guards?: (keyof Authenticators)[]
     } = {}
   ) {
+    ctx.session.put('intended', ctx.request.url())
     await ctx.auth.authenticateUsing(options.guards, { loginRoute: this.redirectTo })
+    ctx.session.forget('intended')
     return next()
   }
 }

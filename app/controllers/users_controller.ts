@@ -1,6 +1,5 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import db from '@adonisjs/lucid/services/db'
-import hash from '@adonisjs/core/services/hash';
 import app from '@adonisjs/core/services/app';
 import { Exception } from '@adonisjs/core/exceptions';
 import User from '#models/user';
@@ -9,62 +8,41 @@ import { loginValidator, registerValidator, updateProfileValidator } from '#vali
 
 export default class UsersController {
 
-    async registerForm({ view, response, session }: HttpContext) {
-        const user = auth.user!
-
-        if (user) {
-            return response.redirect('back')
-        }
-
+    async registerForm({ view }: HttpContext) {
         return view.render('layouts/login', { page: 'pages/user/register', title: 'Registrieren' })
     }
 
-    async registerProcess({ request, response, session }: HttpContext) {
-        if (auth.user!) {
-            return response.redirect('back')
-        }
-
+    async registerProcess({ request, response, session, auth }: HttpContext) {
         const { username, firstname, lastname, email, password } = await registerValidator.validate(request.all())
 
-        const tmpUser = new User()
-        tmpUser.username = username
-        tmpUser.firstname = firstname ?? null
-        tmpUser.lastname = lastname ?? null
-        tmpUser.email = email
-        tmpUser.password = password
-        tmpUser.save()
+        const user = new User()
+        user.username = username
+        user.firstname = firstname ?? null
+        user.lastname = lastname ?? null
+        user.email = email
+        user.password = password
+        user.save()
+        await auth.use('web').login(user)
 
-        session.put('user', { username: tmpUser.username, firstname: tmpUser.firstname, lastname: tmpUser.lastname, email: tmpUser.email, number: tmpUser.number, since: tmpUser.since, picture: tmpUser.picture })
-        response.redirect('/konto')
+        response.redirect(session.get('intended') ?? '/konto')
     }
 
-    async loginForm({ view, response, auth }: HttpContext) {
-        const user = auth.user!
-
-        if (user) {
-            return response.redirect('back')
-        }
-
-        return view.render('layouts/login', { page: 'pages/user/login', title: 'Login' })
+    async loginForm({ view, request }: HttpContext) {
+        return view.render('layouts/login', { page: 'pages/user/login', title: 'Login', url: request.url() })
     }
 
-    async loginProcess({ view, request, response, auth }: HttpContext) {
-
+    async loginProcess({ request, response, auth, session }: HttpContext) {
         const username = request.input('username')
         const password = request.input('password')
-        console.log(username, password)
 
         const user = await User.verifyCredentials(username, password)
-        console.log(user)
         await auth.use('web').login(user)
-        console.log('logged in')
-        //session.put('user', { username: user!.username, firstname: user!.firstname, lastname: user!.lastname, email: user!.email, number: user!.number, since: user!.since, picture: user!.picture })
 
-        return response.redirect().toPath('/konto');
+        return response.redirect().toPath(session.get('intended'))
     }
 
-    async logout({ response, session }: HttpContext) {
-        session.clear()
+    async logout({ response, auth }: HttpContext) {
+        await auth.use('web').logout()
         return response.redirect('/')
     }
 
@@ -72,7 +50,7 @@ export default class UsersController {
         throw new Exception("I'm a teapot", { status: 418 })
     }
 
-    async konto({ view, response, auth }: HttpContext) {
+    async konto({ view, auth }: HttpContext) {
         const user = auth.user!
 
         const achieved = await db.from('achievments').whereIn('title', db.from('achieveds').where('username', user.username).select('title'))
@@ -84,10 +62,6 @@ export default class UsersController {
 
     async updateProfile({ request, response, auth }: HttpContext) {
         const user = auth.user!
-
-        if (!user) {
-            return response.redirect('/login')
-        }
 
         let picture = request.file('image', { size: '3mb', extnames: ['jpg', 'png', 'jpeg', 'webp'] })
 
@@ -102,42 +76,24 @@ export default class UsersController {
 
         const { email, firstname, lastname, number } = await request.validateUsing(updateProfileValidator)
 
-        const updatedUser = await User.find(user.username)
+        user.firstname = firstname ?? user.firstname;
+        user.lastname = lastname ?? user.lastname;
+        user.email = email ?? user.email;
+        user.number = number ?? user.number;
+        user.picture = picture?.fileName ?? user.picture;
 
-        if (!updatedUser) {
-            throw new Exception('User not found', { status: 404 })
-        }
-
-
-        updatedUser.firstname = firstname ?? updatedUser.firstname;
-        updatedUser.lastname = lastname ?? updatedUser.lastname;
-        updatedUser.email = email ?? updatedUser.email;
-        updatedUser.number = number ?? updatedUser.number;
-        updatedUser.picture = picture?.fileName ?? updatedUser.picture;
-
-        await updatedUser.save();
-
-        session.put('user', { username: updatedUser.username, firstname: updatedUser.firstname, lastname: updatedUser.lastname, email: updatedUser.email, number: updatedUser.number, since: updatedUser.since, picture: updatedUser.picture });
+        await user.save();
 
         return response.redirect('/konto');
     }
 
     async saveListing({ request, auth }: HttpContext) {
-        const user = auth.user!
-
-        new Saved().fill({ username: user.username, listing_id: parseInt(request.params().id) }).save()
-        //TODO check for errors
+        //kein await, weil wieso auch? 
+        new Saved().fill({ username: auth.user!.username, listing_id: parseInt(request.params().id) }).save()
     }
 
     async unsaveListing({ request, auth }: HttpContext) {
-        const user = auth.user!
-
-        if (!user) {
-            return
-        }
-
-        await Saved.findBy({ username: user.username, listing_id: request.params().id }).then((saved) => { saved?.delete() })
-        //TODO check for errors
+        Saved.findBy({ username: auth.user!.username, listing_id: request.params().id }).then((saved) => { saved?.delete() })
     }
 
 }

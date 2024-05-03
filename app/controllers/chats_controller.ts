@@ -8,11 +8,8 @@ import Listing from '#models/listing';
 
 export default class ChatsController {
     
-    async displayChatOverview({ view, response, session }: HttpContext) {
-        const user = session.get('user')
-        if (!user) {
-            return response.redirect('/login')
-        }
+    async displayChatOverview({ view, auth }: HttpContext) {
+        const user = auth.user!
 
         //die langen queries mit join, subqueries, etc. fand ich zu kompliziert, um sie auf die model schreibweise zu übersetzen
 
@@ -33,11 +30,9 @@ export default class ChatsController {
         return view.render('layouts/chat', { page: 'pages/user/chat_overview', foreignChats, ownChats, title: 'Chats', user })
     }
 
-    async displayChat({ view, response, session, request }: HttpContext) {
-        const user = session.get('user')
-        if (!user) {
-            return response.redirect('/login')
-        }
+    async displayChat({ view, auth, request }: HttpContext) {
+        const user = auth.user!
+
         const listing =  await Listing.find(request.params().id)
         if(!listing) {
             throw new Exception('Not found', { status: 404 })
@@ -62,11 +57,8 @@ export default class ChatsController {
         return view.render('layouts/chat', { page: 'pages/user/chat', title: 'Chat', chat, user, other, listing, listingImage })
     }
 
-    async processChatMessage({ request, response, session }: HttpContext) {
-        const user = session.get('user')
-        if (!user) {
-            return response.redirect('/login')
-        }
+    async processChatMessage({ request, response, auth }: HttpContext) {
+        const user = auth.user!
 
         await Message.create({
             listing_id: request.params().id,
