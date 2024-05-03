@@ -60,6 +60,11 @@ export default class ChatsController {
     async processChatMessage({ request, response, auth }: HttpContext) {
         const user = auth.user!
 
+        const message = request.input('message')
+        if (!message) {
+            return response.redirect('back')
+        }
+
         await Message.create({
             listing_id: request.params().id,
             username: request.params().username,

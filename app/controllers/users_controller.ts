@@ -13,7 +13,7 @@ export default class UsersController {
     }
 
     async registerProcess({ request, response, session, auth }: HttpContext) {
-        const { username, firstname, lastname, email, password } = await registerValidator.validate(request.all())
+        const { username, firstname, lastname, email, password } = await request.validateUsing(registerValidator)
 
         const user = new User()
         user.username = username
