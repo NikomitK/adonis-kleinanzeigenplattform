@@ -84,68 +84,58 @@
     </form>
 </div>
 <script>
-    function newImage(props) {
+    function newImage(src) {
         const newDiv = document.createElement('div')
-        newDiv.classList.add('carousel-item')
-        if (elPreview.children.length === 0) newDiv.classList.add('active')
         const newImage = new Image()
-        newImage.src = props.src
+
+        newDiv.classList.add('carousel-item')
+        if (carouselInner.children.length === 0) newDiv.classList.add('active')
+
+        newImage.src = src
         newImage.classList.add('d-block')
         newImage.classList.add('w-100')
+
         newDiv.appendChild(newImage)
+
         return newDiv
     }
 
-    // Preview images before upload:
+    const images = document.querySelector("#imageInput");
+    const carouselInner = document.querySelector(".carousel-inner");
 
-    const elFiles = document.querySelector("#imageInput");
-    const elPreview = document.querySelector(".carousel-inner");
-
-    const reader = (file, method = "readAsDataURL") => new Promise((resolve, reject) => {
+    //Konvertierung von hochgeladenen Bildern zu dataURLs
+    const reader = (file) => new Promise((resolve, reject) => {
         const fr = new FileReader();
         fr.onload = () => resolve({ file, result: fr.result });
         fr.onerror = (err) => reject(err);
-        fr[method](file);
+        fr['readAsDataURL'](file);
     });
+
+    // Eventuell vorhandene alte Bilder löschen und neue einfügen
     const previewImages = async (files) => {
-        // Remove existing preview images
-        elPreview.innerHTML = "";
+        carouselInner.innerHTML = '';
 
         let filesData = [];
 
         try {
-            // Read all files. Return Array of Promises
             const readerPromises = files.map((file) => reader(file));
             filesData = await Promise.all(readerPromises);
         } catch (err) {
-            // Notify the user that something went wrong.
-            elPreview.textContent = "An error occurred while loading images. Try again.";
-            // In this specific case Promise.all() might be preferred over
-            // Promise.allSettled(), since it isn't trivial to modify a FileList
-            // to a subset of files of what the user initially selected.
-            // Therefore, let's just stash the entire operation.
-            console.error(err);
-            return; // Exit function here.
+            carouselInner.textContent = 'Es gab einen fehler bei deinen Bildern. Bitte versuche es erneut;
+            return;
         }
 
-        // All OK. Preview images:
         filesData.forEach(data => {
-            elPreview.append(newImage(
-                {
-                    src: data.result, // Base64 String
-                    alt: data.file.name // File.name String
-                })
+            carouselInner.append(newImage(data.result)
             );
         });
     };
 
-    elFiles.addEventListener("change", (ev) => {
-        if (!ev.currentTarget.files) return; // Do nothing.
-        previewImages([...ev.currentTarget.files]);
+    images.addEventListener("change", (e) => {
+        if (!e.currentTarget.files) return; // Do nothing.
+        previewImages([...e.currentTarget.files]);
 
         document.querySelectorAll('#previewCarousel button').forEach(
-            button => {
-                button.classList.remove('d-none')
-            });
+            button => { button.classList.remove('d-none') });
     });
 </script>
