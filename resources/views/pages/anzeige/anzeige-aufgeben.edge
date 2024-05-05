@@ -111,7 +111,7 @@
         fr['readAsDataURL'](file);
     });
 
-    // Eventuell vorhandene alte Bilder löschen und neue einfügen
+    // Eventuell vorhandene alte Bilder
     const previewImages = async (files) => {
         carouselInner.innerHTML = '';
 
@@ -121,7 +121,7 @@
             const readerPromises = files.map((file) => reader(file));
             filesData = await Promise.all(readerPromises);
         } catch (err) {
-            carouselInner.textContent = 'Es gab einen fehler bei deinen Bildern. Bitte versuche es erneut;
+            carouselInner.textContent = 'Es gab einen fehler bei deinen Bildern. Bitte versuche es erneut';
             return;
         }
 
@@ -135,7 +135,9 @@
         if (!e.currentTarget.files) return; // Do nothing.
         previewImages([...e.currentTarget.files]);
 
-        document.querySelectorAll('#previewCarousel button').forEach(
-            button => { button.classList.remove('d-none') });
+        if(e.currentTarget.files.length > 1) {
+            document.querySelectorAll('#previewCarousel button').forEach(
+                button => { button.classList.remove('d-none') });
+        }
     });
 </script>
