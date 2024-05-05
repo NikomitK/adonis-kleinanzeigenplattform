@@ -1,16 +1,20 @@
 <script>
     function disableShippingPrice() {
-        document.getElementById("shipping_price").disabled = !document.getElementById("shipping").checked;
+        shippingPrice = document.getElementById("shipping_price");
+        shippingPrice.disabled = !document.getElementById("shipping").checked;
+        shippingPrice.required = document.getElementById("shipping").checked;
     }
 </script>
 
 <div class="container">
     <form class="twoxthree-grid" action="/anzeige-aufgeben" method="post" enctype="multipart/form-data">
         <div class="anzeige-aufgeben_bild-div">
-            <input name="images" class="form-control" type="file" id="imageInput" multiple maxlength="10">
+            <input name="images" class="form-control" type="file" id="imageInput" multiple maxlength="10" value="{{ old('images') ?? null }}">
             <div id="previewCarousel" class="carousel slide">
                 <div class="carousel-inner">
-
+                    <div class="carousel-item active">
+                        <img src="{{ asset('resources/images/placeholder.webp') }}" alt="" class="w-100 d-block anzeigen-image">
+                    </div>
                 </div>
                 <button class="carousel-control-prev d-none" type="button" data-bs-target="#previewCarousel"
                     data-bs-slide="prev">
@@ -26,22 +30,22 @@
         </div>
         <div id="anzeige-aufgeben_text-div">
             <div class="form-floating">
-                <input name="title" class="form-control" type="text" id="title" placeholder="Titel der Anzeige"
+                <input name="title" class="form-control" type="text" id="title" placeholder="Titel der Anzeige" minlength="4"
                     maxlength="80" required value="{{ old('title') ?? '' }}">
                 <label for="title">Titel der Anzeige</label>
                 @inputError('title')
-                <div class="alert alert-danger">Ungültiger Titel</div>
+                <div class="alert alert-danger">Der Titel muss zwischen 4 und 80 Zeichen liegen.</div>
                 @end
             </div>
             <div class="form-floating">
                 <textarea name="description" class="form-control" id="description"
-                    placeholder="Beschreibung der Anzeige" minlength="50"
+                    placeholder="Beschreibung der Anzeige" minlength="50" maxlength="1000"
                     required>{{ old('description') ?? '' }}</textarea>
                 <label for="description">Beschreibung der Anzeige</label>
 
             </div>
             @inputError('description')
-            <div class="alert alert-danger">Ungültige Beschreibung</div>
+            <div class="alert alert-danger">Die Beschreibung muss mindestens 50, maximal 1000 Zeichen haben.</div>
             @end
         </div>
         <div class="anzeige-aufgeben_price">
@@ -92,16 +96,15 @@
         if (carouselInner.children.length === 0) newDiv.classList.add('active')
 
         newImage.src = src
-        newImage.classList.add('d-block')
-        newImage.classList.add('w-100')
+        newImage.classList.add('anzeigen-image')
 
         newDiv.appendChild(newImage)
 
         return newDiv
     }
 
-    const images = document.querySelector("#imageInput");
-    const carouselInner = document.querySelector(".carousel-inner");
+    const images = document.querySelector('#imageInput');
+    const carouselInner = document.querySelector('.carousel-inner');
 
     //Konvertierung von hochgeladenen Bildern zu dataURLs
     const reader = (file) => new Promise((resolve, reject) => {
@@ -111,7 +114,7 @@
         fr['readAsDataURL'](file);
     });
 
-    // Eventuell vorhandene alte Bilder
+    // Eventuell vorhandene alte Bilder löschen, neue einfügen
     const previewImages = async (files) => {
         carouselInner.innerHTML = '';
 
@@ -132,7 +135,7 @@
     };
 
     images.addEventListener("change", (e) => {
-        if (!e.currentTarget.files) return; // Do nothing.
+        if (!e.currentTarget.files) return;
         previewImages([...e.currentTarget.files]);
 
         if(e.currentTarget.files.length > 1) {
