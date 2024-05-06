@@ -5,6 +5,7 @@ $secondary: #a0c4ff;
 $light: #caffbf;
 $light-red: #f5a3a3;
 $main-color: #ffaa43;
+$light-gray: #f0f0f0;
 
 $light-bg-subtle: $main-color;
 $body-tertiary-bg: $main-color;
@@ -18,4 +19,5 @@ $carousel-control-color: $primary;
 $carousel-indicator-opacity: 0.5;
 $carousel-indicator-active-bg: $primary;
 
+$input-group-addon-bg: $light-gray;
 @import "../../node_modules/bootstrap/scss/bootstrap";
