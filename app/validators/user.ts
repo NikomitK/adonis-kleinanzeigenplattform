@@ -1,16 +1,13 @@
 import User from '#models/user'
 import vine from '@vinejs/vine'
-import hash from '@adonisjs/core/services/hash';
-import db from '@adonisjs/lucid/services/db';
 
 export const registerValidator = vine.compile(
     vine.object({
-        //db ist an der stelle nötig, da einfach der erste parameter das db objekt wird, und ich so nicht den value benutzen könnte
-        username: vine.string().unique(async (db, value) => {
+        username: vine.string().unique(async (_, value) => {
             const user = await User.findBy('username', value)
             return !user
         }),
-        email: vine.string().email().unique(async (db, value) => {
+        email: vine.string().email().unique(async (_, value) => {
             const user = await User.findBy('email', value)
             return !user
         }),
@@ -31,7 +28,7 @@ export const loginValidator = vine.compile(
 
 export const updateProfileValidator = vine.compile(
         vine.object({
-            email: vine.string().email().unique(async (db, value) => {
+            email: vine.string().email().unique(async (_, value) => {
                 const user = await User.findBy('email', value)
                 return !user
             }).optional(),
