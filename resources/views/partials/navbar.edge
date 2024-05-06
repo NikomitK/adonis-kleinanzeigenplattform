@@ -13,7 +13,11 @@
             <ul class="nav-link-container">
                 <li><a href="/chat-overview">Chats</a></li>
                 <li><a href="/anzeige-aufgeben">Anzeige aufgeben</a></li>
+                @if(auth.user) 
                 <li><a href="/konto">Konto</a></li>
+                @else
+                <li><a href="/login">Login/Registrieren</a></li>
+                @end
             </ul>
             <div class="nk-nav-toggler">
                 <button id="navbar-toggler" onclick="" aria-expanded="false" aria-controls="nav-link-container" aria-label="Toggle navigation">
