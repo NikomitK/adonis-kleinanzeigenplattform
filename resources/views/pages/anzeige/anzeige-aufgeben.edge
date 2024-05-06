@@ -9,7 +9,7 @@
 <div class="container">
     <form class="twoxthree-grid" action="/anzeige-aufgeben" method="post" enctype="multipart/form-data">
         <div class="anzeige-aufgeben_bild-div">
-            <input name="images" class="form-control" type="file" id="imageInput" multiple maxlength="10" value="{{ old('images') ?? null }}">
+            <input name="images" accept="image/*" class="form-control" type="file" id="imageInput" multiple maxlength="10" value="{{ old('images') ?? null }}">
             <div id="previewCarousel" class="carousel slide">
                 <div class="carousel-inner">
                     <div class="carousel-item active">
