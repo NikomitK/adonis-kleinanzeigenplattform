@@ -26,6 +26,12 @@ export default class extends BaseSeeder {
             email: 'test@test.com',
             password: 'test',
             picture: 'default.png'
+        },
+        {
+            username: 'ProgrammierKatze',
+            email: 'katze@katze.dev',
+            password: 'test',
+            picture: 'katze_laptop.gif'
         }
     ])
 
@@ -43,10 +49,11 @@ export default class extends BaseSeeder {
         {
             username: 'buegelbrett',
             title: 'Mich',
-            description: 'Ich bin ein Bügelbrett. Ich bin 1 Jahr alt und habe schon 1000 Hemden gebügelt. Ich bin sehr gut erhalten und habe keine Gebrauchsspuren. Ich verkaufe mich für 100€. Versand ist möglich.',
+            description: 'Ich bin ein Bügelbrett. Ich bin 1 Jahr alt und habe schon 1000 Hemden gebügelt. Ich bin sehr gut erhalten und habe keine Gebrauchsspuren. Ich verkaufe mich für 0€. Versand ist möglich.',
             price: '0.00',
             negotiable: false,
-            shipping: false,
+            shipping: true,
+            shipping_price: '4.90',
             status: 'active'
         },
         {
@@ -54,6 +61,13 @@ export default class extends BaseSeeder {
             title: 'Fast neues Auto',
             description: 'Hat ein paar kleine Kratzer und Dellen, aber das ist der Charakterdes Autos.',
             price: '10.00',
+            status: 'active'
+        },
+        {
+            username: 'ProgrammierKatze',
+            title: '🍎⌚️',
+            description: 'Miau mew miau, miau, meeeew miau meow miau. \n\n\n (Verkaufe meine Apple Watch. Das Armband is\' zu groß für meine Pfötchen, und der Touchscreen... naja, da komm ich einfach nich\' mit meinen Samtpfoten klar. Jemand da draußen, der \'ne technisch versierte Katze unterstützen mag? 🐾 Nehme als Zahlung 3 Packungen Fishi-Happen (zweites Bild))  ',
+            price: '3',
             status: 'active'
         },
         {
@@ -83,15 +97,17 @@ export default class extends BaseSeeder {
         {path: 'gniesbert.webp', listing_id: 1},
         {path: 'sven.webp', listing_id: 2},
         {path: 'auto.webp', listing_id: 3},
-        {path: 'alles.webp', listing_id: 4},
-        {path: 'apple-google.webp', listing_id: 5},
-        {path: 'bwl1.webp', listing_id: 6},
-        {path: 'bwl2.webp', listing_id: 6},
-        {path: 'bwl3.webp', listing_id: 6},
-        {path: 'bwl4.webp', listing_id: 6},
-        {path: 'bwl5.webp', listing_id: 6},
-        {path: 'bwl6.webp', listing_id: 6},
-        {path: 'bwl7.webp', listing_id: 6}
+        {path: 'apple-watch.webp', listing_id: 4},
+        {path: 'fishie_happen.webp', listing_id: 4},
+        {path: 'alles.webp', listing_id: 5},
+        {path: 'apple-google.webp', listing_id: 6},
+        {path: 'bwl1.webp', listing_id: 7},
+        {path: 'bwl2.webp', listing_id: 7},
+        {path: 'bwl3.webp', listing_id: 7},
+        {path: 'bwl4.webp', listing_id: 7},
+        {path: 'bwl5.webp', listing_id: 7},
+        {path: 'bwl6.webp', listing_id: 7},
+        {path: 'bwl7.webp', listing_id: 7}
     ])
   }
 }
