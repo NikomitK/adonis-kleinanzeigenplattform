@@ -62,6 +62,7 @@ export default class UsersController {
     async updateProfile({ request, response, auth }: HttpContext) {
         const user = auth.user!
 
+        // die profilbilder werden, anders als bei den anzeigen, extra nicht als webp umgewandelt, dass man gifs benutzen kann.
         let picture = request.file('image', { size: '3mb', extnames: ['jpg', 'png', 'jpeg', 'webp', 'gif'] })
 
         if (!picture?.isValid) {

@@ -52,7 +52,7 @@ export default class ListingsController {
 
         const result = await tmpListing.save()
 
-        // Bewusste Entscheidung, browser nicht zu unterstützen, die kein webp können. Wer seit 5 Jahren kein browser update mehr gemacht hat selbst schuld
+        // Bewusste Entscheidung, browser nicht zu unterstützen, die kein webp können. Wer seit 5 Jahren kein browser update mehr gemacht hat selbst schuld. Performance- und Speicher-impact sind relevant größer
         for await (const image of images) {
             const tmpCuid = cuid();
             await sharp(image.tmpPath).toFile(app.publicPath(`/anzeigen/${tmpCuid}.webp`))
