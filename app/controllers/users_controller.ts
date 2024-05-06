@@ -37,7 +37,7 @@ export default class UsersController {
         const user = await User.verifyCredentials(username, password)
         await auth.use('web').login(user)
 
-        return response.redirect().toPath(session.get('intended'))
+        return response.redirect().toPath(session.get('intended') ?? '/konto')
     }
 
     async logout({ response, auth }: HttpContext) {

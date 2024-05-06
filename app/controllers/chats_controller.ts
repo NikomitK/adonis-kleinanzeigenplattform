@@ -49,7 +49,7 @@ export default class ChatsController {
         const chat = await Message.query().where('listing_id', request.params().id).where('username', request.params().username)
         console.log(chat)
         if (!chat) {
-            return view.render('layouts/base', { page: 'pages/errors/not_found' })
+            throw new Exception('Not found', { status: 404 })
         }
         return view.render('layouts/chat', { page: 'pages/user/chat', title: 'Chat', chat, user, other, listing, listingImage })
     }
