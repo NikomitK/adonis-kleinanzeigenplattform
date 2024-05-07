@@ -5,13 +5,13 @@
         <p>{{ anzeige.description }}</p>
         <hr>
         <div class="anzeige_price">
-            <span><b class="text-success">Preis: 
-                @if(anzeige.price == 0)
-                Zu verschenken!
-                @else
-                {{ anzeige.price }}€
-                @end
-            </b>
+            <span><b class="text-success">Preis:
+                    @if(anzeige.price == 0)
+                    Zu verschenken!
+                    @else
+                    {{ anzeige.price }}€
+                    @end
+                </b>
                 @if(anzeige.negotiable)
                 Verhandelbar!
                 @end
@@ -44,11 +44,11 @@
                 @end
                 ">
                 @if(saved)
-                <span><img
-                        src="{{ asset('resources/images/icons/favorite_fill.svg') }}" alt="">Speicher diese Anzeige nicht mehr</span>
+                <span><img src="{{ asset('resources/images/icons/favorite_fill.svg') }}" alt="">Speicher diese Anzeige
+                    nicht mehr</span>
                 @else
-                <span> <img src="{{ asset('resources/images/icons/favorite_outline.svg') }}"
-                        alt="">Speicher diese Anzeige</span>
+                <span> <img src="{{ asset('resources/images/icons/favorite_outline.svg') }}" alt="">Speicher diese
+                    Anzeige</span>
                 @end
             </button>
             @end
@@ -57,3 +57,14 @@
     @!component('components/profile-top', { user: poster})
 
 </div>
+
+@if(otherFromUser.length > 0)
+<div class="container pt-2">
+    <h2>Weitere Anzeigen von {{ poster.username }}</h2>
+    <div class="py-3 d-flex flex-wrap justify-content-center justify-content-md-start gap-4">
+    @each(other in otherFromUser)
+    @!component('components/anzeigencard', { anzeige: other, user: poster})
+    @end
+    </div>
+</div>
+@end

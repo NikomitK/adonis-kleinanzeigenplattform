@@ -8,6 +8,7 @@ import Image from '#models/image';
 import User from '#models/user';
 import Saved from '#models/saved';
 import { lisitingFormValidator } from '#validators/listing';
+import db from '@adonisjs/lucid/services/db';
 
 export default class ListingsController {
 
@@ -23,7 +24,16 @@ export default class ListingsController {
         const images = await Image.findManyBy('listing_id', anzeige.id)
         const poster = await User.find(anzeige.username)
         const saved = user ? await Saved.findBy({username: user.username, listing_id: request.params().id}) : null
-        return view.render('layouts/anzeige', { page: 'pages/anzeige/anzeige', anzeige: anzeige, poster, user, title: anzeige.title, images, saved })
+
+        const otherFromUser = await db.from('listings')
+        .select('listings.*', 'images.path')
+        .join('images', 'listings.id', '=', 'images.listing_id')
+        .where('listings.username', poster!.username)
+        .where('listings.id', '!=', anzeige.id)
+        .where('listings.status', '=', 'active')
+        .groupBy('listings.id')
+        .orderBy('listings.id', "desc")
+        return view.render('layouts/anzeige', { page: 'pages/anzeige/anzeige', anzeige: anzeige, poster, user, title: anzeige.title, images, saved, otherFromUser })
     }
 
     async createForm({ view }: HttpContext) {
