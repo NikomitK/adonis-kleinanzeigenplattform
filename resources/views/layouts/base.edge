@@ -17,6 +17,9 @@
 
 <body>
 @include('partials/navbar')
+@if(anzeigen.length > 0 || search)
+    @include('partials/searchbar')
+@end
 <main>
     @include(page)
 </main>

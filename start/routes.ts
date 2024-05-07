@@ -21,9 +21,15 @@ import { middleware } from './kernel.js'
 
 router.get('/', [HomeController, 'home'])
 
+router.post('/', [HomeController, 'home'])
+
 router.get('/gespeichert', [HomeController, 'savedListings']).use(middleware.auth())
 
+router.post('/gespeichert', [HomeController, 'savedListings']).use(middleware.auth())
+
 router.get('/meine-anzeigen', [HomeController, 'myListings']).use(middleware.auth())
+
+router.post('/meine-anzeigen', [HomeController, 'myListings']).use(middleware.auth())
 
 router.get('/register', [UsersController, 'registerForm']).use(middleware.guest())
 

@@ -1,12 +1,22 @@
 <div class="container">
-    <h2>Deine gespeicherten Anzeigen</h2>
-    <div class="py-3 d-flex flex-wrap justify-content-center justify-content-md-start gap-4">
-
-        @each(anzeige in gespeichert)
-
-            @!component('components/anzeigencard', { anzeige, saved: true, user})
-
+    <h2>Deine gespeicherten Anzeigen
+        @if(search)
+        - {{search}}
         @end
+    </h2>
 
-    </div>
+    @if(anzeigen.length < 1 && search) 
+    <p>Diese Suche ergab keinen Treffer :C </p>
+    @elseif(anzeigen.length < 1 && !search) 
+    <p>Du hast noch keine Anzeigen gespeichert. Mit dem <img src="{{asset('resources/images/icons/favorite_outline.svg')}}" style="margin-bottom: 0.1em;">-Button kannst du Anzeigen speichern, um sie hier zu sehen.</p>
+    @end
+            <div class="py-3 d-flex flex-wrap justify-content-center justify-content-md-start gap-4">
+
+                @each(anzeige in anzeigen)
+
+                @!component('components/anzeigencard', { anzeige, saved: true, user})
+
+                @end
+
+            </div>
 </div>

@@ -1,11 +1,13 @@
+import Listing from '#models/listing'
 import type { HttpContext } from '@adonisjs/core/http'
 import db from '@adonisjs/lucid/services/db'
 export default class HomeController {
 
-    async home({ view, auth }: HttpContext) {
+    async home({ view, auth, request }: HttpContext) {
         const user = await auth.check() ? auth.user! : null
 
-        const products = await db.from('listings')
+
+        let anzeigen = await db.from('listings')
             .select('listings.*', 'images.path')
             .join('images', 'listings.id', '=', 'images.listing_id')
             .where('listings.username', '!=', user ? user.username : '')
@@ -14,26 +16,40 @@ export default class HomeController {
             .groupBy('listings.id')
             .orderBy('listings.id', "desc")
 
-        return view.render('layouts/base', { page: 'pages/anzeige/home', products, user })
+        const search = request.input('search')
+        if (search) {
+            anzeigen = anzeigen.filter((anzeige: Listing) => {
+                return anzeige.title.toLowerCase().includes(search.toLowerCase()) || anzeige.description.toLowerCase().includes(search.toLowerCase())
+            })
+        }
+
+        return view.render('layouts/base', { page: 'pages/anzeige/home', anzeigen, user, search })
     }
 
-    async myListings({ view, auth }: HttpContext) {
+    async myListings({ view, auth, request }: HttpContext) {
         const user = auth.user!
 
-        const meineAnzeigen = await db.from('listings')
+        let anzeigen = await db.from('listings')
             .select('listings.*', 'images.path')
             .join('images', 'listings.id', '=', 'images.listing_id')
             .where('listings.username', user.username)
             .groupBy('listings.id')
             .orderBy('listings.id', "desc")
 
-        return view.render('layouts/base', { page: 'pages/anzeige/meine-anzeigen', meineAnzeigen, title: 'Meine Anzeigen' })
+        const search = request.input('search')
+        if (search) {
+            anzeigen = anzeigen.filter((anzeige: Listing) => {
+                return anzeige.title.toLowerCase().includes(search.toLowerCase()) || anzeige.description.toLowerCase().includes(search.toLowerCase())
+            })
+        }
+
+        return view.render('layouts/base', { page: 'pages/anzeige/meine-anzeigen', anzeigen, title: 'Meine Anzeigen', search })
     }
 
-    async savedListings({ view, auth }: HttpContext) {
+    async savedListings({ view, auth, request }: HttpContext) {
         const user = auth.user!
 
-        const gespeichert = await db.from('listings')
+        let anzeigen = await db.from('listings')
             .select('listings.*', 'images.path')
             .join('images', 'listings.id', '=', 'images.listing_id')
             .join('saveds', 'listings.id', '=', 'saveds.listing_id')
@@ -42,6 +58,13 @@ export default class HomeController {
             .groupBy('listings.id')
             .orderBy('listings.id', "desc")
 
-        return view.render('layouts/base', { page: 'pages/anzeige/gespeichert', gespeichert, title: 'Gespeicherte Anzeigen', user })
+        const search = request.input('search')
+        if (search) {
+            anzeigen = anzeigen.filter((anzeige: Listing) => {
+                return anzeige.title.toLowerCase().includes(search.toLowerCase()) || anzeige.description.toLowerCase().includes(search.toLowerCase())
+            })
+        }
+
+        return view.render('layouts/base', { page: 'pages/anzeige/gespeichert', anzeigen, title: 'Gespeicherte Anzeigen', user, search })
     }
 }

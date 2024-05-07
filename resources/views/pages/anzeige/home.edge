@@ -1,8 +1,19 @@
 <div class="container">
-    <h2>Neueste Anzeigen!</h2>
+    <h2>
+        @if(search)
+            Suchergebnisse für "{{search}}"
+        @else
+        Neueste Anzeigen!
+        @end
+    </h2>
+    @if(anzeigen.length < 1 && search) 
+    <p>Diese Suche ergab keinen Treffer :C </p>
+    @elseif(anzeigen.length < 1 && !search) 
+    <p class="">Hier gibt es im Moment keine Anzeigen. Guck doch später nochmal vorbei :)</p>
+    @end
     <div class="py-3 d-flex flex-wrap justify-content-center justify-content-md-start gap-4">
 
-        @each(anzeige in products)
+        @each(anzeige in anzeigen)
 
             @!component('components/anzeigencard', { anzeige, user})
 

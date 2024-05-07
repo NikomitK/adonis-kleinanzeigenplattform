@@ -1,8 +1,13 @@
 <div class="container">
     <h2>Deine Anzeigen</h2>
+    @if(anzeigen.length < 1 && search) 
+    <p>Diese Suche ergab keinen Treffer :C </p>
+    @elseif(anzeigen.length < 1 && !search) 
+    <p class="">Du hast scheinbar noch nichts gepostet. Wenn du eine Anzeige aufgeben willst, klicke doch auf den "<a href="/anzeige-aufgeben">Anzeige aufgeben</a>" link oben</p>
+    @end
     <div class="py-3 d-flex flex-wrap justify-content-center justify-content-md-start gap-4">
 
-        @each(anzeige in meineAnzeigen)
+        @each(anzeige in anzeigen)
 
             @!component('components/anzeigencard', { anzeige, myListing: true})
 
