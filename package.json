@@ -64,6 +64,7 @@
     "better-sqlite3": "^9.4.3",
     "bootstrap": "^5.3.3",
     "edge.js": "^6.0.1",
+    "ics": "^3.7.2",
     "luxon": "^3.4.4",
     "reflect-metadata": "^0.2.1",
     "sharp": "^0.33.3"
