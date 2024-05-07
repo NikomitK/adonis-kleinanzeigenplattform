@@ -5,7 +5,13 @@
         <p>{{ anzeige.description }}</p>
         <hr>
         <div class="anzeige_price">
-            <span><b>Preis: {{ anzeige.price }}€</b>
+            <span><b class="text-success">Preis: 
+                @if(anzeige.price == 0)
+                Zu verschenken!
+                @else
+                {{ anzeige.price }}€
+                @end
+            </b>
                 @if(anzeige.negotiable)
                 Verhandelbar!
                 @end

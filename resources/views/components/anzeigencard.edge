@@ -38,7 +38,13 @@
             </a>
 
             @end
-            <b>{{ $props.anzeige.price }}€</b>
+            <b class="text-success">
+                @if(anzeige.price == 0)
+                Zu verschenken!
+                @else
+                {{ $props.anzeige.price }}€
+                @end
+            </b>
         </div>
     </div>
 </div>
