@@ -5,14 +5,17 @@ export const registerValidator = vine.compile(
     vine.object({
         username: vine.string().unique(async (_, value, field) => {
             const user = await User.findBy('username', value)
-            if (user) field.report('Der Nutzername ist test bereits vergeben.', 'username', field)
+            if (user) field.report('Der Nutzername ist bereits vergeben.', 'username', field)
             return !user
         }),
-        email: vine.string().email().unique(async (_, value, field) => {
+        email: vine.string().unique(async (_, value, field) => {
             const user = await User.findBy('email', value)
+            /*translation mit der i18n library funktioniert für die unique regel nicht, 
+            deshalb reporte ich hier selbst eine, die im $messages array vor der automatischen ist, 
+            und nehm einfach immer nur die erste bei der ausgabe*/
             if (user) field.report('Die E-Mail-Adresse ist bereits vergeben.', 'email', field)
             return !user
-        }),
+        }).email(),
         password: vine.string().minLength(8).notSameAs('username').notSameAs('email').notSameAs('firstname').notSameAs('lastname').notSameAs('number').confirmed(),
         firstname: vine.string().alpha().optional(),
         lastname: vine.string().alpha().optional(),
@@ -29,15 +32,13 @@ export const loginValidator = vine.compile(
 
 export const updateProfileValidator = vine.compile(
     vine.object({
-        email: vine.string().email().unique(async (_, value, field) => {
+        email: vine.string().unique(async (_, value, field) => {
             const user = await User.findBy('email', value)
             if (user) field.report('Die E-Mail-Adresse ist bereits vergeben.', 'email', field)
             return !user
-        }).optional(),
+        }).email().optional(),
         firstname: vine.string().alpha().optional(),
         lastname: vine.string().alpha().optional(),
         number: vine.string().optional(),
     })
 )
-
-

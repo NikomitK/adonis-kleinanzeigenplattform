@@ -22,9 +22,7 @@
         </div>
 
         @inputError('email')
-        @each(message in $messages.slice(0, 1))
-        <div class="alert alert-danger">{{message}}</div>
-        @end
+        <div class="alert alert-danger">{{$messages[0]}}</div>
         @end
 
         <div class="input-group">
