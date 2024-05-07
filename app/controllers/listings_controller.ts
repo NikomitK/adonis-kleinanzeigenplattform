@@ -93,8 +93,8 @@ export default class ListingsController {
         listing.title = title
         listing.description = description
         listing.price = price
-        listing.negotiable = request.input('negotiable')
-        listing.shipping = request.input('shipping')
+        listing.negotiable = request.input('negotiable') ?? false
+        listing.shipping = request.input('shipping') ?? false
         listing.shipping_price = shipping_price ?? '0.00'
         await listing.save()
 

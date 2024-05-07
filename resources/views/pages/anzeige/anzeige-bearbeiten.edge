@@ -1,9 +1,3 @@
-<script>
-    function disableShippingPrice() {
-        document.getElementById("shipping_price").disabled = !document.getElementById("shipping").checked;
-    }
-</script>
-
 <div class="container">
     <form class="twoxthree-grid" action="/anzeige/{{anzeige.id}}/bearbeiten" method="post">
         @include('partials/imageCarousel')
@@ -36,7 +30,11 @@
                 @end
             </div>
             <div class="form-check">
-                <input name="negotiable" class="form-check-input" type="checkbox" id="negotiable">
+                <input name="negotiable" class="form-check-input" type="checkbox" id="negotiable" 
+                @if(old('negotiable') ?? anzeige.negotiable) 
+                    checked
+                @end
+                >
                 <label class="form-check-label" for="negotiable">
                     Verhandelbar
                 </label>
@@ -53,7 +51,11 @@
             </div>
             <div class="form-check">
                 <input name="shipping" class="form-check-input" type="checkbox" id="shipping"
-                    onchange="disableShippingPrice()">
+                    onchange="disableShippingPrice()" 
+                    @if(old('shipping') ?? anzeige.shipping)
+                        checked
+                    @end
+                    >
                 <label class="form-check-label" for="shipping">
                     Versand möglich
                 </label>
