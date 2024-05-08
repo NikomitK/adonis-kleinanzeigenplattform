@@ -1,5 +1,10 @@
 @import "./style.scss";
 
+@mixin anzeigen-border {
+    border-radius: 0.5em;
+    border: $light-gray 2pt solid;
+}
+
 .twoxthree-grid {
     width: 100%;
     display: flex;
@@ -41,8 +46,7 @@
         }
 
         .carousel-inner {
-            border-radius: 0.5em;
-            border: $light-gray 3pt solid;
+            @include anzeigen-border;
         }
 
     }
@@ -109,8 +113,7 @@
 
     >div:not(:last-of-type) {
         justify-content: center;
-        border-radius: 0.5em;
-        border: $light-gray 3pt solid;
+        @include anzeigen-border;
     }
 
     .anzeige_text-div {
