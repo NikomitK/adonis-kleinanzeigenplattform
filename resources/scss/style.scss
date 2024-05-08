@@ -125,6 +125,10 @@ nav {
 }
 
 @media screen and (min-width: 786px) {
+    #mobile-nav-links {
+        display: none;
+    }
+
     .nk-navbar {
         grid-template-columns: 1fr 1fr 1fr;
         align-items: center;
@@ -145,12 +149,12 @@ nav {
                 transition: 0.3s;
 
                 &:hover {
-                    color: #e1cffa;
+                    color: #00388185;
                 }
             }
 
             a[aria-current="page"] {
-                color: #a572f3;
+                color: #003781;
                 pointer-events: none;
                 cursor: default;
             }

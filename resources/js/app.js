@@ -8,13 +8,8 @@ navLinks.forEach(link => {
     }
 })
 
-
 let navbarToggler = document.getElementById('navbar-toggler')
 let mobileNavLinks = document.getElementById('mobile-nav-links')
-
-if (window.screen.width > 768) {
-    mobileNavLinks.ariaHidden = 'true'
-}
 
 navbarToggler.addEventListener('click', function () {
     if (navbarToggler.getAttribute("aria-expanded") == "true") {
