@@ -212,12 +212,12 @@ nav {
 #profile-top {
     display: grid;
     border-radius: 0.5em;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 3fr 1fr;
     row-gap: 1em;
     justify-items: center;
     align-items: center;
     background-color: $light-gray;
-    padding-block: 0.5em;
+    padding: 0.5em;
 }
 
 #profile-top_left {
@@ -236,9 +236,6 @@ nav {
     grid-template-columns: 1fr;
     justify-items: start;
 
-    >span {
-        margin-bottom: 0.5em;
-    }
 
     input {
         margin-bottom: 1.5em;
