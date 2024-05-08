@@ -66,8 +66,8 @@
         </div>
         <div class="anzeige-aufgeben_price">
             <div class="form-floating">
-                <input name="shipping_price" class="form-control" type="number" id="shipping_price"
-                    placeholder="Versandkosten" step="any" disabled>
+                <input name="shipping_price" class="form-control" type="number" id="shipping_price" step="0.01"
+                    placeholder="Versandkosten" disabled>
                 <label for="shipping_price">Versandkosten</label>
                 @inputError('shipping_price')
                 <div class="alert alert-danger">Ungültiger Preis</div>
