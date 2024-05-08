@@ -145,12 +145,12 @@ nav {
                 transition: 0.3s;
 
                 &:hover {
-                    color: $light-gray;
+                    color: #e1cffa;
                 }
             }
 
             a[aria-current="page"] {
-                color: #dddddd;
+                color: #a572f3;
                 pointer-events: none;
                 cursor: default;
             }
