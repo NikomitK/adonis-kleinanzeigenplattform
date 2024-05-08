@@ -22,6 +22,9 @@
 
 @import "../scss/custom.scss";
 
+.fit-content {
+    min-width: fit-content;
+}
 
 .btn-gray {
     background-color: $gray-400 !important;
