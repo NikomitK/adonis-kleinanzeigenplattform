@@ -47,7 +47,7 @@
 .chat-container {
     $chat-container-border-radius: 2em;
     display: grid;
-    grid-template-rows: 1fr 5fr 1fr;
+    grid-template-rows: 1fr 8fr 1fr;
     border-radius: $chat-container-border-radius;
     border: 2px solid #dddddd;
     height: 80vh;
@@ -74,15 +74,15 @@
 
         .anzeigen-container {
             display: flex;
-            gap: 1em;
-            justify-content: start;
+            gap: 0.5em;
+            justify-content: end;
             align-items: center;
         }
 
         .user-container {
             display: flex;
-            gap: 1em;
-            justify-content: end;
+            gap: 0.5em;
+            justify-content: start;
             align-items: center;
         }
     }
@@ -133,20 +133,13 @@
         align-items: center;
         background-color: $light-gray;
 
-        textarea {
-            width: 80%;
-            height: 70%;
-            resize: none;
-            border-radius: 3em 0 0 3em;
-            padding: 0.5em 1em;
+        #message {
             border-color: $secondary;
+            border-radius: 3em 0 0 3em;
         }
 
-        input {
+        button {
             border-radius: 0 3em 3em 0;
-            min-width: fit-content;
-            max-width: 5%;
-            height: 70%;
         }
     }
 }
