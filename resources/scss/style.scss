@@ -110,7 +110,7 @@ nav {
     
             li {
                 a {
-                    color: #0f0f0f;
+                    color: white;
                     text-decoration: none;
                     transition: 0.3s;
     
@@ -119,8 +119,8 @@ nav {
                     }
                 }
     
-                a[aria-selected="true"] {
-                    color: #1f1f1f;
+                a[aria-current="page"] {
+                    color: $primary;
                 }
             }
         }
@@ -157,7 +157,7 @@ nav {
             }
 
             a[aria-current="page"] {
-                color: #003781;
+                color: $primary;
                 pointer-events: none;
                 cursor: default;
             }

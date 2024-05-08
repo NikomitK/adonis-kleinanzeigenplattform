@@ -13,14 +13,15 @@
             <ul class="nav-link-container">
                 <li><a href="/chat-overview">Chats</a></li>
                 <li><a href="/anzeige-aufgeben">Anzeige aufgeben</a></li>
-                @if(auth.user) 
+                @if(auth.user)
                 <li><a href="/konto">Konto</a></li>
                 @else
                 <li><a href="/login">Login/Registrieren</a></li>
                 @end
             </ul>
             <div class="nk-nav-toggler">
-                <button id="navbar-toggler" onclick="" aria-expanded="false" aria-controls="nav-link-container" aria-label="Toggle navigation">
+                <button id="navbar-toggler" onclick="" aria-expanded="false" aria-controls="nav-link-container"
+                    aria-label="Toggle navigation">
                     <img src="{{ asset('resources/images/icons/menu.svg')}}" alt="Öffne das Menü" width="32pt">
                 </button>
             </div>
@@ -33,7 +34,11 @@
             <li><a href="/meine-anzeigen">Meine Anzeigen</a></li>
             <li><a href="/chat-overview">Chats</a></li>
             <li><a href="/anzeige-aufgeben">Anzeige aufgeben</a></li>
+            @if(auth.user)
             <li><a href="/konto">Konto</a></li>
+            @else
+            <li><a href="/login">Login/Registrieren</a></li>
+            @end
         </ul>
     </div>
 </nav>
