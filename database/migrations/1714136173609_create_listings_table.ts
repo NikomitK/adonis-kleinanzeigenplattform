@@ -8,7 +8,7 @@ export default class extends BaseSchema {
             table.increments('id').primary()
             table.string('username').references('username').inTable('users').notNullable()
             table.string('title').notNullable()
-            table.string('description').notNullable()
+            table.text('description').notNullable()
             table.string('price').notNullable()
             table.boolean('negotiable').notNullable().defaultTo(false)
             table.boolean('shipping').notNullable().defaultTo(false)
