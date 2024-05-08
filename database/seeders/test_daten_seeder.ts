@@ -31,7 +31,7 @@ export default class extends BaseSeeder {
             username: 'ProgrammierKatze',
             email: 'katze@katze.dev',
             password: 'test',
-            picture: 'katze_laptop.gif'
+            picture: 'ProgrammierKatze.gif'
         }
     ])
 
