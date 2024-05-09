@@ -49,6 +49,7 @@
     "sass": "^1.75.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3",
+    "unlighthouse": "^0.12.1",
     "vite": "^5.0.12"
   },
   "dependencies": {
