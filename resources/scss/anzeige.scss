@@ -21,23 +21,23 @@
         justify-content: flex-start;
     }
 
-    .anzeige-aufgeben_bild-div {
 
+
+    .anzeige-aufgeben_bild-div {
+        height: 100%;
         width: 100%;
         display: flex !important;
         flex-direction: column-reverse;
         gap: 2em;
 
+        img {
+            aspect-ratio: 16/9;
+            object-fit: contain;
+        }
+
 
         * {
             border-radius: 0.5em;
-        }
-
-        .anzeigen-image {
-            width: 100%;
-            border-radius: 0.4em;
-            object-fit: contain;
-            aspect-ratio: 16/9;
         }
 
         .carousel-control-prev,
@@ -95,6 +95,7 @@
     }
 
     .anzeige_image-div {
+        height: 100%;
         width: 100%;
         display: flex;
         align-items: center !important;
@@ -104,7 +105,10 @@
         }
 
         #imageCarousel {
+            height: 100%;
             width: 100%;
+            display: flex;
+            align-items: center;
             aspect-ratio: 16/9;
 
             .carousel-item {
@@ -113,6 +117,7 @@
             }
 
         }
+
 
         img {
             width: 100%;
