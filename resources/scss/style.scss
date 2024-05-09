@@ -241,31 +241,7 @@ nav {
     min-height: 75pt;
 }
 
-#profile-general {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr;
-    justify-items: start;
-
-
-    input {
-        margin-bottom: 1.5em;
-    }
-}
-
-@media screen and (min-width: 768px) {
-
-    #profile-general {
-        grid-template-columns: 1fr 1fr;
-        row-gap: 1em;
-    }
-
-    #profile-information {
-        display: grid;
-        grid-template-columns: 1fr;
-        column-gap: 1em;
-    }
-
+@media (min-width: 768px) {
     #profile-top {
         padding: 1em;
         display: flex;
@@ -273,15 +249,7 @@ nav {
         justify-content: space-between;
         gap: 1em;
     }
-
-    #profile-general {
-        .btn-secondary {
-            max-width: fit-content;
-        }
-    }
-
 }
-
 
 .anzeige {
     $anzeigen-width: 90%;
