@@ -41,13 +41,14 @@ export default class ListingsController {
         return view.render('layouts/anzeige', { page: 'pages/anzeige/anzeige-aufgeben', title: 'Anzeige aufgeben' })
     }
 
-    async createProcess({ view, request, response, auth }: HttpContext) {
+    async createProcess({ view, request, response, session, auth }: HttpContext) {
         const user = auth.user!
 
         const images = request.files('images', { extnames: ['jpg', 'png', 'jpeg', 'webp'] })
 
-        if (!images === null) {
-            return view.render('layouts/anzeige', { page: 'pages/anzeige/anzeige-aufgeben', error: 'Bitte füge ein Bild hinzu' })
+        if (!images || images.length === 0) {
+            session.flashErrors({ images: 'Bitte füge mindestens ein Bild hinzu' })
+            return view.render('layouts/anzeige', { page: 'pages/anzeige/anzeige-aufgeben' })
         }
 
         const { title, description, price, shipping_price} = await request.validateUsing(lisitingFormValidator)
@@ -86,7 +87,6 @@ export default class ListingsController {
         if(user.since.diffNow('years').years < -1) {
             await new Achieved().fill({username: user.username, title: 'Treuer Nutzer'}).save()
         }
-        console.log(user.since.diffNow('years').years)
 
     }
 

@@ -28,7 +28,6 @@
         width: 100%;
         display: flex !important;
         flex-direction: column-reverse;
-        gap: 2em;
 
         img {
             aspect-ratio: 16/9;
@@ -45,8 +44,29 @@
             background-image: none;
         }
 
+        #previewCarousel {
+            height: 100%;
+            width: 100%;
+            aspect-ratio: 16/9;
+
+            .carousel-item {
+                aspect-ratio: 16/9;
+                height: 100%;
+            }
+
+            img {
+                width: 100%;
+                height: 100%;
+                aspect-ratio: 16/9;
+                object-fit: contain;
+            }
+        }
+
         .carousel-inner {
             @include anzeigen-border;
+            height: 100%;
+            display: flex;
+            align-items: center;
         }
 
     }

@@ -9,7 +9,10 @@
 <div class="container">
     <form class="twoxthree-grid" action="/anzeige-aufgeben" method="post" enctype="multipart/form-data">
         <div class="anzeige-aufgeben_bild-div">
-            <input name="images" accept="image/*" class="form-control" type="file" id="imageInput" multiple
+            @error('images')
+            <div class="alert alert-danger mb-0">Es muss mindestens ein Bild hochgeladen werden.</div>
+            @end
+            <input name="images" accept="image/*" class="form-control mt-3" type="file" id="imageInput" multiple
                 maxlength="10" value="{{ old('images') ?? null }}">
             <div id="previewCarousel" class="carousel slide">
                 <div class="carousel-inner">
