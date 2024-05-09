@@ -90,6 +90,13 @@ export default class extends BaseSeeder {
             description: 'schwibke wibke',
             price: '3.00',
             status: 'active'
+        },
+        {
+            username: 'nikomitk',
+            title: 'Breit und Hoch',
+            description: 'Diese Bilder sind sehr breit und hoch. Dies wird genutzt, um die Funktionalität der Bildergalerie zu testen.',
+            price: '0.00',
+            status: 'active'
         }
     ])
     
@@ -107,7 +114,9 @@ export default class extends BaseSeeder {
         {path: 'bwl4.webp', listing_id: 7},
         {path: 'bwl5.webp', listing_id: 7},
         {path: 'bwl6.webp', listing_id: 7},
-        {path: 'bwl7.webp', listing_id: 7}
+        {path: 'bwl7.webp', listing_id: 7},
+        {path: 'wide.webp', listing_id: 8},
+        {path: 'tall.webp', listing_id: 8}
     ])
   }
 }
