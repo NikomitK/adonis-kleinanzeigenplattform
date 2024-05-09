@@ -7,7 +7,7 @@ import Listing from '#models/listing';
 import Image from '#models/image';
 import User from '#models/user';
 import Saved from '#models/saved';
-import { lisitingFormValidator } from '#validators/listing';
+import { lisitingFormValidator, multipleImageValidator, singleImageValidator } from '#validators/listing';
 import db from '@adonisjs/lucid/services/db';
 import Achieved from '#models/achieved';
 
@@ -41,14 +41,16 @@ export default class ListingsController {
         return view.render('layouts/anzeige', { page: 'pages/anzeige/anzeige-aufgeben', title: 'Anzeige aufgeben' })
     }
 
-    async createProcess({ view, request, response, session, auth }: HttpContext) {
+    async createProcess({ request, response, auth }: HttpContext) {
         const user = auth.user!
 
-        const images = request.files('images', { extnames: ['jpg', 'png', 'jpeg', 'webp'] })
+        const images = request.files('images')
 
-        if (!images || images.length === 0) {
-            session.flashErrors({ images: 'Bitte füge mindestens ein Bild hinzu' })
-            return view.render('layouts/anzeige', { page: 'pages/anzeige/anzeige-aufgeben' })
+        // Wenn nur ein Bild hochgeladen wird, wird es als einzelnes Bild behandelt und nicht als array, weshalb die array validation rule fehlschlagen würde
+        if (!images || images.length === 1) {
+            await request.validateUsing(singleImageValidator)
+        } else {
+            await request.validateUsing(multipleImageValidator)
         }
 
         const { title, description, price, shipping_price} = await request.validateUsing(lisitingFormValidator)
@@ -64,7 +66,7 @@ export default class ListingsController {
 
         const result = await tmpListing.save()
 
-        // Bewusste Entscheidung, browser nicht zu unterstützen, die kein webp können. Wer seit 5 Jahren kein browser update mehr gemacht hat selbst schuld. Performance- und Speicher-impact sind relevant größer
+        // Bewusste Entscheidung, Browser nicht zu unterstützen, die kein webp können. Wer seit 5 Jahren kein Browser update mehr gemacht hat selbst schuld. Performance- und Speicher-impact sind relevant größer
         for await (const image of images) {
             const tmpCuid = cuid();
             await sharp(image.tmpPath).toFile(app.publicPath(`/anzeigen/${tmpCuid}.webp`))
