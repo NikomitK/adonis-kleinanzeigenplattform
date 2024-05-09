@@ -5,6 +5,7 @@ import User from '#models/user';
 import Image from '#models/image';
 import Message from '#models/message';
 import Listing from '#models/listing';
+import Achieved from '#models/achieved';
 
 export default class ChatsController {
     
@@ -68,7 +69,14 @@ export default class ChatsController {
             content: request.input('message'),
             sendername: user.username
         })
-        return response.redirect('back')
+        response.redirect('back')
+
+        //check for achievment
+        user.messageCount++
+        await user.save()
+        if(user.messageCount === 50) {
+            await new Achieved().fill({username: user.username, title: 'Gesprächs-Enthusiast'}).save()
+        }
     }
 
 }

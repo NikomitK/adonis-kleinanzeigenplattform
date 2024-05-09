@@ -9,6 +9,7 @@ import User from '#models/user';
 import Saved from '#models/saved';
 import { lisitingFormValidator } from '#validators/listing';
 import db from '@adonisjs/lucid/services/db';
+import Achieved from '#models/achieved';
 
 export default class ListingsController {
 
@@ -69,7 +70,24 @@ export default class ListingsController {
             await new Image().fill({ path: `${tmpCuid}.webp`, listing_id: result.id }).save()
         }
 
-        return response.redirect(`/anzeige/${result.id}`)
+        response.redirect(`/anzeige/${result.id}`)
+
+        //check for achievments
+        user.listingCount++
+        await user.save()
+        if(user.listingCount === 1) {
+            await new Achieved().fill({username: user.username, title: 'Erstverkäufer'}).save()
+        } else if(user.listingCount === 20) {
+            await new Achieved().fill({username: user.username, title: 'Anzeigen-veteran'}).save()
+        }
+        if(tmpListing.description.length > 100){
+            await new Achieved().fill({username: user.username, title: 'Schriftsteller'}).save()
+        }
+        if(user.since.diffNow('years').years < -1) {
+            await new Achieved().fill({username: user.username, title: 'Treuer Nutzer'}).save()
+        }
+        console.log(user.since.diffNow('years').years)
+
     }
 
     async editForm({ view, request, auth }: HttpContext) {

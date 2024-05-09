@@ -33,4 +33,10 @@ export default class User extends compose(BaseModel, AuthFinder) {
 
     @column()
     declare number: string | null
+
+    @column()
+    declare listingCount: number
+
+    @column()
+    declare messageCount: number
 }

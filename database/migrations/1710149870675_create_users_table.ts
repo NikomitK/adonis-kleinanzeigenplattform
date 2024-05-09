@@ -13,6 +13,8 @@ export default class extends BaseSchema {
             table.string('password').notNullable()
             table.string('picture').defaultTo('default.png')
             table.string('number').nullable()
+            table.integer('listing_count').defaultTo(0)
+            table.integer('message_count').defaultTo(0)
         })
     }
 
