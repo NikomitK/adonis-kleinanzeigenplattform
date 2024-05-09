@@ -2,23 +2,23 @@
     margin: 0;
     padding: 0;
     min-width: 0;
-  }
-  
-  html,
-  body {
+}
+
+html,
+body {
     height: 100%;
     width: 100%;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-  }
-  
-  main {
-      flex: 1;
-      padding-top: 1em;
-  }
-  
-  
+}
+
+main {
+    flex: 1;
+    padding-top: 1em;
+}
+
+
 
 @import "../scss/custom.scss";
 
@@ -99,7 +99,7 @@ nav {
     &.shown {
         background-color: #dddddd !important;
         padding-block: 1em;
-    
+
         .nav-link-container {
             list-style: none;
             display: flex;
@@ -107,18 +107,18 @@ nav {
             gap: 1.5rem;
             width: 100%;
             margin: 0;
-    
+
             li {
                 a {
                     color: white;
                     text-decoration: none;
                     transition: 0.3s;
-    
+
                     &:hover {
                         color: $light-gray;
                     }
                 }
-    
+
                 a[aria-current="page"] {
                     color: $primary;
                 }
@@ -210,24 +210,35 @@ nav {
 }
 
 #profile-top {
-    display: grid;
+    display: flex;
     border-radius: 0.5em;
-    grid-template-columns: 3fr 1fr;
-    row-gap: 1em;
-    justify-items: center;
+    gap: 1em;
+    justify-content: space-between;
     align-items: center;
     background-color: $light-gray;
     padding: 0.5em;
+
+    .btn-danger {
+        min-width: fit-content;
+    }
 }
 
 #profile-top_left {
     display: flex;
     align-items: center;
     gap: 1em;
+
+    h2 {
+        word-break: break-all;
+    }
+
 }
 
 #profile-image {
     border-radius: 50%;
+    aspect-ratio: 1 / 1;
+    min-width: 75pt;
+    min-height: 75pt;
 }
 
 #profile-general {
