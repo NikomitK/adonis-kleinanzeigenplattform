@@ -9,11 +9,13 @@
 <div class="container">
     <form class="twoxthree-grid" action="/anzeige-aufgeben" method="post" enctype="multipart/form-data">
         <div class="anzeige-aufgeben_bild-div">
-            <input name="images" accept="image/*" class="form-control" type="file" id="imageInput" multiple maxlength="10" value="{{ old('images') ?? null }}">
+            <input name="images" accept="image/*" class="form-control" type="file" id="imageInput" multiple
+                maxlength="10" value="{{ old('images') ?? null }}">
             <div id="previewCarousel" class="carousel slide">
                 <div class="carousel-inner">
                     <div class="carousel-item active">
-                        <img src="{{ asset('resources/images/placeholder.webp') }}" alt="" class="w-100 d-block anzeigen-image">
+                        <img src="{{ asset('resources/images/placeholder.webp') }}" alt=""
+                            class="w-100 d-block anzeigen-image">
                     </div>
                 </div>
                 <button class="carousel-control-prev d-none" type="button" data-bs-target="#previewCarousel"
@@ -30,8 +32,8 @@
         </div>
         <div id="anzeige-aufgeben_text-div">
             <div class="form-floating">
-                <input name="title" class="form-control" type="text" id="title" placeholder="Titel der Anzeige" minlength="4"
-                    maxlength="80" required value="{{ old('title') ?? '' }}">
+                <input name="title" class="form-control" type="text" id="title" placeholder="Titel der Anzeige"
+                    minlength="4" maxlength="80" required value="{{ old('title') ?? '' }}">
                 <label for="title">Titel der Anzeige</label>
                 @inputError('title')
                 <div class="alert alert-danger">Der Titel muss zwischen 4 und 80 Zeichen liegen.</div>
@@ -39,7 +41,7 @@
             </div>
             <div class="form-floating">
                 <textarea name="description" class="form-control" id="description"
-                    placeholder="Beschreibung der Anzeige" minlength="50" maxlength="1000"
+                    placeholder="Beschreibung der Anzeige" minlength="10" maxlength="1000"
                     required>{{ old('description') ?? '' }}</textarea>
                 <label for="description">Beschreibung der Anzeige</label>
 
@@ -138,7 +140,7 @@
         if (!e.currentTarget.files) return;
         previewImages([...e.currentTarget.files]);
 
-        if(e.currentTarget.files.length > 1) {
+        if (e.currentTarget.files.length > 1) {
             document.querySelectorAll('#previewCarousel button').forEach(
                 button => { button.classList.remove('d-none') });
         }

@@ -12,7 +12,8 @@
             </div>
             <div class="form-floating">
                 <textarea name="description" class="form-control" id="description"
-                    placeholder="Beschreibung der Anzeige" minlength="50" required>{{ old('description') ?? anzeige.description }}</textarea>
+                    placeholder="Beschreibung der Anzeige" minlength="10" maxlength="1000"
+                    required>{{ old('description') ?? anzeige.description }}</textarea>
                 <label for="description">Beschreibung der Anzeige</label>
 
             </div>
@@ -43,7 +44,8 @@
         <div class="anzeige-aufgeben_price">
             <div class="form-floating">
                 <input name="shipping_price" class="form-control" type="number" id="shipping_price"
-                    placeholder="Versandkosten" step="any" disabled value="{{ old('shipping_price') ?? anzeige.shipping_price}}">
+                    placeholder="Versandkosten" step="any" disabled
+                    value="{{ old('shipping_price') ?? anzeige.shipping_price}}">
                 <label for="shipping_price">Versandkosten</label>
                 @inputError('shipping_price')
                 <div class="alert alert-danger">Ungültiger Preis</div>
