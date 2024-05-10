@@ -16,6 +16,12 @@
         <p class="card-text">{{$props.anzeige.description}}</p>
         <div class="d-flex flex-nowrap gap-3 align-items-center">
             @if(!$props.myListing)
+            <a href="/chat/{{ $props.anzeige.id }}/{{ $props.user ? $props.user.username : null }}"
+                class="btn btn-secondary anzeigen-btn">
+                <img src="{{ asset('resources/images/icons/chat.svg') }}"
+                    alt="Starte einen Chat zu dieser Anzeige">
+            </a>
+
             <button class="btn btn-secondary anzeigen-btn" onclick="
             @if($props.saved)
             unsaveListing({{$props.anzeige.id}})
@@ -30,12 +36,6 @@
                     alt="Speicher diese Anzeige">
                 @end
             </button>
-
-            <a href="/chat/{{ $props.anzeige.id }}/{{ $props.user ? $props.user.username : null }}"
-                class="btn btn-secondary anzeigen-btn">
-                <img src="{{ asset('resources/images/icons/chat.svg') }}"
-                    alt="Starte einen Chat zu dieser Anzeige">
-            </a>
 
             @end
             <b class="text-success">
