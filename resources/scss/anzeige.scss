@@ -148,7 +148,7 @@
 
         .carousel-control-prev,
         .carousel-control-next {
-            background-image: none;
+            background-image: radial-gradient(circle, rgba(255,255,255,0.80) 5%, rgba(255,255,255,0.66) 10%, rgba(255,255,255,0.2) 14%, rgba(255,255,255,0) 17%);
         }
     }
 
