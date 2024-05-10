@@ -255,7 +255,7 @@ nav {
     $anzeigen-width: 90%;
 
     width: $anzeigen-width;
-    height: 1.3 * $anzeigen-width !important;
+    height: 1.35 * $anzeigen-width !important;
 
     .anzeigen-status,
     .anzeigen-image {
@@ -314,7 +314,7 @@ nav {
     .anzeige {
         $anzeigen-width: 18rem;
         width: $anzeigen-width;
-        height: 1.4 * $anzeigen-width !important;
+        height: 1.7 * $anzeigen-width !important;
     }
 }
 
