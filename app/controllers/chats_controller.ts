@@ -10,10 +10,10 @@ import Achieved from '#models/achieved';
 export default class ChatsController {
     
     async displayChatOverview({ view, auth }: HttpContext) {
+        // auth.user muss den user liefern, weil die route durch die middleware geschützt ist, deshalb !
         const user = auth.user!
 
         //die langen queries mit join, subqueries, etc. fand ich zu kompliziert, um sie auf die model schreibweise zu übersetzen
-
         const ownChats = await db.from('messages')
         .join('listings', 'messages.listing_id', 'listings.id')
         .join('images', 'listings.id', 'images.listing_id')
@@ -31,11 +31,12 @@ export default class ChatsController {
         return view.render('layouts/chat', { page: 'pages/user/chat_overview', foreignChats, ownChats, title: 'Chats', user })
     }
 
-    async displayChat({ view, auth, request }: HttpContext) {
+    async displayChat({ view, auth, request, response }: HttpContext) {
         const user = auth.user!
 
         const listing =  await Listing.find(request.params().id)
         if(!listing) {
+            //TODO change to response.notFound etc
             throw new Exception('Not found', { status: 404 })
         }
         if (user.username !== request.params().username && user.username !== listing.username) {
@@ -48,7 +49,6 @@ export default class ChatsController {
         const listingImage = await Image.findBy('listing_id', request.params().id)
 
         const chat = await Message.query().where('listing_id', request.params().id).where('username', request.params().username)
-        console.log(chat)
         if (!chat) {
             throw new Exception('Not found', { status: 404 })
         }
@@ -71,7 +71,7 @@ export default class ChatsController {
         })
         response.redirect('back')
 
-        //check for achievment
+        // Überprüfung, ob achievment erreicht wurde
         user.messageCount++
         await user.save()
         if(user.messageCount === 50) {

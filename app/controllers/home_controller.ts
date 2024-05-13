@@ -6,7 +6,6 @@ export default class HomeController {
     async home({ view, auth, request }: HttpContext) {
         const user = await auth.check() ? auth.user! : null
 
-
         let anzeigen = await db.from('listings')
             .select('listings.*', 'images.path')
             .join('images', 'listings.id', '=', 'images.listing_id')
@@ -19,7 +18,7 @@ export default class HomeController {
         const search = request.input('search')
         if (search) {
             anzeigen = anzeigen.filter((anzeige: Listing) => {
-                return anzeige.title.toLowerCase().includes(search.toLowerCase()) || anzeige.description.toLowerCase().includes(search.toLowerCase())
+                return anzeige.title.toLowerCase().includes(search.toLowerCase())
             })
         }
 
@@ -39,7 +38,7 @@ export default class HomeController {
         const search = request.input('search')
         if (search) {
             anzeigen = anzeigen.filter((anzeige: Listing) => {
-                return anzeige.title.toLowerCase().includes(search.toLowerCase()) || anzeige.description.toLowerCase().includes(search.toLowerCase())
+                return anzeige.title.toLowerCase().includes(search.toLowerCase())
             })
         }
 
@@ -61,7 +60,7 @@ export default class HomeController {
         const search = request.input('search')
         if (search) {
             anzeigen = anzeigen.filter((anzeige: Listing) => {
-                return anzeige.title.toLowerCase().includes(search.toLowerCase()) || anzeige.description.toLowerCase().includes(search.toLowerCase())
+                return anzeige.title.toLowerCase().includes(search.toLowerCase())
             })
         }
 

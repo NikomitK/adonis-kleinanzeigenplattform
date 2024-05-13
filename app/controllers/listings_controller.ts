@@ -14,6 +14,7 @@ import Achieved from '#models/achieved';
 export default class ListingsController {
 
     async show({ request, view, auth }: HttpContext) {
+        // Der auth.check() call ist nötig, da die route nicht von der middleware protected ist, weshalb das auth.user nicht ohne den check funktionieren kann
         const user = await auth.check() ? auth.user! : null
 
         const anzeige = await Listing.find(request.params().id)
@@ -46,7 +47,7 @@ export default class ListingsController {
 
         const images = request.files('images')
 
-        // Wenn nur ein Bild hochgeladen wird, wird es als einzelnes Bild behandelt und nicht als array, weshalb die array validation rule fehlschlagen würde
+        // Wenn nur ein Bild hochgeladen wird, wird es automatisch als einzelnes Bild behandelt und nicht als array, weshalb die array validation rule fehlschlagen würde
         if (!images || images.length === 1) {
             await request.validateUsing(singleImageValidator)
         } else {
@@ -60,6 +61,7 @@ export default class ListingsController {
         tmpListing.title = title
         tmpListing.description = description
         tmpListing.price = price
+        // Bei den checkbox inputs macht die validierung nicht wirklich sinn, und da die keine booleans liefern, 
         tmpListing.negotiable = request.input('negotiable') || false
         tmpListing.shipping = request.input('shipping') || false
         tmpListing.shipping_price = shipping_price ?? '0.00'
@@ -75,7 +77,7 @@ export default class ListingsController {
 
         response.redirect(`/anzeige/${result.id}`)
 
-        //check for achievments
+        // Überprüfung, ob achievment erreicht wurde
         user.listingCount++
         await user.save()
         if(user.listingCount === 1) {
@@ -123,8 +125,8 @@ export default class ListingsController {
         listing.title = title
         listing.description = description
         listing.price = price
-        listing.negotiable = request.input('negotiable') ?? false
-        listing.shipping = request.input('shipping') ?? false
+        listing.negotiable = request.input('negotiable') || false
+        listing.shipping = request.input('shipping') || false
         listing.shipping_price = shipping_price ?? '0.00'
         await listing.save()
 
