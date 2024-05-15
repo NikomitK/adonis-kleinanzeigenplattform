@@ -8,25 +8,25 @@ import Listing from '#models/listing';
 import Achieved from '#models/achieved';
 
 export default class ChatsController {
-    
+
     async displayChatOverview({ view, auth }: HttpContext) {
         // auth.user muss den user liefern, weil die route durch die middleware geschützt ist, deshalb !
         const user = auth.user!
 
         //die langen queries mit join, subqueries, etc. fand ich zu kompliziert, um sie auf die model schreibweise zu übersetzen
         const ownChats = await db.from('messages')
-        .join('listings', 'messages.listing_id', 'listings.id')
-        .join('images', 'listings.id', 'images.listing_id')
-        .where('listings.username', user.username)
-        .groupBy('messages.listing_id', 'messages.username')
-        .select('messages.*', 'listings.title', 'listings.username as poster', 'messages.username as other', 'images.path')
+            .join('listings', 'messages.listing_id', 'listings.id')
+            .join('images', 'listings.id', 'images.listing_id')
+            .where('listings.username', user.username)
+            .groupBy('messages.listing_id', 'messages.username')
+            .select('messages.*', 'listings.title', 'listings.username as poster', 'messages.username as other', 'images.path')
 
         const foreignChats = await db.from('messages')
-        .join('listings', 'messages.listing_id', 'listings.id')
-        .join('images', 'listings.id', 'images.listing_id')
-        .where('messages.username', user.username)
-        .groupBy('messages.listing_id')
-        .select('messages.*', 'listings.title', 'listings.username as other', 'messages.username as poster', 'images.path')
+            .join('listings', 'messages.listing_id', 'listings.id')
+            .join('images', 'listings.id', 'images.listing_id')
+            .where('messages.username', user.username)
+            .groupBy('messages.listing_id')
+            .select('messages.*', 'listings.title', 'listings.username as other', 'messages.username as poster', 'images.path')
 
         return view.render('layouts/chat', { page: 'pages/user/chat_overview', foreignChats, ownChats, title: 'Chats', user })
     }
@@ -34,8 +34,8 @@ export default class ChatsController {
     async displayChat({ view, auth, request, response }: HttpContext) {
         const user = auth.user!
 
-        const listing =  await Listing.find(request.params().id)
-        if(!listing) {
+        const listing = await Listing.find(request.params().id)
+        if (!listing) {
             // Fehlermeldungen nicht mit z.B. response.notFound(), weil ich dann nicht auf die Fehlerseite geleitet werde sondern einfach ganz die connection verloren geht
             throw new Exception('Not found', { status: 404 })
         }
@@ -43,9 +43,8 @@ export default class ChatsController {
             throw new Exception('Unauthorized', { status: 403 })
         }
 
-        let other =  
-        await User.find(user.username === request.params().username ? listing.username : request.params().username)
-        
+        let other = await User.find(user.username === request.params().username ? listing.username : request.params().username)
+
         const listingImage = await Image.findBy('listing_id', request.params().id)
 
         const chat = await Message.query().where('listing_id', request.params().id).where('username', request.params().username)
@@ -74,8 +73,8 @@ export default class ChatsController {
         // Überprüfung, ob achievment erreicht wurde
         user.messageCount++
         await user.save()
-        if(user.messageCount === 50) {
-            await new Achieved().fill({username: user.username, title: 'Gesprächs-Enthusiast'}).save()
+        if (user.messageCount === 50) {
+            await new Achieved().fill({ username: user.username, title: 'Gesprächs-Enthusiast' }).save()
         }
     }
 

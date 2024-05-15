@@ -87,7 +87,7 @@ export default class extends BaseSeeder {
         {
             username: 'asdfkeinplan',
             title: 'bwl präsentation',
-            description: 'schwibke wibke',
+            description: 'Hab exmatrikuliert bevor ich diese Präsentation halten musste, deshalb verkaufe ich sie jetzt.',
             price: '3.00',
             status: 'active'
         },
