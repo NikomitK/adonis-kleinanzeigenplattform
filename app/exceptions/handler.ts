@@ -22,16 +22,16 @@ export default class HttpExceptionHandler extends ExceptionHandler {
      */
     protected statusPages: Record<StatusPageRange, StatusPageRenderer> = {
         '403': (error, { view }) => {
-            return view.render('layouts/base', { page: 'pages/errors/forbidden', error })
+            return view.render('layouts/login', { page: 'pages/errors/forbidden', error })
         },
         '404': (error, { view }) => {
-            return view.render('layouts/base', { page: 'pages/errors/not_found', error })
+            return view.render('layouts/login', { page: 'pages/errors/not_found', error })
         },
         '418': (error, { view }) => {
-            return view.render('layouts/base', { page: 'pages/errors/im_a_teapot', error })
+            return view.render('layouts/login', { page: 'pages/errors/im_a_teapot', error })
         },
         '500..599': (error, { view }) => {
-            return view.render('layouts/base', { page: 'pages/errors/server_error', error })
+            return view.render('layouts/login', { page: 'pages/errors/server_error', error })
         },
     }
 
