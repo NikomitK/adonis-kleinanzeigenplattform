@@ -36,7 +36,7 @@ export default class ChatsController {
 
         const listing =  await Listing.find(request.params().id)
         if(!listing) {
-            //TODO change to response.notFound etc
+            // Fehlermeldungen nicht mit z.B. response.notFound(), weil ich dann nicht auf die Fehlerseite geleitet werde sondern einfach ganz die connection verloren geht
             throw new Exception('Not found', { status: 404 })
         }
         if (user.username !== request.params().username && user.username !== listing.username) {
