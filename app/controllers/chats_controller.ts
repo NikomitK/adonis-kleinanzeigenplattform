@@ -31,7 +31,7 @@ export default class ChatsController {
         return view.render('layouts/chat', { page: 'pages/user/chat_overview', foreignChats, ownChats, title: 'Chats', user })
     }
 
-    async displayChat({ view, auth, request, response }: HttpContext) {
+    async displayChat({ view, auth, request }: HttpContext) {
         const user = auth.user!
 
         const listing = await Listing.find(request.params().id)

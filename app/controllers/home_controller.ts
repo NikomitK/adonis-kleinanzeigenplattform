@@ -4,6 +4,7 @@ import db from '@adonisjs/lucid/services/db'
 export default class HomeController {
 
     async home({ view, auth, request }: HttpContext) {
+        // Der auth.check() call ist nötig, da die route nicht von der middleware protected ist, weshalb das auth.user nicht ohne den check funktionieren kann
         const user = await auth.check() ? auth.user! : null
 
         let anzeigen = await db.from('listings')

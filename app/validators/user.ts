@@ -12,9 +12,6 @@ export const registerValidator = vine.compile(
             return !user
         }).email(),
         password: vine.string().minLength(8).maxLength(255).notSameAs('username').notSameAs('email').confirmed(),
-        firstname: vine.string().alpha().optional(),
-        lastname: vine.string().alpha().optional(),
-        number: vine.string().optional(),
     })
 )
 
