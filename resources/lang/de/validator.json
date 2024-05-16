@@ -11,7 +11,8 @@
             "password.maxLength": "Das Passwort darf maximal 255 Zeichen haben.",
             "password.confirmed": "Die Passwörter müssen übereinstimmen.",
             "password.notSameAs": "Dein Passwort darf weder dein Nutzername noch deine Email-Adresse enthalten.",
-            "password": "Das Passwort ist nicht valide."
+            "password": "Das Passwort ist nicht valide.",
+            "mobile": "Das ist keine valide Telefonnummer."
         }
     }
 }

@@ -3,27 +3,43 @@
         @!component('components/profile-top', { user, logout: true})
         <form id="profile-general" action="/konto" method="post" enctype="multipart/form-data">
             {{ csrfField() }}
-            <label for="image">Profilbild:</label> <input id="image" name="image" class="form-control form-control-sm" type="file"
-                placeholder="{{user.image}}">
+            <label for="image">Profilbild:</label> <input id="image" name="image" class="form-control form-control-sm"
+                type="file" placeholder="{{user.image}}">
             <label for="email">Email: </label>
             <span class="d-flex flex-column w-100">
                 <input id="email" name="email" class="form-control form-control-sm" type="text"
                     placeholder="{{user.email}}">
-    
-                    @inputError('email')
-                    <div class="alert alert-danger">{{$messages[0]}}</div>
-                    @end
-            </span>
-            <label for="firstname">Vorname:</label> 
-            <input id="firstname" name="firstname" class="form-control form-control-sm" type="text"
-                placeholder="{{user.firstname ? user.firstname : 'Vorname'}}">
 
-            <label for="lastname">Nachname:</label> 
-            <input id="lastname" name="lastname" class="form-control form-control-sm" type="text"
-                placeholder="{{user.lastname ? user.lastname : 'Nachname'}}">
-                
-            <label for="number">Telefon:</label> <input id="number" name="number" class="form-control form-control-sm" type="text"
-                placeholder="{{user.number ? user.number : 'Telefon'}}">
+                @inputError('email')
+                <div class="alert alert-danger">{{$messages[0]}}</div>
+                @end
+            </span>
+            <label for="firstname">Vorname:</label>
+            <span class="d-flex flex-column w-100">
+                <input id="firstname" name="firstname" class="form-control form-control-sm" type="text"
+                    placeholder="{{user.firstname ? user.firstname : 'Vorname'}}" value="{{ old('firstname') ?? ''}}">
+
+                @inputError('firstname')
+                <div class="alert alert-danger">{{$messages[0]}}</div>
+                @end
+            </span class="d-flex flex-column w-100">
+            <label for="lastname">Nachname:</label>
+            <span class="d-flex flex-column w-100">
+                <input id="lastname" name="lastname" class="form-control form-control-sm" type="text"
+                    placeholder="{{user.lastname ? user.lastname : 'Nachname'}}" value={{ old('lastname') ?? ''}}>
+                @inputError('lastname')
+                <div class="alert alert-danger">{{$messages[0]}}</div>
+                @end
+            </span>
+            <label for="number">Telefon:</label>
+            <span class="d-flex flex-column w-100">
+                <input id="number" name="number" class="form-control form-control-sm" type="number"
+                    placeholder="{{user.number ? user.number : '049XXXXXXX'}}" value="{{ old('number') ?? ''}}">
+
+                @inputError('number')
+                <div class="alert alert-danger">{{$messages[0]}}</div>
+                @end
+            </span>
             <input id="submit-btn" type="submit" class="btn btn-secondary" value="Änderungen Speichern 🚀" disabled>
         </form>
     </div>
@@ -41,17 +57,17 @@
 </div>
 <script>
     document.getElementById('profile-general').addEventListener('input', function () {
-            let disabled = ![].some.call(document.querySelectorAll("input[type=text]"), (input) => {
-                return input.value.length;
-            });
-            disabled = disabled && !document.querySelector("input[type=file]").value.length;
-
-            let submit = document.getElementById("submit-btn");
-
-            if (disabled) {
-                submit.setAttribute("disabled", "disabled");
-            } else {
-                submit.removeAttribute("disabled");
-            }
+        let disabled = ![].some.call(document.querySelectorAll("input[type=text]"), (input) => {
+            return input.value.length;
         });
+        disabled = disabled && !document.querySelector("input[type=file]").value.length;
+
+        let submit = document.getElementById("submit-btn");
+
+        if (disabled) {
+            submit.setAttribute("disabled", "disabled");
+        } else {
+            submit.removeAttribute("disabled");
+        }
+    });
 </script>

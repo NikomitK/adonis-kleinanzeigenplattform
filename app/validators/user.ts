@@ -30,6 +30,6 @@ export const updateProfileValidator = vine.compile(
         }).email().optional(),
         firstname: vine.string().alpha().optional(),
         lastname: vine.string().alpha().optional(),
-        number: vine.string().optional(),
+        number: vine.string().mobile().optional(),
     })
 )
