@@ -17,7 +17,7 @@
 
         <div class="form-floating">
             <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com" required
-                value="{{ old('email') ?? '' }}">
+                value="{{ old('email') ?? '' }}" autocomplete="email">
             <label for="email">Email Addresse</label>
         </div>
 
@@ -28,7 +28,7 @@
         <div class="input-group">
             <div class="form-floating">
                 <input type="password" class="form-control" name="password" id="password" placeholder="Passwort"
-                    required minlength="8">
+                    required minlength="8" autocomplete="new-password">
                 <label for="password">Passwort</label>
             </div>
             <span class="input-group-text" data-bs-toggle="tooltip" data-bs-placement="top"
@@ -37,7 +37,7 @@
 
         <div class="form-floating">
             <input type="password" class="form-control" name="password_confirmation" id="password_confirmation"
-                placeholder="Passwort wiederholen" required minlength="8">
+                placeholder="Passwort wiederholen" required minlength="8" autocomplete="new-password">
             <label for="password_confirmation">Passwort wiederholen</label>
         </div>
 
