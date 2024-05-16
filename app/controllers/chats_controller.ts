@@ -47,7 +47,7 @@ export default class ChatsController {
             throw new Exception('Not found', { status: 404 })
         }
         if (user.username !== request.params().username && user.username !== listing.username) {
-            throw new Exception('Unauthorized', { status: 403 })
+            throw new Exception('Forbidden', { status: 403 })
         }
 
         let other = await User.find(user.username === request.params().username ? listing.username : request.params().username)

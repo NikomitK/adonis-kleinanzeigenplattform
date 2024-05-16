@@ -102,7 +102,7 @@ export default class ListingsController {
         if (!anzeige) {
             throw new Exception('Not found', { status: 404 })
         } else if (anzeige.username !== user.username) {
-            throw new Exception('Unauthorized', { status: 403 })
+            throw new Exception('Forbidden', { status: 403 })
         }
 
         const images = await Image.findManyBy('listing_id', anzeige.id)
@@ -117,7 +117,7 @@ export default class ListingsController {
         if (!listing) {
             throw new Exception('Not found', { status: 404})
         } else if (user.username !== listing.username) {
-            throw new Exception('Unauthorized', { status: 403 })
+            throw new Exception('Forbidden', { status: 403 })
         }
 
         const { title, description, price, shipping_price} = await request.validateUsing(lisitingFormValidator)
@@ -141,7 +141,7 @@ export default class ListingsController {
         if (!anzeige) {
             return response.redirect('/meine-anzeigen')
         } else if (anzeige.username !== user.username) {
-            throw new Exception('Unauthorized', { status: 403 })
+            throw new Exception('Forbidden', { status: 403 })
         }
 
         await Listing.find(request.params().id).then((listing) => {
