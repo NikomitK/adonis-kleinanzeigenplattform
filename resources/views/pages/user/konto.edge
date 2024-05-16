@@ -26,7 +26,7 @@
             <label for="lastname">Nachname:</label>
             <span class="d-flex flex-column w-100">
                 <input id="lastname" name="lastname" class="form-control form-control-sm" type="text"
-                    placeholder="{{user.lastname ? user.lastname : 'Nachname'}}" value={{ old('lastname') ?? ''}} autocomplete="family-name">
+                    placeholder="{{user.lastname ? user.lastname : 'Nachname'}}" value="{{ old('lastname') ?? ''}}" autocomplete="family-name">
                 @inputError('lastname')
                 <div class="alert alert-danger">{{$messages[0]}}</div>
                 @end
