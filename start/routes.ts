@@ -65,6 +65,8 @@ router.get('/anzeige/:id/deaktivieren', [ListingsController, 'changeState']).use
 
 router.get('/anzeige/:id/verkauft', [ListingsController, 'changeState']).use(middleware.auth())
 
+router.get('/anzeige/:id/reaktivieren', [ListingsController, 'changeState']).use(middleware.auth())
+
 router.get('/chat-overview', [ChatsController, 'displayChatOverview']).use(middleware.auth())
 
 router.get('/chat/:id/:username', [ChatsController, 'displayChat']).use(middleware.auth())

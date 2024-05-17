@@ -144,8 +144,13 @@ export default class ListingsController {
             throw new Exception('Forbidden', { status: 403 })
         }
 
+        switch (request.url()) {
+            case `/anzeige/${request.params().id}/deaktivieren`: var newState = 'inactive'; break;
+            case `/anzeige/${request.params().id}/verkauft`: var newState = 'sold'; break;
+            case `/anzeige/${request.params().id}/reaktivieren`: var newState = 'active'; break;
+        }
         await Listing.find(request.params().id).then((listing) => {
-            listing?.merge({ status: request.url().includes('verkauft') ? 'sold' : 'inactive' }).save()
+            listing?.merge({ status: newState}).save()
         })
 
         return response.redirect('/meine-anzeigen')

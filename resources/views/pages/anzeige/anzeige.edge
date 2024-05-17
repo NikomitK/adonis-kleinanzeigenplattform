@@ -22,17 +22,25 @@
         </div>
         <hr>
         <div class="anzeige_interaction">
+
             @if(user && user.username == poster.username)
             <a href="/anzeige/{{ anzeige.id }}/bearbeiten" class="btn btn-secondary"><span>Anzeige bearbeiten</span></a>
             <div>
                 @if(anzeige.status !== 'inactive')
                 <a href="/anzeige/{{ anzeige.id }}/deaktivieren" class="btn btn-danger"><span>Anzeige
                         deaktivieren</span></a>
+                @else
+                <a href="/anzeige/{{ anzeige.id }}/reaktivieren" class="btn btn-gray"><span>Anzeige
+                        aktivieren</span></a>
                 @end
                 @if(anzeige.status !== 'sold')
                 <a href="/anzeige/{{ anzeige.id }}/verkauft" class="btn btn-light"><span>Anzeige verkauft</span></a>
+                @else
+                <a href="/anzeige/{{ anzeige.id }}/reaktivieren" class="btn btn-gray"><span>Anzeige
+                        aktivieren</span></a>
                 @end
             </div>
+
             @elseif(anzeige.status === 'active')
             <a href="/chat/{{ anzeige.id }}/{{ user ? user.username : null }}" class="btn btn-secondary anzeigen-btn">
                 <span><img src="{{ asset('resources/images/icons/chat.svg') }}" alt="">Chat starten </span></a>
