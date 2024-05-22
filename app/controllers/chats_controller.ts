@@ -37,10 +37,6 @@ export default class ChatsController {
             return response.redirect(`/chat/${request.params().id}/${user.username}`)
         }
 
-        if(request.params().username === user.username) {
-            return response.redirect(`/chat-overview`)
-        }
-
         const listing = await Listing.find(request.params().id)
         if (!listing) {
             // Fehlermeldungen nicht mit z.B. response.notFound(), weil ich dann nicht auf die Fehlerseite geleitet werde sondern einfach ganz die connection verloren geht
@@ -48,6 +44,10 @@ export default class ChatsController {
         }
         if (user.username !== request.params().username && user.username !== listing.username) {
             throw new Exception('Forbidden', { status: 403 })
+        }
+
+        if(request.params().username === listing.username) {
+            return response.redirect('/chat-overview')
         }
 
         let other = await User.find(user.username === request.params().username ? listing.username : request.params().username)
