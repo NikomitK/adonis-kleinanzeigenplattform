@@ -1,4 +1,4 @@
-import '../scss/base.scss'
+//import '../scss/base.scss'
 
 import { createEvent } from 'ics';
 
