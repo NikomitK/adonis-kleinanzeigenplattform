@@ -23,7 +23,7 @@ export default class UsersController {
 
         await auth.use('web').login(user);
 
-        return response.redirect('/konto')
+        response.redirect(session.get('intended') ?? '/konto')
     }
 
     async loginForm({ view, request }: HttpContext) {
