@@ -13,18 +13,17 @@ export default class UsersController {
     }
 
     async registerProcess({ request, response, session, auth }: HttpContext) {
-        const { username, email, password } = await request.validateUsing(registerValidator)
+        const userdata = await request.validateUsing(registerValidator);
 
-        const user = new User()
-        user.username = username
-        user.firstname = null
-        user.lastname = null
-        user.email = email
-        user.password = password
-        user.save()
-        await auth.use('web').login(user)
+        const user = await User.create({
+            ...userdata,
+            firstname: null,
+            lastname: null,
+        });
 
-        response.redirect(session.get('intended') ?? '/konto')
+        await auth.use('web').login(user);
+
+        return response.redirect('/konto')
     }
 
     async loginForm({ view, request }: HttpContext) {
