@@ -3,9 +3,9 @@
 import * as bootstrap from 'bootstrap'
 
 const shipping = document.getElementById("shipping")
+const shippingPrice = document.getElementById("shipping_price")
 
 if (shipping) {
-    var shippingPrice = document.getElementById("shipping_price");
     shippingPrice.disabled = !shipping.checked;
 }
 

@@ -66,7 +66,7 @@
 
 </div>
 
-@if(otherFromUser.length > 0 && user && user.username !== poster.username)
+@if((otherFromUser.length > 0) && (!user || user.username !== poster.username))
 <div class="container pt-2">
     <h2>Weitere Anzeigen von {{ poster.username }}</h2>
     <div class="py-3 d-flex flex-wrap justify-content-center justify-content-md-start gap-4">

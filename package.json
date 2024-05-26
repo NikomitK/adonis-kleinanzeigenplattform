@@ -12,7 +12,8 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "typecheck": "tsc --noEmit",
-    "reseed": "node ace migration:refresh && node ace db:seed"
+    "reseed": "node ace migration:refresh && node ace db:seed",
+    "unlighthouse": "npx unlighthouse --site localhost:3333 --desktop --throttle"
   },
   "imports": {
     "#controllers/*": "./app/controllers/*.js",
