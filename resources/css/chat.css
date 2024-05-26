@@ -12400,7 +12400,7 @@ nav {
 }
 .anzeige {
   width: 90%;
-  height: 121.5% !important;
+  height: 121.5%;
   transition: box-shadow 0.3s;
 }
 .anzeige .anzeigen-status,
